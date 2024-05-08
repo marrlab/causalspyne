@@ -11,7 +11,7 @@ class RecursiveGraphGen():
         self.num_nodes_per_cluster = self.strategy_num_nodes_per_cluster(
             self.num_clusters)
         self.dict_cluster_node2dag = {}
-        self.dag = None
+        self.fine_grained_dag = None
 
     def gen_back_bone(self):
         self.backbone = self.dag_generator.genDAG(
@@ -29,4 +29,4 @@ class RecursiveGraphGen():
             # cluster1 comes before cluster2
             node1 = self.dict_cluster_node2dag[cluster1].sample_node()
             node2 = self.dict_cluster_node2dag[cluster2].sample_node()
-            self.dag.add_arc((node1, node2))
+            self.fine_grained_dag.add_arc((node1, node2))
