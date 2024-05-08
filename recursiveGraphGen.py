@@ -1,21 +1,26 @@
 
+
 class RecursiveGraphGen():
-    def __init__(dag_generator, backbone_density, strategy_num_nodes_per_cluster, n_cluster):
+    def __init__(self, dag_generator, backbone_density,
+                 strategy_num_nodes_per_cluster, n_cluster):
         self.dag_generator = dag_generator
         self.backbone = None
-        self.snum_clusters = n_cluster
+        self.num_clusters = n_cluster
         self.backbone_density = backbone_density
         self.strategy_num_nodes_per_cluster = strategy_num_nodes_per_cluster
-        self.num_nodes_per_cluster = self.strategy_num_nodes_per_cluster(self.num_clusters)
-        self.dict_cluster_node2dag = None
+        self.num_nodes_per_cluster = self.strategy_num_nodes_per_cluster(
+            self.num_clusters)
+        self.dict_cluster_node2dag = {}
         self.dag = None
 
     def gen_back_bone(self):
-        self.backbone = self.dag_generator.genDAG(self.num_clusters, self.backbone_density)
+        self.backbone = self.dag_generator.genDAG(
+            self.num_clusters, self.backbone_density)
 
     def populate_cluster(self):
         for node in self.backbone:
-            self.dict_cluster_node2dag[node] = self.dag_generator.genDAG(self.num_nodes_per_cluster[node])
+            self.dict_cluster_node2dag[node] = self.dag_generator.genDAG(
+                self.num_nodes_per_cluster[node])
 
     def interconnection(self):
         self.backbone.toplogical_order()
