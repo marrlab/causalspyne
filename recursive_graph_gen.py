@@ -1,3 +1,12 @@
+from scipy.linalg import block_diag
+
+class ClassBackBone():
+    """
+    """
+    @property
+    def arcs(self):
+        """
+        """
 
 
 class RecursiveGraphGen():
@@ -17,16 +26,34 @@ class RecursiveGraphGen():
         self.backbone = self.dag_generator.genDAG(
             self.num_clusters, self.backbone_density)
 
+    def get_dag_size():
+
     def populate_cluster(self):
+        """
+        replace a macro node into a DAG
+        """
+        num_nodes = 0
         for node in self.backbone:
             self.dict_cluster_node2dag[node] = self.dag_generator.genDAG(
                 self.num_nodes_per_cluster[node])
+            num_nodes + = self.get_dag_size(self.dict_cluster_node2dag[node])
+        self.init_fine_grained()   # block diagnoal
+
+    def init_fine_grained():
+        self.fine_grained_dag = block_diag(
+            tuple(self.dict_cluster_node2dag[node])
 
     def interconnection(self):
         self.backbone.toplogical_order()
         for arc in self.backbone.arcs():
-            cluster1, cluster2 = arc.nodes_pair()
-            # cluster1 comes before cluster2
-            node1 = self.dict_cluster_node2dag[cluster1].sample_node()
-            node2 = self.dict_cluster_node2dag[cluster2].sample_node()
-            self.fine_grained_dag.add_arc((node1, node2))
+            str_cluster_src, str_clustr_sink = arc.nodes_pair()
+            # str_cluster_src comes before str_clustr_sink
+            node_micro_src = self.dict_cluster_node2dag[str_cluster_src].sample_node()
+            node_micro_sink = self.dict_cluster_node2dag[str_clustr_sink].sample_node()
+            # the order is pointing src to sink
+            self.fine_grained_dag.add_arc((node_micro_src, node_micro_sink))
+
+    def run(self):
+        self.gen_back_bone()
+        self.populate_cluster()
+        self.interconnection(self)
