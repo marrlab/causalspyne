@@ -47,7 +47,6 @@ class RecursiveGraphGen():
             self.dict_cluster_node2dag[str(i)] = self.dag_generator.genDAG(3)
             # num_nodes += self.get_dag_size(self.dict_cluster_node2dag[node])
         self.init_fine_grained()   # block diagnoal
-        breakpoint()
 
     def init_fine_grained(self):
         self.fine_grained_dag = block_diag(
