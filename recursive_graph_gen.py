@@ -8,6 +8,10 @@ class ClassBackBone():
         """
         """
 
+class NumNodesPerCluster():
+    def __call__(self, num_clusters):
+        return 3
+
 
 class RecursiveGraphGen():
     def __init__(self, dag_generator, backbone_density,
@@ -24,24 +28,30 @@ class RecursiveGraphGen():
 
     def gen_back_bone(self):
         self.backbone = self.dag_generator.genDAG(
-            self.num_clusters, self.backbone_density)
+             self.num_clusters)
+        # FIXME: self.num_clusters, self.backbone_density)
 
-    def get_dag_size():
+    def get_dag_size(self, dag):
+        """
+        """
+        return dag.shape[0]
 
     def populate_cluster(self):
         """
         replace a macro node into a DAG
         """
         num_nodes = 0
-        for node in self.backbone:
-            self.dict_cluster_node2dag[node] = self.dag_generator.genDAG(
-                self.num_nodes_per_cluster[node])
-            num_nodes + = self.get_dag_size(self.dict_cluster_node2dag[node])
+        # iterate each macro node
+        # for (i, _) in enumerate(self.backbone):
+        for i in range(self.backbone.shape[0]):
+            self.dict_cluster_node2dag[str(i)] = self.dag_generator.genDAG(3)
+            # num_nodes += self.get_dag_size(self.dict_cluster_node2dag[node])
         self.init_fine_grained()   # block diagnoal
+        breakpoint()
 
-    def init_fine_grained():
+    def init_fine_grained(self):
         self.fine_grained_dag = block_diag(
-            tuple(self.dict_cluster_node2dag[node])
+            tuple(self.dict_cluster_node2dag.values()))
 
     def interconnection(self):
         self.backbone.toplogical_order()

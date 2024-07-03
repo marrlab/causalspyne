@@ -18,5 +18,19 @@ class Erdos_Renyi():
         return W, mat_weight
 
 
+class GenDAGER():
+    def __init__(self, num_nodes, degree, weight_range):
+        self.num_nodes = num_nodes
+        self.degree = degree
+        self.weight_range = weight_range
+        self.gen = Erdos_Renyi()
+
+    def genDAG(self, num_nodes=None):
+        if num_nodes is None:
+            num_nodes = self.num_nodes
+        matrix, _ = self.gen(num_nodes, self.degree, self.weight_range)
+        return matrix
+
+
 def test_erdos_renyi():
     Erdos_Renyi()(num_nodes=3, degree=2, weight_range=[3, 5])
