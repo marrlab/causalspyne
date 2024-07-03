@@ -1,5 +1,6 @@
+
 """Generate ground truth pair (D, A_S), where D is a DAG and A is the
-optimal abstraction of D with respect to score S.
+optimal abstraction of D with respect to score S (e.g. BIC, AIC score).
 
 Given D, construct the poset of graphical abstractions and perform
 exhaustive search for the optimal abstraction. This will be a useful
@@ -28,7 +29,7 @@ def partitions(n: int) -> Generator[List[List[int]], None, None]:
             yield partition + [[n]]
             for idx, part in enumerate(partition):
                 prepart = partition[:idx]
-                postpart = partition[idx + 1 :]
+                postpart = partition[idx + 1:]
                 yield prepart + [part + [n]] + postpart
 
 
