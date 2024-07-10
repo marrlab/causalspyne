@@ -56,6 +56,7 @@ class RecursiveGraphGen():
         # iterate over the Macro-DAG edges
         for arc in self.backbone.arcs():
             # macro-DAG node source and sink, (i,j)
+            # NP.nonzero
             # iterate all non-zero elements of the DAG adjacency matrix
             str_cluster_src, str_clustr_sink = arc.nodes_pair()
             # str_cluster_src comes before str_clustr_sink
