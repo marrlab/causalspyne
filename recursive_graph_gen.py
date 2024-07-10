@@ -53,8 +53,10 @@ class RecursiveGraphGen():
             *(tuple(self.dict_cluster_node2dag.values())))
 
     def interconnection(self):
-        self.backbone.toplogical_order()
+        # iterate over the Macro-DAG edges
         for arc in self.backbone.arcs():
+            # macro-DAG node source and sink, (i,j)
+            # iterate all non-zero elements of the DAG adjacency matrix
             str_cluster_src, str_clustr_sink = arc.nodes_pair()
             # str_cluster_src comes before str_clustr_sink
             node_micro_src = self.dict_cluster_node2dag[str_cluster_src].sample_node()
