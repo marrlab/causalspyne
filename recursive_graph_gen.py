@@ -50,7 +50,7 @@ class RecursiveGraphGen():
 
     def init_fine_grained(self):
         self.fine_grained_dag = block_diag(
-            tuple(self.dict_cluster_node2dag.values()))
+            *(tuple(self.dict_cluster_node2dag.values())))
 
     def interconnection(self):
         self.backbone.toplogical_order()
@@ -65,4 +65,4 @@ class RecursiveGraphGen():
     def run(self):
         self.gen_back_bone()
         self.populate_cluster()
-        self.interconnection(self)
+        self.interconnection()

@@ -11,5 +11,4 @@ def test_recursive_gen():
                       backbone_density=0.7,
                       strategy_num_nodes_per_cluster=getter_num_nodes,
                       n_cluster=3)
-
     gen.run()
