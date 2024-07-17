@@ -1,4 +1,5 @@
 from scipy.linalg import block_diag
+from dag import MatDAG
 
 class ClassBackBone():
     """
@@ -54,16 +55,16 @@ class RecursiveGraphGen():
 
     def interconnection(self):
         # iterate over the Macro-DAG edges
-        for arc in self.backbone.arcs():
+        for arc in MatDAG(self.backbone).arcs:
             # macro-DAG node source and sink, (i,j)
             # NP.nonzero
             # iterate all non-zero elements of the DAG adjacency matrix
-            str_cluster_src, str_clustr_sink = arc.nodes_pair()
-            # str_cluster_src comes before str_clustr_sink
-            node_micro_src = self.dict_cluster_node2dag[str_cluster_src].sample_node()
-            node_micro_sink = self.dict_cluster_node2dag[str_clustr_sink].sample_node()
+            macro_arrow_tail, macro_arrow_head = tuple(arc)
+            # macro_arrow_tail comes before macro_arrow_head
+            node_global_tail = self.dict_cluster_node2dag[str(macro_arrow_tail)].sample_node(macro_arrow_tail)
+            node_global_head = self.dict_cluster_node2dag[str(macro_arrow_head)].sample_node(macro_arrow_head)
             # the order is pointing src to sink
-            self.fine_grained_dag.add_arc((node_micro_src, node_micro_sink))
+            self.fine_grained_dag.add_arc((node_global_tail, node_global_head))
 
     def run(self):
         self.gen_back_bone()
