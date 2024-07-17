@@ -1,5 +1,8 @@
+import random
 from scipy.linalg import block_diag
 from dag import MatDAG
+from big_refined_dag import RefinedBigDag
+
 
 class ClassBackBone():
     """
@@ -61,10 +64,13 @@ class RecursiveGraphGen():
             # iterate all non-zero elements of the DAG adjacency matrix
             macro_arrow_tail, macro_arrow_head = tuple(arc)
             # macro_arrow_tail comes before macro_arrow_head
-            node_global_tail = self.dict_cluster_node2dag[str(macro_arrow_tail)].sample_node(macro_arrow_tail)
-            node_global_head = self.dict_cluster_node2dag[str(macro_arrow_head)].sample_node(macro_arrow_head)
+            big_dag_indexer = RefinedBigDag(self.dict_cluster_node2dag)
+            node_local_tail = random.randint(0, self.dict_cluster_node2dag[str(macro_arrow_tail)].shape[0]-1)
+            node_local_head = random.randint(0, self.dict_cluster_node2dag[str(macro_arrow_head)].shape[0]-1)
+            node_global_tail = big_dag_indexer.get_global_ind(macro_arrow_tail, node_local_tail)
+            node_global_head = big_dag_indexer.get_global_ind(macro_arrow_head, node_local_head)
             # the order is pointing src to sink
-            self.fine_grained_dag.add_arc((node_global_tail, node_global_head))
+            self.fine_grained_dag[node_global_tail, node_global_head] = 1
 
     def run(self):
         self.gen_back_bone()
