@@ -12,12 +12,12 @@ class Erdos_Renyi():
     def __call__(self, num_nodes, degree, list_weight_range):
         prob = float(degree) / (num_nodes - 1)
         # lower triagular, k=-1 is the lower off diagonal
-        mat_b = np.tril((
+        mat_lower_triangle = np.tril((
             np.random.rand(num_nodes, num_nodes) < prob).astype(float),
             k=-1)
         # permutes first axis only
         mat_perm = np.random.permutation(np.eye(num_nodes, num_nodes))
-        mat_b_permuted = mat_perm.T.dot(mat_b).dot(mat_perm)
+        mat_b_permuted = mat_perm.T.dot(mat_lower_triangle).dot(mat_perm)
         mat_weight = np.random.uniform(low=list_weight_range[0], high=list_weight_range[1],
                                        size=[num_nodes, num_nodes])
 
