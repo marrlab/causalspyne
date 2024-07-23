@@ -1,5 +1,5 @@
-from recursive_graph_gen import RecursiveGraphGen, NumNodesPerCluster
-from dag_gen import Erdos_Renyi, GenDAGER
+from causalSpyne.recursive_graph_gen import RecursiveGraphGen, NumNodesPerCluster
+from causalSpyne.dag_gen import Erdos_Renyi, GenDAGER
 
 
 

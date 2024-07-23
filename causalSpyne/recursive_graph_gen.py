@@ -1,7 +1,7 @@
 import random
 from scipy.linalg import block_diag
-from dag import MatDAG
-from big_refined_dag import RefinedBigDag
+from causalSpyne.dag import MatDAG
+from causalSpyne.big_refined_dag import RefinedBigDag
 
 
 class ClassBackBone():
