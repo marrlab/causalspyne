@@ -1,6 +1,6 @@
 import random
 from scipy.linalg import block_diag
-from causalSpyne.dag import MatDAG
+from causalSpyne.dag_interface import MatDAG
 from causalSpyne.big_refined_dag import RefinedBigDag
 
 
