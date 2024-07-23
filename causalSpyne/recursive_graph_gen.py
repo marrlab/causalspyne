@@ -12,28 +12,27 @@ class ClassBackBone():
         """
         """
 
+
 class NumNodesPerCluster():
-    def __call__(self, num_clusters):
+    def __call__(self, name_macro_node):
         return 3
 
 
 class RecursiveGraphGen():
-    def __init__(self, dag_generator, backbone_density,
-                 strategy_num_nodes_per_cluster, n_cluster):
+    def __init__(self, dag_generator,
+                 strategy_num_nodes_per_cluster, num_macro_nodes):
         self.dag_generator = dag_generator
         self.backbone = None
-        self.num_clusters = n_cluster
-        self.backbone_density = backbone_density
+        self.num_macro_nodes = num_macro_nodes
         self.strategy_num_nodes_per_cluster = strategy_num_nodes_per_cluster
         self.num_nodes_per_cluster = self.strategy_num_nodes_per_cluster(
-            self.num_clusters)
+            self.num_macro_nodes)
         self.dict_cluster_node2dag = {}
         self.fine_grained_dag = None
 
     def gen_back_bone(self):
         self.backbone = self.dag_generator.genDAG(
-             self.num_clusters)
-        # FIXME: self.num_clusters, self.backbone_density)
+             self.num_macro_nodes)
 
     def get_dag_size(self, dag):
         """

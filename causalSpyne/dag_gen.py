@@ -37,19 +37,18 @@ class Erdos_Renyi():
         return mat_weighted_adjacency, mat_mask
 
 
-class GenDAGER():
+class GenDAG():
     def __init__(self, num_nodes, degree, list_weight_range):
+        """
+        degree: expected degree for each node
+        """
         self.num_nodes = num_nodes
         self.degree = degree
         self.list_weight_range = list_weight_range
-        self.gen = Erdos_Renyi()
+        self.stategy = Erdos_Renyi()
 
     def genDAG(self, num_nodes=None):
         if num_nodes is None:
             num_nodes = self.num_nodes
-        matrix, _ = self.gen(num_nodes, self.degree, self.list_weight_range)
+        matrix, _ = self.stategy(num_nodes, self.degree, self.list_weight_range)
         return matrix
-
-
-def test_erdos_renyi():
-    Erdos_Renyi()(num_nodes=3, degree=2, list_weight_range=[3, 5])
