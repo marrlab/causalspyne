@@ -35,7 +35,7 @@ class DataGenLinearGaussian():
             if list_parents_inds:
                 # Linear combination of parent nodes + Gaussian noise
                 weights = self.dag.get_weights_from_list_parents(
-                    list_parents_inds)
+                    node, list_parents_inds)
                 bias = np.dot(data[:, list_parents_inds], weights)
                 data[:, node] += bias
         return data
