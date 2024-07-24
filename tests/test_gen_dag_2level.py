@@ -13,4 +13,6 @@ def test_gen_dag_2level():
 
     dag_gen = GenDAG(num_nodes=3, degree=2, list_weight_range=[3, 5])
     gen = GenDAG2Level(dag_generator=dag_gen, num_macro_nodes=3)
-    gen.run()
+    dag = gen.run()
+    dag
+    print(dag)

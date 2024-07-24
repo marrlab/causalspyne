@@ -87,9 +87,15 @@ class MatDAG():
 
     @classmethod
     def stack_dags(cls, dict_dags):
-        """
+        """j
         stack dictionary of DAG into a block diagnoal matrix
         """
         mat_stacked_dag = block_diag(
             *(dag.mat_adjacency for dag in dict_dags.values()))
         return MatDAG(mat_stacked_dag)
+
+    def __str__(self):
+        return str(self.mat_adjacency)
+
+    def __repr__(self):
+        return str(self.mat_adjacency)
