@@ -3,6 +3,7 @@ class method for DAG operations and check
 """
 import random
 from scipy.linalg import block_diag
+from causalSpyne.is_dag import is_dag
 
 
 class MatDAG():
@@ -16,6 +17,13 @@ class MatDAG():
         self.mat_adjacency = mat_adjacency
         self._list_node_names = None
         self._dict_node_names2ind = {}
+
+    def check(self):
+        """
+        check if the matrix represent a DAG
+        """
+        if not is_dag(self.mat_adjacency):
+            raise RuntimeError("not a DAG")
 
     @property
     def num_nodes(self):

@@ -69,4 +69,5 @@ class GenDAG2Level():
         self.dag_backbone = self.dag_generator.gen_dag(self.num_macro_nodes)
         self.populate_macro_node()
         self.interconnection()
+        self.dag_refined.check()
         return self.dag_refined
