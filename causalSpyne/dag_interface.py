@@ -2,8 +2,10 @@
 class method for DAG operations and check
 """
 import random
+import numpy as np
 from scipy.linalg import block_diag
 from causalSpyne.is_dag import is_dag
+from causalSpyne.utils_topological_sort import topological_sort
 
 
 class MatDAG():
@@ -17,6 +19,7 @@ class MatDAG():
         self.mat_adjacency = mat_adjacency
         self._list_node_names = None
         self._dict_node_names2ind = {}
+        self.list_ind_nodes_sorted = None
 
     def check(self):
         """
@@ -101,6 +104,34 @@ class MatDAG():
         mat_stacked_dag = block_diag(
             *(dag.mat_adjacency for dag in dict_dags.values()))
         return MatDAG(mat_stacked_dag)
+
+    def topological_sort(self):
+        """
+        topological sort DAG into list of node index
+        """
+        binary_adj_mat = (self.mat_adjacency != 0).astype(int)
+        self.list_ind_nodes_sorted = topological_sort(binary_adj_mat)
+        return self.list_ind_nodes_sorted
+
+    def get_list_parents_inds(self, ind_node):
+        """
+        get list of parents nodes
+        """
+        # np.nonzero(x)
+        # returns (array([0, 1, 2, 2]), array([0, 1, 0, 1]))
+        # assume lower triangular matrix as adjacency matrix
+        # matrix[i, j]=1 indicate arrow j->i
+        submatrix = self.mat_adjacency[ind_node, :]
+        vector = submatrix.flatten()
+        list_inds = np.nonzero(vector)[0].tolist()
+        return list_inds
+
+    def get_weights_from_list_parents(self, ind_sink, list_parents):
+        """
+        get incoming edge weights
+        """
+        sub_matrix = self.mat_adjacency[ind_sink, list_parents]
+        return sub_matrix
 
     def __str__(self):
         return str(self.mat_adjacency)

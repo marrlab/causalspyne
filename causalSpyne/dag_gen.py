@@ -5,7 +5,7 @@ import numpy as np
 from causalSpyne.dag_interface import MatDAG
 
 
-class Erdos_Renyi():
+class Erdos_Renyi_PLP():
     """
     uniformly (w.r.t. each edge) decide if the edge will exist w.r.t. a prob.
     threshold
@@ -47,7 +47,7 @@ class GenDAG():
         self.num_nodes = num_nodes
         self.degree = degree
         self.list_weight_range = list_weight_range
-        self.stategy = Erdos_Renyi()
+        self.stategy_gen_dag = Erdos_Renyi_PLP()
 
     def gen_dag(self, num_nodes=None):
         """
@@ -55,7 +55,7 @@ class GenDAG():
         """
         if num_nodes is None:
             num_nodes = self.num_nodes
-        matrix, _ = self.stategy(
+        matrix, _ = self.stategy_gen_dag(
             num_nodes, self.degree, self.list_weight_range)
         dag = MatDAG(matrix)
         return dag
