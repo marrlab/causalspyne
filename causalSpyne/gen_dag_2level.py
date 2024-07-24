@@ -2,14 +2,7 @@
 2-level DAG generation
 """
 import random
-from scipy.linalg import block_diag
-from causalSpyne.dag_interface import MatDAG
-from causalSpyne.big_refined_dag import RefinedBigDag
-
-
-class NumNodesPerCluster():
-    def __call__(self, name_macro_node):
-        return 3
+from causalSpyne.dag_stack_indexer import DAGStackIndexer
 
 
 class GenDAG2Level():
@@ -17,64 +10,62 @@ class GenDAG2Level():
     generate a DAG with 2 levels: first level generate macro nodes, second
     level populate each macro node
     """
-    def __init__(self, dag_generator,
-                 strategy_num_nodes_per_cluster, num_macro_nodes):
+    def __init__(self, dag_generator, num_macro_nodes, max_num_local_nodes=4):
         self.dag_generator = dag_generator
-        self.backbone = None
         self.num_macro_nodes = num_macro_nodes
-        self.strategy_num_nodes_per_cluster = strategy_num_nodes_per_cluster
-        self.num_nodes_per_cluster = self.strategy_num_nodes_per_cluster(
-            self.num_macro_nodes)
-        self.dict_cluster_node2dag = {}
-        self.fine_grained_dag = None
+        self.max_num_local_nodes = max_num_local_nodes
 
-    def gen_back_bone(self):
-        """
-        generate backbone DAG with only macro nodes
-        """
-        self.backbone = self.dag_generator.genDAG(self.num_macro_nodes)
-
-    def get_dag_size(self, dag):
-        """
-        """
-        return dag.shape[0]
+        self.global_dag_indexer = None
+        self.dag_backbone = None
+        self.dict_macro_node2dag = {}
+        self.dag_refined = None
 
     def populate_macro_node(self):
         """
         replace a macro node into a DAG
         """
-        num_nodes = 0
         # iterate each macro node
-        # for (i, _) in enumerate(self.backbone):
-        for i in range(self.backbone.shape[0]):
-            self.dict_cluster_node2dag[str(i)] = self.dag_generator.genDAG(3)
-            # num_nodes += self.get_dag_size(self.dict_cluster_node2dag[node])
-        self.init_fine_grained()   # block diagnoal
-
-    def init_fine_grained(self):
-        self.fine_grained_dag = block_diag(
-            *(tuple(self.dict_cluster_node2dag.values())))
+        for name in self.dag_backbone.list_node_names:
+            num_nodes = random.randint(2, self.max_num_local_nodes)
+            self.dict_macro_node2dag[name] = self.dag_generator.gen_dag(
+                num_nodes)
+        self.global_dag_indexer = DAGStackIndexer(self.dict_macro_node2dag)
+        self.dag_refined = self.global_dag_indexer.dag_refined
 
     def interconnection(self):
+        """
+        connect macro nodes with edges
+        """
         # iterate over the Macro-DAG edges
-        for arc in MatDAG(self.backbone).arcs:
-            # macro-DAG node source and sink, (i,j)
-            # NP.nonzero
-            # iterate all non-zero elements of the DAG adjacency matrix
-            macro_arrow_tail, macro_arrow_head = tuple(arc)
-            # macro_arrow_tail comes before macro_arrow_head
-            big_dag_indexer = RefinedBigDag(self.dict_cluster_node2dag)
-            node_local_tail = random.randint(0, self.dict_cluster_node2dag[str(macro_arrow_tail)].shape[0]-1)
-            node_local_head = random.randint(0, self.dict_cluster_node2dag[str(macro_arrow_head)].shape[0]-1)
-            node_global_tail = big_dag_indexer.get_global_ind(macro_arrow_tail, node_local_tail)
-            node_global_head = big_dag_indexer.get_global_ind(macro_arrow_head, node_local_head)
-            # the order is pointing src to sink
-            self.fine_grained_dag[node_global_tail, node_global_head] = 1
+        for arc in self.dag_backbone.list_arcs:
+            self.connect_macro_node_via_local_node(arc)
+
+    def connect_macro_node_via_local_node(self, arc):
+        """
+        connect macro-DAG node edge (i,j) via local nodes
+        """
+        macro_arrow_tail, macro_arrow_head = arc
+        _, ind_local_tail = \
+            self.dict_macro_node2dag[macro_arrow_tail].sample_node()
+        _, ind_local_head = \
+            self.dict_macro_node2dag[macro_arrow_head].sample_node()
+
+        ind_macro_tail = self.dag_backbone.get_node_ind(macro_arrow_tail)
+        ind_macro_head = self.dag_backbone.get_node_ind(macro_arrow_head)
+
+        ind_global_tail = self.global_dag_indexer.get_global_ind(
+            ind_macro_tail, ind_local_tail)
+        ind_global_head = self.global_dag_indexer.get_global_ind(
+            ind_macro_head, ind_local_head)
+
+        self.dag_refined.add_arc_ind(ind_global_tail, ind_global_head)
 
     def run(self):
         """
         generation
         """
-        self.gen_back_bone()
+
+        # generate dag_backbone DAG with only macro nodes
+        self.dag_backbone = self.dag_generator.gen_dag(self.num_macro_nodes)
         self.populate_macro_node()
         self.interconnection()

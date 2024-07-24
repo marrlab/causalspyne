@@ -2,6 +2,7 @@
 concrete class to generate simple DAGs
 """
 import numpy as np
+from causalSpyne.dag_interface import MatDAG
 
 
 class Erdos_Renyi():
@@ -22,13 +23,14 @@ class Erdos_Renyi():
             k=-1)
         # permutes first axis only
         mat_perm = np.random.permutation(np.eye(num_nodes, num_nodes))
-        mat_b_permuted = mat_perm.T.dot(mat_lower_triangle_binary).dot(mat_perm)
+        mat_b_permuted = mat_perm.T.dot(
+            mat_lower_triangle_binary).dot(mat_perm)
         mat_weight = np.random.uniform(low=list_weight_range[0],
                                        high=list_weight_range[1],
                                        size=[num_nodes, num_nodes])
 
         # set some edges randomly to negative: e.g. x_i = 2x_j - 3x_k
-        mat_weight[np.random.rand(num_nodes, num_nodes) \
+        mat_weight[np.random.rand(num_nodes, num_nodes)
                    < self.prob_neg_weights] *= -1
 
         mat_mask = (mat_b_permuted != 0).astype(float)
@@ -47,8 +49,13 @@ class GenDAG():
         self.list_weight_range = list_weight_range
         self.stategy = Erdos_Renyi()
 
-    def genDAG(self, num_nodes=None):
+    def gen_dag(self, num_nodes=None):
+        """
+        generate DAG and wrap it around with interface
+        """
         if num_nodes is None:
             num_nodes = self.num_nodes
-        matrix, _ = self.stategy(num_nodes, self.degree, self.list_weight_range)
-        return matrix
+        matrix, _ = self.stategy(
+            num_nodes, self.degree, self.list_weight_range)
+        dag = MatDAG(matrix)
+        return dag
