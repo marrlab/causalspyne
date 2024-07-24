@@ -1,16 +1,10 @@
+"""
+2-level DAG generation
+"""
 import random
 from scipy.linalg import block_diag
 from causalSpyne.dag_interface import MatDAG
 from causalSpyne.big_refined_dag import RefinedBigDag
-
-
-class ClassBackBone():
-    """
-    """
-    @property
-    def arcs(self):
-        """
-        """
 
 
 class NumNodesPerCluster():
@@ -18,7 +12,11 @@ class NumNodesPerCluster():
         return 3
 
 
-class RecursiveGraphGen():
+class GenDAG2Level():
+    """
+    generate a DAG with 2 levels: first level generate macro nodes, second
+    level populate each macro node
+    """
     def __init__(self, dag_generator,
                  strategy_num_nodes_per_cluster, num_macro_nodes):
         self.dag_generator = dag_generator
@@ -31,15 +29,17 @@ class RecursiveGraphGen():
         self.fine_grained_dag = None
 
     def gen_back_bone(self):
-        self.backbone = self.dag_generator.genDAG(
-             self.num_macro_nodes)
+        """
+        generate backbone DAG with only macro nodes
+        """
+        self.backbone = self.dag_generator.genDAG(self.num_macro_nodes)
 
     def get_dag_size(self, dag):
         """
         """
         return dag.shape[0]
 
-    def populate_cluster(self):
+    def populate_macro_node(self):
         """
         replace a macro node into a DAG
         """
@@ -72,6 +72,9 @@ class RecursiveGraphGen():
             self.fine_grained_dag[node_global_tail, node_global_head] = 1
 
     def run(self):
+        """
+        generation
+        """
         self.gen_back_bone()
-        self.populate_cluster()
+        self.populate_macro_node()
         self.interconnection()
