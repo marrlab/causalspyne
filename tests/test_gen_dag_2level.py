@@ -4,6 +4,7 @@ test 2 level DAG generation
 
 from causalSpyne.gen_dag_2level import GenDAG2Level
 from causalSpyne.dag_gen import GenDAG
+from causalSpyne.is_dag import is_dag
 
 
 def test_gen_dag_2level():
@@ -16,3 +17,4 @@ def test_gen_dag_2level():
     dag = gen.run()
     dag
     print(dag)
+    is_dag(dag.mat_adjacency)
