@@ -127,6 +127,8 @@ class MatDAG():
         return list_inds
 
     def get_weights_from_list_parents(self, ind_sink, list_parents):
+        # FIXME: list_parents are redundant, since we could get the parent
+        # of ind_insk
         """
         get incoming edge weights
         """

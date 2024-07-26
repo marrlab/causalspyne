@@ -9,6 +9,11 @@ class Erdos_Renyi_PLP():
     """
     uniformly (w.r.t. each edge) decide if the edge will exist w.r.t. a prob.
     threshold
+    trick: PLP^T to ensure a DAG, L is lower triangular (topological order)
+    P is permutation, P permute the labels
+    (i,j) entry indicate j->i
+    row permutation  (i,j), (k,j) becomes (k,j) (i,j)
+    column permutation
     """
     def __init__(self, prob_neg_weights=0.5):
         """
