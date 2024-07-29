@@ -38,6 +38,10 @@ class MatDAG():
         self._dict_node_names2ind = {}
         self.list_ind_nodes_sorted = None
 
+    def gen_dict_ind2node_na(self):
+        mdict = {i: name for (i, name) in enumerate(self.list_node_names)}
+        return mdict
+
     def check(self):
         """
         check if the matrix represent a DAG
