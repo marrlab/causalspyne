@@ -1,6 +1,7 @@
 """
 index node globally when stacking several dags together
 """
+from scipy.linalg import block_diag
 from causalSpyne.dag_interface import MatDAG
 
 
@@ -8,26 +9,32 @@ class DAGStackIndexer():
     """
     stack DAG indexer
     """
-    def __init__(self, dict_dag):
+    def __init__(self, host):
         """
         """
-        self._dag_refined = MatDAG.stack_dags(dict_dag)
-        self.dict_num = {key: dag.num_nodes for key, dag in dict_dag.items()}
-        list_accum_count = list(fun_accum_sum(self.dict_num))
-        self.list_accum_count = [0] + list_accum_count[:-1]
-
-    @property
-    def dag_refined(self):
-        """
-        return the stacked dag
-        """
-        return self._dag_refined
+        self.host = host
+        self.host.dag_refined = self.stack_dags()
 
     def get_global_ind(self, ind_macro_node, ind_local_node):
         """
         get the global index of a local node
         """
         return self.list_accum_count[ind_macro_node] + ind_local_node
+
+    def stack_dags(self):
+        """
+        stack dictionary of DAG into a block diagnoal matrix
+        """
+        mat_stacked_dag = block_diag(
+            *(dag.mat_adjacency for dag in
+              self.host.dict_macro_node2dag.values()))
+        dag_stacked = MatDAG(mat_stacked_dag)
+        self.dict_num = {key: dag.num_nodes
+                         for key, dag in self.host.dict_macro_node2dag.items()}
+        list_accum_count = list(fun_accum_sum(self.dict_num))
+        self.list_accum_count = [0] + list_accum_count[:-1]
+        dag_stacked.gen_node_names_stacked(self.host.dict_macro_node2dag)
+        return dag_stacked
 
 
 def fun_accum_sum(dict_num):

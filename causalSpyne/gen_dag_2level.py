@@ -28,9 +28,8 @@ class GenDAG2Level():
         for name in self.dag_backbone.list_node_names:
             num_nodes = random.randint(2, self.max_num_local_nodes)
             self.dict_macro_node2dag[name] = self.dag_generator.gen_dag(
-                num_nodes)
-        self.global_dag_indexer = DAGStackIndexer(self.dict_macro_node2dag)
-        self.dag_refined = self.global_dag_indexer.dag_refined
+                num_nodes=num_nodes, prefix=name)
+        self.global_dag_indexer = DAGStackIndexer(self)
 
     def interconnection(self):
         """

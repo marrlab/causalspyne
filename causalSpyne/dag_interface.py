@@ -3,18 +3,35 @@ class method for DAG operations and check
 """
 import random
 import numpy as np
-from scipy.linalg import block_diag
 from causalSpyne.is_dag import is_dag
 from causalSpyne.utils_topological_sort import topological_sort
+
+
+def add_prefix(string, prefix="", separator="_"):
+    """
+    Adds a prefix to a string.
+    If the prefix is empty, returns the original string.
+
+    Args:
+    string (str): The original string.
+    prefix (str, optional): The prefix to add. Defaults to an empty string.
+
+    Returns:
+    str: The string with the prefix added.
+    """
+    if not prefix:
+        return string
+    return separator.join([prefix, string])
 
 
 class MatDAG():
     """
     DAG represented as a mat_adjacency
     """
-    def __init__(self, mat_adjacency, name_prefix=""):
+    def __init__(self, mat_adjacency, name_prefix="", separator="_"):
         """
         """
+        self.separator = separator
         self.name_prefix = name_prefix
         self.mat_adjacency = mat_adjacency
         self._list_node_names = None
@@ -39,7 +56,16 @@ class MatDAG():
         """
         get list of node names
         """
-        self._list_node_names = [str(i) for i in range(self.num_nodes)]
+        self._list_node_names = [
+            add_prefix(string=str(i), prefix=self.name_prefix)
+            for i in range(self.num_nodes)]
+        self._dict_node_names2ind = \
+            {name: i for (i, name) in enumerate(self._list_node_names)}
+
+    def gen_node_names_stacked(self, dict_macro_node2dag):
+        self._list_node_names = []
+        for key, dag in dict_macro_node2dag.items():
+            self._list_node_names.extend(dag.list_node_names)
         self._dict_node_names2ind = \
             {name: i for (i, name) in enumerate(self._list_node_names)}
 
@@ -95,15 +121,6 @@ class MatDAG():
             self.mat_adjacency[ind_tail, ind_head] = 1
         else:
             self.mat_adjacency[ind_tail, ind_head] = weight
-
-    @classmethod
-    def stack_dags(cls, dict_dags):
-        """j
-        stack dictionary of DAG into a block diagnoal matrix
-        """
-        mat_stacked_dag = block_diag(
-            *(dag.mat_adjacency for dag in dict_dags.values()))
-        return MatDAG(mat_stacked_dag)
 
     def topological_sort(self):
         """

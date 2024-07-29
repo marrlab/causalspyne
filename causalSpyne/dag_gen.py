@@ -54,7 +54,7 @@ class GenDAG():
         self.list_weight_range = list_weight_range
         self.stategy_gen_dag = Erdos_Renyi_PLP()
 
-    def gen_dag(self, num_nodes=None):
+    def gen_dag(self, num_nodes=None, prefix=""):
         """
         generate DAG and wrap it around with interface
         """
@@ -62,5 +62,5 @@ class GenDAG():
             num_nodes = self.num_nodes
         matrix, _ = self.stategy_gen_dag(
             num_nodes, self.degree, self.list_weight_range)
-        dag = MatDAG(matrix)
+        dag = MatDAG(matrix, name_prefix=prefix)
         return dag

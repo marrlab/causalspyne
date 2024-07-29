@@ -1,10 +1,10 @@
 """
 test linear gaussian data gen
 """
+import pandas as pd
 from causalSpyne.data_linear_gaussian import DataGenLinearGaussian
 from causalSpyne.gen_dag_2level import GenDAG2Level
 from causalSpyne.dag_gen import GenDAG
-import pandas as pd
 
 
 def test_data_gen_linear_gaussian():
