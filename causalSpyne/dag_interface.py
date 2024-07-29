@@ -37,7 +37,7 @@ class MatDAG():
         self.mat_adjacency = mat_adjacency
         self._list_node_names = None
         self._dict_node_names2ind = {}
-        self.list_ind_nodes_sorted = None
+        self._list_ind_nodes_sorted = None
 
     def gen_dict_ind2node_na(self):
         mdict = {i: name for (i, name) in enumerate(self.list_node_names)}
@@ -137,8 +137,14 @@ class MatDAG():
         topological sort DAG into list of node index
         """
         binary_adj_mat = (self.mat_adjacency != 0).astype(int)
-        self.list_ind_nodes_sorted = topological_sort(binary_adj_mat)
-        return self.list_ind_nodes_sorted
+        self._list_ind_nodes_sorted = topological_sort(binary_adj_mat)
+        return self._list_ind_nodes_sorted
+
+    @property
+    def list_ind_nodes_sorted(self):
+        if self._list_ind_nodes_sorted is None:
+            self.topological_sort()
+        return self._list_ind_nodes_sorted
 
     def get_list_parents_inds(self, ind_node):
         """

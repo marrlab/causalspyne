@@ -23,3 +23,9 @@ def gen_data_linear_gaussian(backbone_num_nodes, backbone_degree,
     df = pd.DataFrame(arr,
                       columns=dag.list_node_names)
     df.to_csv(output_file_names, index=False)
+    dag.to_binary_csv()
+
+
+if __name__ == "__main__":
+    gen_data_linear_gaussian()
+

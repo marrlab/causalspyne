@@ -10,8 +10,9 @@ cp examples/benchpress/full_dev.json benchpress/config/causalSpyne.json
 
 cp adj.csv benchpress/resources/adjmat/myadjmats/adj.csv
 
-touch benchpress/resources/constraints/None-pcalg
-touch benchpress/resources/constraints/None-bnlearn
+# touch benchpress/resources/constraints/None-pcalg
+echo "{}" > benchpress/resources/constraints/None-pcalg
+# touch benchpress/resources/constraints/None-bnlearn
 
 cd benchpress
 git checkout dev
