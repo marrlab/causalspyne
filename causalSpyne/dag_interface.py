@@ -3,6 +3,7 @@ class method for DAG operations and check
 """
 import random
 import numpy as np
+import pandas as pd
 from causalSpyne.is_dag import is_dag
 from causalSpyne.utils_topological_sort import topological_sort
 
@@ -125,6 +126,11 @@ class MatDAG():
             self.mat_adjacency[ind_tail, ind_head] = 1
         else:
             self.mat_adjacency[ind_tail, ind_head] = weight
+
+    def to_binary_csv(self):
+        binary_adj_mat = (self.mat_adjacency != 0).astype(int)
+        df = pd.DataFrame(binary_adj_mat, columns=self.list_node_names)
+        df.to_csv("adj.csv", index=False)
 
     def topological_sort(self):
         """
