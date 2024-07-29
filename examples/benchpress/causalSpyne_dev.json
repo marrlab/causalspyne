@@ -1,0 +1,83 @@
+{
+  "benchmark_setup": [{
+    "title": "causalSpyne",
+    "data": [
+      {
+        "graph_id": "adj.csv",
+        "parameters_id": null,
+        "data_id": "output.csv",
+        "seed_range": null
+      }
+    ],
+    "evaluation": {
+      "benchmarks": {
+        "filename_prefix": "causalSpyne/",
+        "show_seed": false,
+        "errorbar": true,
+        "errorbarh": false,
+        "scatter": true,
+        "path": true,
+        "text": false,
+        "ids": ["fges-sem-bic"]
+      },
+      "graph_true_plots": true,
+      "graph_true_stats": true,
+      "ggally_ggpairs": true,
+      "graph_plots": [
+        "fges-sem-bic"
+      ],
+      "mcmc_traj_plots": [],
+      "mcmc_heatmaps": [],
+      "mcmc_autocorr_plots": []
+    }
+  }],
+  "resources": {
+    "data": {
+      "iid": [
+        {
+          "id": "standardized",
+          "standardized": true,
+          "n": [300]
+        }
+      ]
+    },
+    "graph": {
+      "pcalg_randdag": [
+        {
+          "id": "avneigs4_p20",
+          "max_parents": 5,
+          "n": 20,
+          "d": 4,
+          "par1": null,
+          "par2": null,
+          "method": "er",
+          "DAG": true
+        }
+      ]
+    },
+    "parameters": {
+      "sem_params": [
+        {
+          "id": "SEM",
+          "min": 0.25,
+          "max": 1
+        }
+      ]
+    },
+    "structure_learning_algorithms": {
+      "tetrad_fges": [
+        {
+          "id": "fges-sem-bic",
+          "faithfulnessAssumed": true,
+          "score": "sem-bic-score",
+          "datatype": "continuous",
+          "samplePrior": 1,
+          "edgeConstraints": null,
+          "semBicStructurePrior": 1,
+          "penaltyDiscount": [0.75, 0.8, 1, 1.5],
+          "timeout": null
+        }
+      ]
+    }
+  }
+}

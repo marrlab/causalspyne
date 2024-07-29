@@ -8,7 +8,7 @@ from causalSpyne.is_dag import is_dag
 from causalSpyne.utils_topological_sort import topological_sort
 
 
-def add_prefix(string, prefix="", separator="_"):
+def add_prefix(string, prefix="", separator="u"):
     """
     Adds a prefix to a string.
     If the prefix is empty, returns the original string.
@@ -62,7 +62,7 @@ class MatDAG():
         get list of node names
         """
         self._list_node_names = [
-            add_prefix(string=str(i), prefix=self.name_prefix)
+            add_prefix(string="v" + str(i), prefix=self.name_prefix)
             for i in range(self.num_nodes)]
         self._dict_node_names2ind = \
             {name: i for (i, name) in enumerate(self._list_node_names)}
