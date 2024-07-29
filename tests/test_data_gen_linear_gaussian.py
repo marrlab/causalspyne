@@ -19,3 +19,4 @@ def test_data_gen_linear_gaussian():
     arr.shape
     df = pd.DataFrame(arr,
                       columns=dag.list_node_names)
+    df.to_csv("output.csv", index=False)
