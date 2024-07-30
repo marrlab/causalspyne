@@ -35,7 +35,7 @@ class DAGView():
         hide variables according to a list of global index of topological sort
         """
         # subset list
-        self._list_global_inds_unobserved = \ [self._dag.list_ind_nodes_sorted[ind_top_order]
+        self._list_global_inds_unobserved = [self._dag.list_ind_nodes_sorted[ind_top_order]
              for ind_top_order in list_toporder_unobserved]
         self._mat_sub_dag = self._dag.subgraph(self._list_global_inds_unobserved)
         self._subset_data_arr = np.delete(self._data_arr,
@@ -53,8 +53,8 @@ class DAGView():
         """
         sub dataframe to  csv
         """
-        node_names = [name if i not in self._list_global_inds_unobserved
-                      for (i, name) in enumerate(self._dag.list_node_names)]
+        node_names = [name for (i, name) in enumerate(self._dag.list_node_names)
+                      if i not in self._list_global_inds_unobserved]
         df = pd.DataFrame(self.data, columns=node_names)
         df.to_csv("output.csv", index=False)
         subdag = MatDAG(self.mat_adj)
