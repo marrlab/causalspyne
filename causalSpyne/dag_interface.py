@@ -128,6 +128,9 @@ class MatDAG():
             self.mat_adjacency[ind_tail, ind_head] = weight
 
     def to_binary_csv(self):
+        """
+        adjacency matrix to csv format
+        """
         binary_adj_mat = (self.mat_adjacency != 0).astype(int)
         df = pd.DataFrame(binary_adj_mat, columns=self.list_node_names)
         df.to_csv("adj.csv", index=False)
@@ -142,6 +145,9 @@ class MatDAG():
 
     @property
     def list_ind_nodes_sorted(self):
+        """
+        get global node index topologically sorted
+        """
         if self._list_ind_nodes_sorted is None:
             self.topological_sort()
         return self._list_ind_nodes_sorted
@@ -173,3 +179,13 @@ class MatDAG():
 
     def __repr__(self):
         return str(self.mat_adjacency)
+
+    def subgraph(self, list_ind_unobserved):
+        """
+        subset adjacency matrix by deleting unobserved variables
+        """
+        temp_mat_row = np.delete(
+            self.mat_adjacency, list_ind_unobserved, axis=0)
+        mat_adj_subgraph = np.delete(
+            temp_mat_row, list_ind_unobserved, axis=1)
+        return mat_adj_subgraph
