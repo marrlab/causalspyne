@@ -165,13 +165,12 @@ class MatDAG():
         list_inds = np.nonzero(vector)[0].tolist()
         return list_inds
 
-    def get_weights_from_list_parents(self, ind_sink, list_parents):
-        # FIXME: list_parents are redundant, since we could get the parent
-        # of ind_insk
+    def get_weights_from_list_parents(self, ind_node):
         """
         get incoming edge weights
         """
-        sub_matrix = self.mat_adjacency[ind_sink, list_parents]
+        list_parents_inds = self.dag.get_list_parents_inds(ind_node)
+        sub_matrix = self.mat_adjacency[ind_node, list_parents_inds]
         return sub_matrix
 
     def __str__(self):

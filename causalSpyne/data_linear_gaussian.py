@@ -2,6 +2,7 @@
 generate Linear Gaussian
 """
 import numpy as np
+from causalSpyne.noise_idiosyncratic import Gaussian, HyperPars
 
 
 class DataGenLinearGaussian():
@@ -29,13 +30,11 @@ class DataGenLinearGaussian():
 
         # Generate data for each node in topological order
         for node in list_ind_nodes_topo_order:
-            list_parents_inds = self.dag.get_list_parents_inds(node)
-            noise = np.random.normal(0, noise_std, num_samples)
+            noise = Gaussian(HyperPars().gen()).gen(num_samples)
             data[:, node] = noise
             if list_parents_inds:
                 # Linear combination of parent nodes + Gaussian noise
-                weights = self.dag.get_weights_from_list_parents(
-                    node, list_parents_inds)
+                weights = self.dag.get_weights_from_list_parents(node)
                 bias = np.dot(data[:, list_parents_inds], weights)
                 data[:, node] += bias
         return data
