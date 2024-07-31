@@ -169,7 +169,7 @@ class MatDAG():
         """
         get incoming edge weights
         """
-        list_parents_inds = self.dag.get_list_parents_inds(ind_node)
+        list_parents_inds = self.get_list_parents_inds(ind_node)
         sub_matrix = self.mat_adjacency[ind_node, list_parents_inds]
         return sub_matrix
 
