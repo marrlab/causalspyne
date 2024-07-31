@@ -30,6 +30,7 @@ class DataGenLinearGaussian():
 
         # Generate data for each node in topological order
         for node in list_ind_nodes_topo_order:
+            list_parents_inds = self.dag.get_list_parents_inds(ind_node)
             noise = Gaussian(HyperPars().gen()).gen(num_samples)
             data[:, node] = noise
             if list_parents_inds:
