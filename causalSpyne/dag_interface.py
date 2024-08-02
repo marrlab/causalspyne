@@ -194,7 +194,8 @@ class MatDAG():
         mat_adj_subgraph = np.delete(
             temp_mat_row, list_ind_unobserved, axis=1)
         mat_adj_subgraph
-        subdag = MatDAG(mat_adj_subgraph, list_node_names)
+        subdag = MatDAG(mat_adj_subgraph,
+                        list_node_names=self.list_node_names[-list_ind_unobserved])
         return subdag
 
     def visualize(self, title="dag"):
