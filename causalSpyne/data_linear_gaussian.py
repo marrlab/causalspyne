@@ -3,11 +3,15 @@ generate Linear Gaussian
 """
 import numpy as np
 from causalSpyne.noise_idiosyncratic import Gaussian, HyperPars
+from causalSpyne.edge_models import EdgeModelLinear
 
 
 class DataGenLinearGaussian():
-    def __init__(self, dag):
+    def __init__(self, dag, edge_model=None):
         self.dag = dag
+        self.edge_model = edge_model
+        if edge_model is None:
+            self.edge_model = EdgeModelLinear(self.dag)
 
     def gen(self, num_samples, noise_std=1.0):
         """
@@ -34,8 +38,6 @@ class DataGenLinearGaussian():
             noise = Gaussian(HyperPars().gen()).gen(num_samples)
             data[:, node] = noise
             if list_parents_inds:
-                # Linear combination of parent nodes + Gaussian noise
-                weights = self.dag.get_weights_from_list_parents(node)
-                bias = np.dot(data[:, list_parents_inds], weights)
+                bias = self.edge_model.run(node, data[:, list_parents_inds])
                 data[:, node] += bias
         return data
