@@ -3,7 +3,7 @@ create different views for the same DAG by hiding some variables
 """
 import numpy as np
 import pandas as pd
-from causalSpyne.data_linear_gaussian import DataGen
+from causalSpyne.data_gen import DataGen
 from causalSpyne.dag_interface import MatDAG
 
 

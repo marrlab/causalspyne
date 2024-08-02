@@ -1,5 +1,5 @@
 import pandas as pd
-from causalSpyne.data_linear_gaussian import DataGen
+from causalSpyne.data_gen import DataGen
 from causalSpyne.gen_dag_2level import GenDAG2Level
 from causalSpyne.dag_gen import GenDAG
 
