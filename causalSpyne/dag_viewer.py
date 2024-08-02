@@ -15,7 +15,7 @@ class DAGView():
         self._dag = dag
         # there is no need to use a full DAG to represent subdag
         # since sub-dag is not responsible for data generation
-        self._mat_sub_dag = None
+        self._sub_dag = None
         self._data_arr = None
         self._subset_data_arr = None
         self._list_global_inds_unobserved = None
@@ -37,7 +37,7 @@ class DAGView():
         # subset list
         self._list_global_inds_unobserved = [self._dag.list_ind_nodes_sorted[ind_top_order]
              for ind_top_order in list_toporder_unobserved]
-        self._mat_sub_dag = self._dag.subgraph(self._list_global_inds_unobserved)
+        self._sub_dag = self._dag.subgraph(self._list_global_inds_unobserved)
         self._subset_data_arr = np.delete(self._data_arr,
                                           self._list_global_inds_unobserved, axis=1)
 
@@ -47,7 +47,7 @@ class DAGView():
 
     @property
     def mat_adj(self):
-        return self._mat_sub_dag
+        return self._sub_dag.mat_adjacency
 
     def to_csv(self):
         """
@@ -61,5 +61,4 @@ class DAGView():
         subdag.to_binary_csv()
 
     def visualize(self, title):
-        subdag = MatDAG(self._mat_sub_dag, list_node_names)
-        subdag.visualize(title=title)
+        self._sub_dag.visualize(title=title)
