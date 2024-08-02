@@ -15,10 +15,10 @@ def test_data_dag_subview():
     simple_dag_gen = GenDAG(num_nodes=3, degree=2, list_weight_range=[3, 5])
     dag_gen = GenDAG2Level(dag_generator=simple_dag_gen, num_macro_nodes=2)
     dag = dag_gen.run()
-    dag.visualize(title="dag_complete.svg")
+    dag.visualize(title="dag_complete")
 
     subview = DAGView(dag=dag)
     subview.run(num_samples=200)
     subview.run(num_samples=200, list_nodes2hide=[1, 2])
     subview.to_csv()
-    subview.visualize(title="dag_marginal.svg")
+    subview.visualize(title="dag_marginal")
