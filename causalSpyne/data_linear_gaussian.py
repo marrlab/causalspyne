@@ -2,13 +2,14 @@
 generate Linear Gaussian
 """
 import numpy as np
-from causalSpyne.noise_idiosyncratic import Gaussian, HyperPars
+from causalSpyne.noise_idiosyncratic import Idiosyncratic
 from causalSpyne.edge_models import EdgeModelLinear
 
 
-class DataGenLinearGaussian():
-    def __init__(self, dag, edge_model=None):
+class DataGen():
+    def __init__(self, dag, edge_model=None, idiosynchratic=None):
         self.dag = dag
+        self.idiosyncratic = Idiosyncratic()
         self.edge_model = edge_model
         if edge_model is None:
             self.edge_model = EdgeModelLinear(self.dag)
@@ -35,7 +36,7 @@ class DataGenLinearGaussian():
         # Generate data for each node in topological order
         for node in list_ind_nodes_topo_order:
             list_parents_inds = self.dag.get_list_parents_inds(node)
-            noise = Gaussian(HyperPars().gen()).gen(num_samples)
+            noise = self.idiosyncratic.gen(num_samples)
             data[:, node] = noise
             if list_parents_inds:
                 bias = self.edge_model.run(node, data[:, list_parents_inds])

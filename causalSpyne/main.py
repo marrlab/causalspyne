@@ -1,5 +1,5 @@
 import pandas as pd
-from causalSpyne.data_linear_gaussian import DataGenLinearGaussian
+from causalSpyne.data_linear_gaussian import DataGen
 from causalSpyne.gen_dag_2level import GenDAG2Level
 from causalSpyne.dag_gen import GenDAG
 
@@ -18,7 +18,7 @@ def gen_data_linear_gaussian(backbone_num_nodes, backbone_degree,
     dag_gen = GenDAG2Level(dag_generator=simple_dag_gen,
                            num_macro_nodes=num_macro_nodes)
     dag = dag_gen.run()
-    gen_data = DataGenLinearGaussian(dag)
+    gen_data = DataGen(dag)
     arr = gen_data.gen(num_samples=num_samples)
     df = pd.DataFrame(arr,
                       columns=dag.list_node_names)
