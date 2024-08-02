@@ -202,3 +202,12 @@ class MatDAG():
         draw_dags_nx(self.mat_adjacency,
                      dict_ind2name=self.gen_dict_ind2node_na(),
                      title=title)
+        
+    def mk_confound(self, ind):
+        """
+        make the current vertex confounder
+        """
+        nnzero = np.count_nonzero(self.mat_adjacency[:, ind])
+        if nnzero < 2:
+            mat = copy.deepcopy(self.mat_adjacency)
+            mat[j, ind] = self.gen_weight()
