@@ -61,4 +61,5 @@ class DAGView():
         subdag.to_binary_csv()
 
     def visualize(self, title):
-        MatDAG(self._mat_sub_dag).visualize(title=title)
+        subdag = MatDAG(self._mat_sub_dag, list_node_names)
+        subdag.visualize(title=title)

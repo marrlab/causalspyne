@@ -30,15 +30,22 @@ class MatDAG():
     """
     DAG represented as a mat_adjacency
     """
-    def __init__(self, mat_adjacency, name_prefix="", separator="_"):
+    def __init__(self, mat_adjacency, name_prefix="",
+                 separator="_", list_node_names=None):
         """
         """
         self.separator = separator
         self.name_prefix = name_prefix
         self.mat_adjacency = mat_adjacency
-        self._list_node_names = None
+        self._list_node_names = list_node_names
         self._dict_node_names2ind = {}
+        self._init_map()
         self._list_ind_nodes_sorted = None
+
+    def _init_map(self):
+        if self._list_node_names is not None:
+            self._dict_node_names2ind = \
+                {name: i for (i, name) in enumerate(self._list_node_names)}
 
     def gen_dict_ind2node_na(self):
         mdict = {i: name for (i, name) in enumerate(self.list_node_names)}
@@ -65,15 +72,13 @@ class MatDAG():
         self._list_node_names = [
             add_prefix(string="v" + str(i), prefix=self.name_prefix)
             for i in range(self.num_nodes)]
-        self._dict_node_names2ind = \
-            {name: i for (i, name) in enumerate(self._list_node_names)}
+        self._init_map()
 
     def gen_node_names_stacked(self, dict_macro_node2dag):
         self._list_node_names = []
         for key, dag in dict_macro_node2dag.items():
             self._list_node_names.extend(dag.list_node_names)
-        self._dict_node_names2ind = \
-            {name: i for (i, name) in enumerate(self._list_node_names)}
+        self._init_map()
 
     def get_node_ind(self, node_name):
         """
@@ -188,7 +193,9 @@ class MatDAG():
             self.mat_adjacency, list_ind_unobserved, axis=0)
         mat_adj_subgraph = np.delete(
             temp_mat_row, list_ind_unobserved, axis=1)
-        return mat_adj_subgraph
+        mat_adj_subgraph
+        subdag = MatDAG(mat_adj_subgraph, list_node_names)
+        return subdag
 
     def visualize(self, title="dag"):
         draw_dags_nx(self.mat_adjacency,

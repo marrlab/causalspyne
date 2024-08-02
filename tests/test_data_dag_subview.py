@@ -21,4 +21,4 @@ def test_data_dag_subview():
     subview.run(num_samples=200)
     subview.run(num_samples=200, list_nodes2hide=[1, 2])
     subview.to_csv()
-    dag.visualize(title="dag_marginal.svg")
+    subview.visualize(title="dag_marginal.svg")
