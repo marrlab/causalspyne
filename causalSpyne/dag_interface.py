@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 from causalSpyne.is_dag import is_dag
 from causalSpyne.utils_topological_sort import topological_sort
+from causalSpyne.draw_dags import draw_dags_nx
 
 
 def add_prefix(string, prefix="", separator="u"):
@@ -188,3 +189,8 @@ class MatDAG():
         mat_adj_subgraph = np.delete(
             temp_mat_row, list_ind_unobserved, axis=1)
         return mat_adj_subgraph
+
+    def visualize(self, title="dag"):
+        draw_dags_nx(self.mat_adjacency,
+                     dict_ind2name=self.gen_dict_ind2node_na(),
+                     title=title)

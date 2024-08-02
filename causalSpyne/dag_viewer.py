@@ -59,3 +59,6 @@ class DAGView():
         df.to_csv("output.csv", index=False)
         subdag = MatDAG(self.mat_adj)
         subdag.to_binary_csv()
+
+    def visualize(self, title):
+        MatDAG(self._mat_sub_dag).visualize(title=title)
