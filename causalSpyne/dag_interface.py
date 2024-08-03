@@ -34,6 +34,7 @@ class MatDAG():
                  separator="_", list_node_names=None):
         """
         """
+        self._obj_gen_weight = None
         self.separator = separator
         self.name_prefix = name_prefix
         self.mat_adjacency = mat_adjacency
@@ -48,6 +49,9 @@ class MatDAG():
                 {name: i for (i, name) in enumerate(self._list_node_names)}
 
     def gen_dict_ind2node_na(self):
+        """
+        utility function to have {1:"node_name"} dictionary for plotting
+        """
         mdict = {i: name for (i, name) in enumerate(self.list_node_names)}
         return mdict
 
@@ -193,15 +197,30 @@ class MatDAG():
             self.mat_adjacency, list_ind_unobserved, axis=0)
         mat_adj_subgraph = np.delete(
             temp_mat_row, list_ind_unobserved, axis=1)
-        list_node_names_subgraph = [x for i, x in enumerate(self.list_node_names) if i not in list_ind_unobserved]
+        list_node_names_subgraph = [x for i, x in
+                                    enumerate(self.list_node_names)
+                                    if i not in list_ind_unobserved]
         subdag = MatDAG(mat_adj_subgraph,
                         list_node_names=list_node_names_subgraph)
         return subdag
 
     def visualize(self, title="dag"):
+        """
+        draw dag using networkx
+        """
         draw_dags_nx(self.mat_adjacency,
                      dict_ind2name=self.gen_dict_ind2node_na(),
                      title=title)
+
+    def mk_confound(self, ind):
+        """
+        make the current vertex confounder
+        """
+        nnzero = np.count_nonzero(self.mat_adjacency[:, ind])
+        if nnzero < 2:
+            pos = self.list_ind_nodes_sorted.index(ind)
+            j = random.randint(pos + 1, self.num_nodes - 1)
+            self.mat_adjacency[j, ind] = self._obj_gen_weight()
 
     @property
     def list_top_names(self):
