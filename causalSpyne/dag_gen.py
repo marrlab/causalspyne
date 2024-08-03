@@ -1,9 +1,11 @@
 """
 concrete class to generate simple DAGs
 """
+import random
 import numpy as np
 from causalSpyne.dag_interface import MatDAG
 from causalSpyne.weight import WeightGenUniform
+from causalSpyne.dag_manipulator import DAGManipulator
 
 
 class Erdos_Renyi_PLP():
@@ -39,6 +41,7 @@ class GenDAG():
         self.list_weight_range = list_weight_range
         self.stategy_gen_dag = Erdos_Renyi_PLP()
         self.obj_gen_weight = WeightGenUniform(list_weight_range)
+        self.dag_manipulator = None
 
     def gen_dag(self, num_nodes=None, prefix=""):
         """
@@ -55,4 +58,7 @@ class GenDAG():
         mat_weighted_adjacency = mat_mask * mat_weight
 
         dag = MatDAG(mat_weighted_adjacency, name_prefix=prefix)
+        self.dag_manipulator = DAGManipulator(dag, self.obj_gen_weight)
+        ind = random.choices(dag.list_ind_nodes_sorted)[0]
+        flag_success = self.dag_manipulator.mk_confound(ind)
         return dag
