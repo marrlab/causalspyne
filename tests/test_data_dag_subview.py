@@ -18,7 +18,7 @@ def test_data_dag_subview():
     dag.visualize(title="dag_complete")
 
     subview = DAGView(dag=dag)
-    subview.run(num_samples=200)
+    # subview.run(num_samples=200)
     subview.run(num_samples=200, list_nodes2hide=[1, 2])
     subview.to_csv()
     subview.visualize(title="dag_marginal")

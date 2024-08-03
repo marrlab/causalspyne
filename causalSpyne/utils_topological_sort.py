@@ -6,6 +6,7 @@ toplogical sort on adjacency matrix
 import numpy as np
 from causalSpyne.is_dag import is_dag
 
+
 def is_binary_matrix(matrix):
     """
     check if matrix is binary
@@ -16,13 +17,15 @@ def is_binary_matrix(matrix):
     # Check if all elements are either 0 or 1
     return np.all((arr == 0) | (arr == 1))
 
+
 def topological_sort(binary_adj_mat):
     """
     first identify all source nodes
 
-    if binary_adj_mat[neighbor][node_src] != 0, then there is
-    edge from node_src to neighbor since by default we assume
-    a lower triangular matrix
+    if binary_adj_mat[node_arrow_head][node_arrow_tail] != 0, then there is
+    edge from node_arrow_tail to node_arrow_head since by default we assume
+    a lower triangular matrix where the first row should be source of the graph
+    since no other nodes point into it.
     """
     if not is_dag(binary_adj_mat):
         raise RuntimeError("not a DAG!")
@@ -33,7 +36,8 @@ def topological_sort(binary_adj_mat):
     # array([0, 6])
     arr_node_in_degree_volatile = np.sum(binary_adj_mat, axis=1)
     # list_queue_src_node_inds initially only contains all source nodes
-    list_queue_src_node_inds = [i for i in range(num_nodes) if arr_node_in_degree_volatile[i] == 0]
+    list_queue_src_node_inds = [i for i in range(num_nodes)
+                                if arr_node_in_degree_volatile[i] == 0]
     if not list_queue_src_node_inds:
         raise RuntimeError("no source nodes!")
     list_sorted_node_inds = []

@@ -35,6 +35,8 @@ class DAGView():
         hide variables according to a list of global index of topological sort
         """
         # subset list
+        nodes2remove = [self._dag.list_top_names[i] for i in list_toporder_unobserved]
+        print("nodes to hide " + str(nodes2remove))
         self._list_global_inds_unobserved = [self._dag.list_ind_nodes_sorted[ind_top_order]
              for ind_top_order in list_toporder_unobserved]
         self._sub_dag = self._dag.subgraph(self._list_global_inds_unobserved)

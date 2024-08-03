@@ -211,3 +211,12 @@ class MatDAG():
         if nnzero < 2:
             mat = copy.deepcopy(self.mat_adjacency)
             mat[j, ind] = self.gen_weight()
+
+    @property
+    def list_top_names(self):
+        """
+        return list of node names in toplogical order
+        """
+        list_top_names = [self.list_node_names[i]
+                          for i in self.list_ind_nodes_sorted]
+        return list_top_names
