@@ -18,4 +18,5 @@ class DAGManipulator():
             pos = self.dag.list_ind_nodes_sorted.index(ind)
             j = random.randint(pos + 1, self.dag.num_nodes - 1)
             self.dag.mat_adjacency[j, ind] = self._obj_gen_weight.gen(1)
+            self.dag.check()
         return True
