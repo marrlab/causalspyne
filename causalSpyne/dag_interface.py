@@ -202,3 +202,12 @@ class MatDAG():
         draw_dags_nx(self.mat_adjacency,
                      dict_ind2name=self.gen_dict_ind2node_na(),
                      title=title)
+
+    @property
+    def list_top_names(self):
+        """
+        return list of node names in toplogical order
+        """
+        list_top_names = [self.list_node_names[i]
+                          for i in self.list_ind_nodes_sorted]
+        return list_top_names
