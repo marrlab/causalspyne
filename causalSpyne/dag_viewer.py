@@ -7,6 +7,14 @@ from causalSpyne.data_gen import DataGen
 from causalSpyne.dag_interface import MatDAG
 
 
+def gen_list2hide(list_or_percentage, total_num):
+    if isinstance(list_or_percentage, float):
+        pos = int(list_or_percentage * total_num)
+        list_chosen = list(range(pos, total_num + 1))
+        return list_chosen
+    return list_or_percentage
+
+
 class DAGView():
     """
     with ground truth DAG intact, only show subgraph
@@ -38,6 +46,8 @@ class DAGView():
         given a list of index, hide the confounder according to the toplogical
         order provided by the input index list_toporder_confounder
         """
+        list_toporder_confounder = gen_list2hide(
+            list_toporder_confounder, len(self._dag.list_confounder))
         list_toporder_unobserved = \
             [self._dag.list_ind_nodes_sorted.index(confounder)
              for confounder in self._dag.list_confounder]
@@ -53,6 +63,9 @@ class DAGView():
         """
         hide variables according to a list of global index of topological sort
         """
+        list_toporder_unobserved = gen_list2hide(
+            list_toporder_unobserved, self._dag.num_nodes)
+
         # subset list
         nodes2remove = [self._dag.list_top_names[i]
                         for i in list_toporder_unobserved]
