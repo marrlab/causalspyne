@@ -61,6 +61,9 @@ class MatDAG():
         """
         if not is_dag(self.mat_adjacency):
             raise RuntimeError("not a DAG")
+        binary_adj_mat = (self.mat_adjacency != 0).astype(int)
+        if not is_dag(binary_adj_mat):
+            raise RuntimeError("not a DAG")
 
     @property
     def num_nodes(self):
