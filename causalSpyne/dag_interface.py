@@ -39,6 +39,7 @@ class MatDAG():
         self.name_prefix = name_prefix
         self.mat_adjacency = mat_adjacency
         self._list_node_names = list_node_names
+        self._list_confounder = None
         self._dict_node_names2ind = {}
         self._init_map()
         self._list_ind_nodes_sorted = None
@@ -47,6 +48,15 @@ class MatDAG():
         if self._list_node_names is not None:
             self._dict_node_names2ind = \
                 {name: i for (i, name) in enumerate(self._list_node_names)}
+
+    @property
+    def list_confounder(self):
+        """
+        return list of confounders
+        """
+        nonzero_counts = np.count_nonzero(self.mat_adjacency, axis=0)
+        columns_with_more_than_one = np.where(nonzero_counts > 1)[0]
+        return list(columns_with_more_than_one)
 
     def gen_dict_ind2node_na(self):
         """
