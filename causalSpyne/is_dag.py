@@ -1,26 +1,34 @@
+"""
+DFS to check if is DAG, use python inner function to access global variable
+"""
+
+
 def is_dag(adjacency_matrix):
+    """
+    adjaceny_matrx[u][v] \\neq 0 \\iff u <- v
+    """
     n = len(adjacency_matrix)
-    visited = set()
-    path = set()
+    set_visited = set()
+    set_path = set()  # A->[B]->[C]->A
 
-    def dfs(node):
-        visited.add(node)
-        path.add(node)
+    def dfs(ind_node):
+        set_visited.add(ind_node)
+        set_path.add(ind_node)
 
-        for neighbor in range(n):
-            if adjacency_matrix[node][neighbor] == 1:
-                if neighbor in path:
-                    return False
-                if neighbor not in visited:
-                    if not dfs(neighbor):
-                        return False
-
-        path.remove(node)
+        for arrow_head in range(n):
+            if adjacency_matrix[arrow_head][ind_node] != 0:  # arrow head
+                if arrow_head in set_path:  # # A->B->C->A
+                    return False  # not a DAG, bottom level return
+                if arrow_head not in set_visited:
+                    if not dfs(arrow_head):  # recursion
+                        return False  # recursive return
+        # exit of recursion: if arrow_head is visited
+        set_path.remove(ind_node)
         return True
 
-    for node in range(n):
-        if node not in visited:
-            if not dfs(node):
+    for ind_node in range(n):
+        if ind_node not in set_visited:
+            if not dfs(ind_node):
                 return False
 
     return True

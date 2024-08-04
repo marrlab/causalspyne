@@ -9,12 +9,14 @@ from causalSpyne.edge_models import EdgeModelLinear
 class DataGen():
     def __init__(self, dag, edge_model=None, idiosynchratic=None):
         self.dag = dag
-        self.idiosyncratic = Idiosyncratic()
+        self.idiosyncratic = idiosynchratic
+        if idiosynchratic is None:
+            self.idiosyncratic = Idiosyncratic()
         self.edge_model = edge_model
         if edge_model is None:
             self.edge_model = EdgeModelLinear(self.dag)
 
-    def gen(self, num_samples, noise_std=1.0):
+    def gen(self, num_samples):
         """
         Generate linear Gaussian data from a given DAG.
 

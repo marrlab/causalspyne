@@ -59,6 +59,5 @@ class GenDAG():
 
         dag = MatDAG(mat_weighted_adjacency, name_prefix=prefix)
         self.dag_manipulator = DAGManipulator(dag, self.obj_gen_weight)
-        ind = random.choices(dag.list_ind_nodes_sorted)[0]
-        flag_success = self.dag_manipulator.mk_confound(ind)
+        flag_success = self.dag_manipulator.mk_confound()
         return dag
