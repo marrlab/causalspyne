@@ -22,3 +22,18 @@ def test_data_dag_subview():
     subview.run(num_samples=200, list_nodes2hide=[1, 2])
     subview.to_csv()
     subview.visualize(title="dag_marginal")
+
+
+def test_data_dag_subview_confounder():
+    """
+    test linear gaussian data gen
+    """
+    simple_dag_gen = GenDAG(num_nodes=3, degree=2, list_weight_range=[3, 5])
+    dag_gen = GenDAG2Level(dag_generator=simple_dag_gen, num_macro_nodes=2)
+    dag = dag_gen.run()
+    dag.visualize(title="dag_complete_confounder")
+
+    subview = DAGView(dag=dag)
+    subview.run(num_samples=200, confound=True, list_nodes2hide=[0])
+    subview.to_csv()
+    subview.visualize(title="dag_marginal_confounder")

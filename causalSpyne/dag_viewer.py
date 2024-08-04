@@ -41,7 +41,8 @@ class DAGView():
         list_toporder_unobserved = \
             [self._dag.list_ind_nodes_sorted.index(confounder)
              for confounder in self._dag.list_confounder]
-        if len(list_toporder_confounder) > len(list_toporder_unobserved):
+        if len(list_toporder_confounder) > len(list_toporder_unobserved) or \
+                max(list_toporder_confounder) > len(list_toporder_unobserved):
             raise RuntimeError("there are less confounders than the length \
                                of input list_toporder_confounder")
         list_toporder_confounder_sub = \
