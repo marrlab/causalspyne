@@ -38,7 +38,8 @@ class DAGView():
         self._subset_data_arr = None
         self._list_global_inds_unobserved = None
         self.data_gen = DataGen(self._dag)
-        self._nodes2hide = None
+        self._list_nodes2hide = None
+        self._success = False
 
     def run(self, num_samples, list_nodes2hide=None, confound=False):
         """
@@ -84,10 +85,10 @@ class DAGView():
             list_toporder_unobserved, self._dag.num_nodes)
 
         # subset list
-        self._nodes2hide = [self._dag.list_top_names[i]
+        self._list_nodes2hide = [self._dag.list_top_names[i]
                             for i in list_toporder_unobserved]
         # FIXME: change to logger
-        print("nodes to hide " + str(self._nodes2hide))
+        print("nodes to hide " + str(self._list_nodes2hide))
 
         self._list_global_inds_unobserved = \
             [self._dag.list_ind_nodes_sorted[ind_top_order]
@@ -97,6 +98,7 @@ class DAGView():
         self._subset_data_arr = np.delete(
             self._data_arr,
             self._list_global_inds_unobserved, axis=1)
+        self._success = True
 
     @property
     def data(self):
@@ -116,11 +118,15 @@ class DAGView():
         """
         sub dataframe to  csv
         """
+        if not self._success:
+            warnings.warn("no subview of DAG available")
+            return
         node_names = [name for (i, name) in
                       enumerate(self._dag.list_node_names)
                       if i not in self._list_global_inds_unobserved]
         df = pd.DataFrame(self.data, columns=node_names)
-        df.to_csv(title, index=False)
+        str_node2hide = '_'.join(map(str, self._list_nodes2hide))
+        df.to_csv(title + str_node2hide, index=False)
         subdag = MatDAG(self.mat_adj)
         subdag.to_binary_csv()
 
