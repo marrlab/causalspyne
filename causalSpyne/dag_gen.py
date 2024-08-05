@@ -1,7 +1,7 @@
 """
 concrete class to generate simple DAGs
 """
-import random
+import warnings
 import numpy as np
 from causalSpyne.dag_interface import MatDAG
 from causalSpyne.weight import WeightGenUniform
@@ -59,5 +59,13 @@ class GenDAG():
 
         dag = MatDAG(mat_weighted_adjacency, name_prefix=prefix)
         self.dag_manipulator = DAGManipulator(dag, self.obj_gen_weight)
-        flag_success = self.dag_manipulator.mk_confound()
+        flag_success = False
+        count = 0
+        while not flag_success:
+            flag_success = self.dag_manipulator.mk_confound()
+            count += 1
+            if count > dag.num_nodes:
+                warnings.warn(f"failed to ensure confounder after \
+                              {dag.num_nodes} trails for {dag}")
+                break
         return dag
