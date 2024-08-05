@@ -49,6 +49,6 @@ def test_data_dag_subview_confounder_percentage():
     dag.visualize(title="dag_complete_confounder")
 
     subview = DAGView(dag=dag)
-    subview.run(num_samples=200, confound=True, list_nodes2hide=[0.5])
+    subview.run(num_samples=200, confound=True, list_nodes2hide=[0.9])
     subview.to_csv()
     subview.visualize(title="dag_marginal_confounder")
