@@ -7,12 +7,21 @@ from causalSpyne.data_gen import DataGen
 from causalSpyne.dag_interface import MatDAG
 
 
-def gen_list2hide(list_or_percentage, total_num):
-    if isinstance(list_or_percentage, float):
-        pos = int(list_or_percentage * total_num)
-        list_chosen = list(range(pos, total_num + 1))
-        return list_chosen
-    return list_or_percentage
+def process_list2hide(list_ind_or_percentage, total_num):
+    """
+    list_ind_or_percentage can either be a list or a scalar float
+    """
+    if len(list_ind_or_percentage) > total_num:
+        raise RuntimeError(f"there are less confounders {total_num} to hide \
+                           than the length of {list_ind_or_percentage}")
+
+    if max(list_ind_or_percentage) > total_num:
+        raise RuntimeError(f"max value in {list_ind_or_percentage} is bigger \
+                           than total number of variables {total_num} to hide")
+
+    list_ind = [int(ele * total_num) if isinstance(ele, float) else ele
+                for ele in list_ind_or_percentage]
+    return list_ind
 
 
 class DAGView():
@@ -28,6 +37,7 @@ class DAGView():
         self._subset_data_arr = None
         self._list_global_inds_unobserved = None
         self.data_gen = DataGen(self._dag)
+        self._nodes2hide = None
 
     def run(self, num_samples, list_nodes2hide=None, confound=False):
         """
@@ -41,38 +51,42 @@ class DAGView():
         else:
             self.hide(list_nodes2hide)
 
-    def hide_confounder(self, list_toporder_confounder):
+    def hide_confounder(self, list_toporder_confounder2hide):
         """
         given a list of index, hide the confounder according to the toplogical
-        order provided by the input index list_toporder_confounder
+        order provided by the input index list_toporder_confounder2hide
+        then call self.hide
         """
-        list_toporder_confounder = gen_list2hide(
-            list_toporder_confounder, len(self._dag.list_confounder))
-        list_toporder_unobserved = \
+        list_toporder_confounder2hide = process_list2hide(
+            list_toporder_confounder2hide, len(self._dag.list_confounder))
+
+        list_ind_confounder_sorted = \
             [self._dag.list_ind_nodes_sorted.index(confounder)
              for confounder in self._dag.list_confounder]
-        if len(list_toporder_confounder) > len(list_toporder_unobserved) or \
-                max(list_toporder_confounder) > len(list_toporder_unobserved):
-            raise RuntimeError("there are less confounders than the length \
-                               of input list_toporder_confounder")
+
         list_toporder_confounder_sub = \
-            [list_toporder_unobserved[i] for i in list_toporder_confounder]
+            [list_ind_confounder_sorted[i]
+             for i in list_toporder_confounder2hide]
+
         self.hide(list_toporder_confounder_sub)
 
     def hide(self, list_toporder_unobserved):
         """
         hide variables according to a list of global index of topological sort
         """
-        list_toporder_unobserved = gen_list2hide(
+        list_toporder_unobserved = process_list2hide(
             list_toporder_unobserved, self._dag.num_nodes)
 
         # subset list
-        nodes2remove = [self._dag.list_top_names[i]
-                        for i in list_toporder_unobserved]
-        print("nodes to hide " + str(nodes2remove))
+        self._nodes2hide = [self._dag.list_top_names[i]
+                            for i in list_toporder_unobserved]
+        # FIXME: change to logger
+        print("nodes to hide " + str(self._nodes2hide))
+
         self._list_global_inds_unobserved = \
             [self._dag.list_ind_nodes_sorted[ind_top_order]
              for ind_top_order in list_toporder_unobserved]
+
         self._sub_dag = self._dag.subgraph(self._list_global_inds_unobserved)
         self._subset_data_arr = np.delete(
             self._data_arr,
@@ -92,7 +106,7 @@ class DAGView():
         """
         return self._sub_dag.mat_adjacency
 
-    def to_csv(self):
+    def to_csv(self, title="data_subdag.csv"):
         """
         sub dataframe to  csv
         """
@@ -100,7 +114,7 @@ class DAGView():
                       enumerate(self._dag.list_node_names)
                       if i not in self._list_global_inds_unobserved]
         df = pd.DataFrame(self.data, columns=node_names)
-        df.to_csv("output.csv", index=False)
+        df.to_csv(title, index=False)
         subdag = MatDAG(self.mat_adj)
         subdag.to_binary_csv()
 
