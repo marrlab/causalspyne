@@ -1,6 +1,7 @@
 """
 create different views for the same DAG by hiding some variables
 """
+import warnings
 import numpy as np
 import pandas as pd
 from causalSpyne.data_gen import DataGen
@@ -12,7 +13,7 @@ def process_list2hide(list_ind_or_percentage, total_num):
     list_ind_or_percentage can either be a list or a scalar float
     """
     if len(list_ind_or_percentage) > total_num:
-        raise RuntimeError(f"there are less confounders {total_num} to hide \
+        raise RuntimeError(f"there are {total_num} confounders to hide, less \
                            than the length of {list_ind_or_percentage}")
 
     if max(list_ind_or_percentage) > total_num:
@@ -57,6 +58,10 @@ class DAGView():
         order provided by the input index list_toporder_confounder2hide
         then call self.hide
         """
+        if not self._dag.list_confounder:
+            warnings.warn(f"there are no confounders in the graph {self._dag} \
+                          !")
+            return
         list_toporder_confounder2hide = process_list2hide(
             list_toporder_confounder2hide, len(self._dag.list_confounder))
 
