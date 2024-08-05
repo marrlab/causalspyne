@@ -2,6 +2,7 @@ import pandas as pd
 from causalSpyne.data_gen import DataGen
 from causalSpyne.gen_dag_2level import GenDAG2Level
 from causalSpyne.dag_gen import GenDAG
+from causalSpyne.dag_viewer import DAGView
 
 
 def gen_partially_observed_data(backbone_num_nodes, backbone_degree,
