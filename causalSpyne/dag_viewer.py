@@ -61,7 +61,7 @@ class DAGView():
         if not self._dag.list_confounder:
             warnings.warn(f"there are no confounders in the graph {self._dag} \
                           !")
-            return
+            return False
         list_toporder_confounder2hide = process_list2hide(
             list_toporder_confounder2hide, len(self._dag.list_confounder))
 
@@ -74,6 +74,7 @@ class DAGView():
              for i in list_toporder_confounder2hide]
 
         self.hide(list_toporder_confounder_sub)
+        return True
 
     def hide(self, list_toporder_unobserved):
         """
