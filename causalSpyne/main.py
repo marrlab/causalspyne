@@ -4,28 +4,28 @@ from causalSpyne.gen_dag_2level import GenDAG2Level
 from causalSpyne.dag_gen import GenDAG
 
 
-def gen_data_linear_gaussian(backbone_num_nodes, backbone_degree,
-                             backbone_list_weight_range,
-                             num_macro_nodes,
-                             num_samples,
-                             output_file_names="output.csv"):
+def gen_partially_observed_data(backbone_num_nodes, backbone_degree,
+                                backbone_list_weight_range,
+                                num_macro_nodes,
+                                num_samples,
+                                output_file_names="output.csv"):
     """
     test linear gaussian data gen
     """
-    simple_dag_gen = GenDAG(num_nodes=backbone_num_nodes,
-                            degree=backbone_degree,
-                            list_weight_range=backbone_list_weight_range)
-    dag_gen = GenDAG2Level(dag_generator=simple_dag_gen,
-                           num_macro_nodes=num_macro_nodes)
+
+
+    simple_dag_gen = GenDAG(num_nodes=4, degree=2, list_weight_range=[3, 5])
+
+    dag_gen = GenDAG2Level(dag_generator=simple_dag_gen, num_macro_nodes=4)
+
     dag = dag_gen.run()
-    gen_data = DataGen(dag)
-    arr = gen_data.gen(num_samples=num_samples)
-    df = pd.DataFrame(arr,
-                      columns=dag.list_node_names)
-    df.to_csv(output_file_names, index=False)
+    dag.visualize(title="dag_complete_confounder")
     dag.to_binary_csv()
+    gen_data = DataGen(dag)
+    gen_data.gen(num_samples=200)
+    gen_data.to_csv()
 
-
-if __name__ == "__main__":
-    gen_data_linear_gaussian()
-
+    subview = DAGView(dag=dag)
+    subview.run(num_samples=200, confound=True, list_nodes2hide=[0.99])
+    subview.to_csv()
+    subview.visualize(title="dag_marginal_confounder")
