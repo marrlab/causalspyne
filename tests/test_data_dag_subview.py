@@ -12,7 +12,7 @@ def test_data_dag_subview():
     """
     test linear gaussian data gen
     """
-    simple_dag_gen = GenDAG(num_nodes=3, degree=2, list_weight_range=[3, 5])
+    simple_dag_gen = GenDAG(num_nodes=3, degree=2)
     dag_gen = GenDAG2Level(dag_generator=simple_dag_gen, num_macro_nodes=2)
     dag = dag_gen.run()
     dag.visualize(title="dag_complete")
@@ -28,7 +28,7 @@ def test_data_dag_subview_confounder():
     """
     test linear gaussian data gen
     """
-    simple_dag_gen = GenDAG(num_nodes=3, degree=2, list_weight_range=[3, 5])
+    simple_dag_gen = GenDAG(num_nodes=3, degree=2)
     dag_gen = GenDAG2Level(dag_generator=simple_dag_gen, num_macro_nodes=2)
     dag = dag_gen.run()
     dag.visualize(title="dag_complete_confounder")
@@ -43,7 +43,7 @@ def test_data_dag_subview_confounder_percentage():
     """
     test linear gaussian data gen
     """
-    simple_dag_gen = GenDAG(num_nodes=4, degree=2, list_weight_range=[3, 5])
+    simple_dag_gen = GenDAG(num_nodes=4, degree=2)
     dag_gen = GenDAG2Level(dag_generator=simple_dag_gen, num_macro_nodes=4)
     dag = dag_gen.run()
     dag.visualize(title="dag_complete_confounder")

@@ -1,10 +1,11 @@
 """
 concrete class to generate simple DAGs
+
 """
 import warnings
 import numpy as np
 from causalSpyne.dag_interface import MatDAG
-from causalSpyne.weight import WeightGenUniform
+from causalSpyne.weight import WeightGenUniform, WeightGenWishart
 from causalSpyne.dag_manipulator import DAGManipulator
 
 
@@ -32,15 +33,16 @@ class Erdos_Renyi_PLP():
 
 
 class GenDAG():
-    def __init__(self, num_nodes, degree, list_weight_range):
+    def __init__(self, num_nodes, degree, obj_gen_weight=None):
         """
         degree: expected degree for each node
         """
         self.num_nodes = num_nodes
         self.degree = degree
-        self.list_weight_range = list_weight_range
         self.stategy_gen_dag = Erdos_Renyi_PLP()
-        self.obj_gen_weight = WeightGenUniform(list_weight_range)
+        self.obj_gen_weight = obj_gen_weight
+        if obj_gen_weight is None:
+            self.obj_gen_weight = WeightGenWishart()
         self.dag_manipulator = None
 
     def gen_dag(self, num_nodes=None, prefix=""):

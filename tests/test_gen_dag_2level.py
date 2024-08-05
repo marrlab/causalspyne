@@ -12,7 +12,7 @@ def test_gen_dag_2level():
     test 2 level generation of DAGs
     """
 
-    dag_gen = GenDAG(num_nodes=3, degree=2, list_weight_range=[3, 5])
+    dag_gen = GenDAG(num_nodes=3, degree=2)
     gen = GenDAG2Level(dag_generator=dag_gen, num_macro_nodes=3)
     dag = gen.run()
     dag

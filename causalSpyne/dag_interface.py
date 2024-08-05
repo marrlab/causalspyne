@@ -225,16 +225,6 @@ class MatDAG():
                      dict_ind2name=self.gen_dict_ind2node_na(),
                      title=title)
 
-    def mk_confound(self, ind):
-        """
-        make the current vertex confounder
-        """
-        nnzero = np.count_nonzero(self.mat_adjacency[:, ind])
-        if nnzero < 2:
-            pos = self.list_ind_nodes_sorted.index(ind)
-            j = random.randint(pos + 1, self.num_nodes - 1)
-            self.mat_adjacency[j, ind] = self._obj_gen_weight()
-
     @property
     def list_top_names(self):
         """
