@@ -86,7 +86,8 @@ class DAGView():
 
         # subset list
         self._list_nodes2hide = [self._dag.list_top_names[i]
-                            for i in list_toporder_unobserved]
+                                 for i in list_toporder_unobserved]
+
         # FIXME: change to logger
         print("nodes to hide " + str(self._list_nodes2hide))
 
@@ -134,4 +135,7 @@ class DAGView():
         """
         plot DAG
         """
+        if not self._success:
+            warnings.warn("no subview of DAG available")
+            return
         self._sub_dag.visualize(title=title)
