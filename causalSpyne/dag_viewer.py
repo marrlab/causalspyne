@@ -16,13 +16,16 @@ def process_list2hide(list_ind_or_percentage, total_num):
         raise RuntimeError(f"there are {total_num} confounders to hide, less \
                            than the length of {list_ind_or_percentage}")
 
-    if max(list_ind_or_percentage) > total_num:
+    list_ind = [min(int(ele * total_num), total_num - 1)
+                if isinstance(ele, float) else ele
+                for ele in list_ind_or_percentage]
+
+    list_ind = list(set(list_ind))
+
+    if max(list_ind) > total_num:
         raise RuntimeError(f"max value in {list_ind_or_percentage} is bigger \
                            than total number of variables {total_num} to hide")
 
-    list_ind = [int(ele * total_num) if isinstance(ele, float) else ele
-                for ele in list_ind_or_percentage]
-    list_ind = list(set(list_ind))
     return list_ind
 
 
@@ -70,7 +73,6 @@ class DAGView():
         list_ind_confounder_sorted = \
             [self._dag.list_ind_nodes_sorted.index(confounder)
              for confounder in self._dag.list_confounder]
-
         list_toporder_confounder_sub = \
             [list_ind_confounder_sorted[i]
              for i in list_toporder_confounder2hide]

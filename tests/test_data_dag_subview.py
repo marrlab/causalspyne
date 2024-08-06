@@ -52,3 +52,17 @@ def test_data_dag_subview_confounder_percentage():
     subview.run(num_samples=200, confound=True, list_nodes2hide=[0.99])
     subview.to_csv()
     subview.visualize(title="dag_marginal_confounder")
+
+def test_data_dag_subview_confounder_percentage():
+    """
+    test linear gaussian data gen
+    """
+    simple_dag_gen = GenDAG(num_nodes=4, degree=2)
+    dag_gen = GenDAG2Level(dag_generator=simple_dag_gen, num_macro_nodes=4)
+    dag = dag_gen.run()
+    dag.visualize(title="dag_complete_confounder2")
+
+    subview = DAGView(dag=dag)
+    subview.run(num_samples=200, confound=True, list_nodes2hide=[0.1, 1.0])
+    subview.to_csv()
+    subview.visualize(title="dag_marginal_confounder2")
