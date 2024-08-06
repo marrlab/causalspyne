@@ -1,5 +1,5 @@
 import numpy as np
-from causalSpyne.draw_dags import draw_dags_nx
+from causalspyne.draw_dags import draw_dags_nx
 
 
 def test_draw_dag_nx():

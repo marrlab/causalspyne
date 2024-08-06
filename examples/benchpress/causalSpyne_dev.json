@@ -1,6 +1,6 @@
 {
   "benchmark_setup": [{
-    "title": "causalSpyne",
+    "title": "causalspyne",
     "data": [
       {
         "graph_id": "adj.csv",
@@ -11,7 +11,7 @@
     ],
     "evaluation": {
       "benchmarks": {
-        "filename_prefix": "causalSpyne/",
+        "filename_prefix": "causalspyne/",
         "show_seed": false,
         "errorbar": true,
         "errorbarh": false,

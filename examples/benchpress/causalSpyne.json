@@ -10,7 +10,7 @@
     ],
     "evaluation": {
       "benchmarks": {
-        "filename_prefix": "causalSpyne/",
+        "filename_prefix": "causalspyne/",
         "show_seed": false,
         "errorbar": true,
         "errorbarh": false,

@@ -1,7 +1,7 @@
 # ProblemSetApproximateCausalDiscovery
 
 ```
-from causalSpyne import gen_partially_observed
+from causalspyne import gen_partially_observed
 
 
 gen_partially_observed(size_micro_node_dag=4,     

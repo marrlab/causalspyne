@@ -2,7 +2,7 @@
 toplogical sort
 """
 import numpy as np
-from causalSpyne.is_dag import is_dag
+from causalspyne.is_dag import is_dag
 
 
 def test_is_dag0():

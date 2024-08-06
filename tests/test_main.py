@@ -1,4 +1,4 @@
-from causalSpyne import gen_partially_observed
+from causalspyne import gen_partially_observed
 
 
 def test_main():

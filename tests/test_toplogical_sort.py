@@ -2,7 +2,7 @@
 toplogical sort
 """
 import numpy as np
-from causalSpyne.utils_topological_sort import topological_sort
+from causalspyne.utils_topological_sort import topological_sort
 
 
 def test_topological_sort_linear():

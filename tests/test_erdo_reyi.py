@@ -1,5 +1,5 @@
-from causalSpyne.dag_gen import Erdos_Renyi_PLP
-from causalSpyne.is_dag import is_dag
+from causalspyne.dag_gen import Erdos_Renyi_PLP
+from causalspyne.is_dag import is_dag
 
 
 def test_erdos_renyi():

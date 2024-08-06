@@ -2,9 +2,9 @@
 test linear gaussian data gen
 """
 import pandas as pd
-from causalSpyne.data_gen import DataGen
-from causalSpyne.gen_dag_2level import GenDAG2Level
-from causalSpyne.dag_gen import GenDAG
+from causalspyne.data_gen import DataGen
+from causalspyne.gen_dag_2level import GenDAG2Level
+from causalspyne.dag_gen import GenDAG
 
 
 def test_data_gen_linear_gaussian():

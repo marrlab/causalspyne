@@ -1,4 +1,4 @@
-from causalSpyne.poset_approach import partitions
+from causalspyne.poset_approach import partitions
 
 
 def test_lattice_enumerate():

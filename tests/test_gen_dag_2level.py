@@ -2,10 +2,10 @@
 test 2 level DAG generation
 """
 
-from causalSpyne.gen_dag_2level import GenDAG2Level
-from causalSpyne.dag_gen import GenDAG
-from causalSpyne.is_dag import is_dag
-from causalSpyne.draw_dags import draw_dags_nx
+from causalspyne.gen_dag_2level import GenDAG2Level
+from causalspyne.dag_gen import GenDAG
+from causalspyne.is_dag import is_dag
+from causalspyne.draw_dags import draw_dags_nx
 
 def test_gen_dag_2level():
     """

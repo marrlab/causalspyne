@@ -1,9 +1,9 @@
 """
 test linear gaussian data gen
 """
-from causalSpyne.dag_gen import GenDAG
-# from causalSpyne.dag_manipulator import DAGManipulator
-from causalSpyne.gen_dag_2level import GenDAG2Level
+from causalspyne.dag_gen import GenDAG
+# from causalspyne.dag_manipulator import DAGManipulator
+from causalspyne.gen_dag_2level import GenDAG2Level
 
 
 def test_data_gen_linear_gaussian():

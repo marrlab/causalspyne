@@ -30,7 +30,7 @@ jobs:
         pip install poetry
         poetry install --with dev
     - name: Generate coverage report
-      run: rm -rf zoutput && poetry run pytest --cov=causalSpyne tests/ --cov-report=xml
+      run: rm -rf zoutput && poetry run pytest --cov=causalspyne tests/ --cov-report=xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
