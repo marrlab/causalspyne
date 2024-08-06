@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-matplotlib = "^3.9.1"
+matplotlib = "^3.9.0"
 networkx = "^3.2.1"
 numpy = "^2.0.1"
 pandas = "^2.2.2"
