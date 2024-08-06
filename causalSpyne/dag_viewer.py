@@ -22,6 +22,7 @@ def process_list2hide(list_ind_or_percentage, total_num):
 
     list_ind = [int(ele * total_num) if isinstance(ele, float) else ele
                 for ele in list_ind_or_percentage]
+    list_ind = list(set(list_ind))
     return list_ind
 
 
