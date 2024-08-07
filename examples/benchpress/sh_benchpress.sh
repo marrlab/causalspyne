@@ -1,5 +1,6 @@
 
 cp data_subdag.csv submodules/benchpress/resources/data/mydatasets/
+cp adj.csv submodules/benchpress/resources/adjmat/myadjmats/adj.csv
 
 # cp submodules/benchpress/config/paper_sachs.json examples/benchpress/causalspyne_master.json
 
@@ -13,7 +14,6 @@ cp examples/benchpress/causalspyne_master.json submodules/benchpress/config/caus
 #cp examples/benchpress/full_dev.json submodules/benchpress/config/causalspyne.json
 
 
-cp adj.csv submodules/benchpress/resources/adjmat/myadjmats/adj.csv
 
 # touch benchpress/resources/constraints/None-pcalg
 # echo "{}" > submodules/benchpress/resources/constraints/None-pcalg
