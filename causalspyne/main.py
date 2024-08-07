@@ -19,9 +19,10 @@ def gen_partially_observed(degree=2,
     dag_gen = GenDAG2Level(dag_generator=simple_dag_gen, num_macro_nodes=num_macro_nodes)
     dag = dag_gen.run()
     dag.visualize(title="dag_complete")
-    dag.to_binary_csv()
 
     subview = DAGView(dag=dag)
     subview.run(num_samples=num_sample, confound=True, list_nodes2hide=list_confounder2hide)
     subview.to_csv()
     subview.visualize(title="dag_marginal")
+
+    subview._sub_dag.to_binary_csv()

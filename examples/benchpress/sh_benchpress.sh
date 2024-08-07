@@ -1,7 +1,7 @@
 
 cp data_subdag.csv submodules/benchpress/resources/data/mydatasets/
 
-cp submodules/benchpress/config/paper_sachs.json examples/benchpress/causalspyne_master.json
+# cp submodules/benchpress/config/paper_sachs.json examples/benchpress/causalspyne_master.json
 
 cp examples/benchpress/causalspyne_master.json submodules/benchpress/config/causalspyne.json
 
