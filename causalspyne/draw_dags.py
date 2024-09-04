@@ -21,7 +21,7 @@ def draw_dags_nx(adj_matrix, dict_ind2name=None, title="dag", show=False, graphv
     else:
         pos = nx.spring_layout(nx_graph, k=0.5, scale=2)
     nx.draw(nx_graph, pos=pos,
-            arrows=True, with_labels=True)
+            arrows=True, with_labels=True, node_color='white')
     plt.title(title)
     plt.axis('off')
     plt.savefig(title + ".pdf", format="pdf")
