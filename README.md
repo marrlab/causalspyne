@@ -1,9 +1,11 @@
-# CausalSpyne package for simulating data from confounded causal models
-
+# CausalSpyne 
 [![PyPI version](https://badge.fury.io/py/causalspyne.svg)](https://badge.fury.io/py/causalspyne)
 
+A Python package for simulating data from confounded causal models.
+
+
 ## Quick start
-Install with `pip install causalspyne`.
+Install with: `pip install causalspyne`
 
 Generate some data:
 ```
