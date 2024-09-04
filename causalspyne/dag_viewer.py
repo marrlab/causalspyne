@@ -130,7 +130,7 @@ class DAGView():
                       if i not in self._list_global_inds_unobserved]
         df = pd.DataFrame(self.data, columns=node_names)
         str_node2hide = '_'.join(map(str, self._list_nodes2hide))
-        df.to_csv(title[:-4] + str_node2hide + title[-4:], index=False)
+        df.to_csv(title[:-4] + "_" + str_node2hide + title[-4:], index=False)
         subdag = MatDAG(self.mat_adj)
         subdag.to_binary_csv()
 
