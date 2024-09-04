@@ -23,6 +23,7 @@ def gen_partially_observed(degree=2,
     subview = DAGView(dag=dag)
     subview.run(num_samples=num_sample, confound=True, list_nodes2hide=list_confounder2hide)
     subview.to_csv()
-    subview.visualize(title="dag_marginal")
+    str_node2hide = '_'.join(map(str, subview._list_nodes2hide))
+    subview.visualize(title="dag_marginal_hide_"+str_node2hide)
 
     subview._sub_dag.to_binary_csv()
