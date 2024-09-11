@@ -27,3 +27,4 @@ def gen_partially_observed(degree=2,
     subview.visualize(title="dag_marginal_hide_"+str_node2hide)
 
     subview._sub_dag.to_binary_csv()
+    return subview.data
