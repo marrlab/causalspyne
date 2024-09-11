@@ -1,3 +1,6 @@
 [submodule "submodules/benchpress"]
 	path = submodules/benchpress
 	url = https://github.com/felixleopoldo/benchpress
+[submodule "submodules/causal-learn"]
+	path = submodules/causal-learn
+	url = https://github.com/py-why/causal-learn.git
