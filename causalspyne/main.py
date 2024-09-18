@@ -1,4 +1,8 @@
-from contextlib import chdir
+try:
+    from contextlib import chdir
+except Exception:
+    from causalspyne.py3_9_10_compatibility import chdir
+
 from pathlib import Path
 
 from causalspyne.gen_dag_2level import GenDAG2Level
