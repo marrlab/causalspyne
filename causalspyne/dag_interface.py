@@ -58,11 +58,14 @@ class MatDAG():
         columns_with_more_than_one = np.where(nonzero_counts > 1)[0]
         return list(columns_with_more_than_one)
 
-    def gen_dict_ind2node_na(self):
+    def gen_dict_ind2node_na(self, hierarch_na):
         """
         utility function to have {1:"node_name"} dictionary for plotting
+        hierarch_na: if use hierarchical name maco-node-micro-node format
         """
-        mdict = {i: name for (i, name) in enumerate(self.list_node_names)}
+        mdict = {i: str(i) for (i, name) in enumerate(self.list_node_names)}
+        if hierarch_na:
+            mdict = {i: name for (i, name) in enumerate(self.list_node_names)}
         return mdict
 
     def check(self):
@@ -219,12 +222,12 @@ class MatDAG():
                         list_node_names=list_node_names_subgraph)
         return subdag
 
-    def visualize(self, title="dag"):
+    def visualize(self, title="dag", hierarch_na=False):
         """
         draw dag using networkx
         """
         draw_dags_nx(self.mat_adjacency,
-                     dict_ind2name=self.gen_dict_ind2node_na(),
+                     dict_ind2name=self.gen_dict_ind2node_na(hierarch_na),
                      title=title)
 
     @property
