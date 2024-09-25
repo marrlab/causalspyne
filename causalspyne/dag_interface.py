@@ -65,10 +65,13 @@ class MatDAG():
         utility function to have {1:"node_name"} dictionary for plotting
         hierarch_na: if use hierarchical name maco-node-micro-node format
         """
-        if hierarch_na or self._parent_list_node_names is None:
+        if hierarch_na:
             mdict = {i: name for (i, name) in enumerate(self.list_node_names)}
-        else:
+        elif self._parent_list_node_names is not None:
             mdict = {i: str(self._parent_list_node_names.index(name))
+                     for (i, name) in enumerate(self.list_node_names)}
+        else:
+            mdict = {i: str(self.list_node_names.index(name))
                      for (i, name) in enumerate(self.list_node_names)}
         return mdict
 
