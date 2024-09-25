@@ -31,7 +31,8 @@ class MatDAG():
     DAG represented as a mat_adjacency
     """
     def __init__(self, mat_adjacency, name_prefix="",
-                 separator="_", list_node_names=None):
+                 separator="_", list_node_names=None,
+                 parent_list_node_names=None):
         """
         """
         self._obj_gen_weight = None
@@ -41,6 +42,7 @@ class MatDAG():
         self._list_node_names = list_node_names
         self._list_confounder = None
         self._dict_node_names2ind = {}
+        self._parent_list_node_names = parent_list_node_names
         self._init_map()
         self._list_ind_nodes_sorted = None
 
@@ -63,11 +65,11 @@ class MatDAG():
         utility function to have {1:"node_name"} dictionary for plotting
         hierarch_na: if use hierarchical name maco-node-micro-node format
         """
-        if hierarch_na:
+        if hierarch_na or self._parent_list_node_names is None:
             mdict = {i: name for (i, name) in enumerate(self.list_node_names)}
         else:
             mdict = {i: str(self._parent_list_node_names.index(name))
-                    for (i, name) in enumerate(self.list_node_names)}
+                     for (i, name) in enumerate(self.list_node_names)}
         return mdict
 
     def check(self):
@@ -221,7 +223,8 @@ class MatDAG():
                                     enumerate(self.list_node_names)
                                     if i not in list_ind_unobserved]
         subdag = MatDAG(mat_adj_subgraph,
-                        list_node_names=list_node_names_subgraph)
+                        list_node_names=list_node_names_subgraph,
+                        parent_list_node_names=self.list_node_names)
         return subdag
 
     def visualize(self, title="dag", hierarch_na=False):
