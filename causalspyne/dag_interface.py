@@ -60,7 +60,7 @@ class MatDAG():
         columns_with_more_than_one = np.where(nonzero_counts > 1)[0]
         return list(columns_with_more_than_one)
 
-    def gen_dict_ind2node_na(self, hierarch_na):
+    def gen_dict_ind2node_na(self, hierarch_na=False):
         """
         utility function to have {1:"node_name"} dictionary for plotting
         hierarch_na: if use hierarchical name maco-node-micro-node format
