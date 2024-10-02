@@ -1,5 +1,5 @@
 # CausalSpyne
-[![PyPI version](https://badge.fury.io/py/causalspyne.svg)](https://badge.fury.io/py/causalspyne)
+[![PyPI version](https://badge.fury.io/py/causalspyne.svg)](https://badge.fury.io/py/causalspyne)  + [![cov](https://marrlab.github.io/causalspyne/badges/coverage.svg)](https://github.com/marrlab/causalspyne/actions)
 
 A Python package for simulating data from confounded causal models.
 
