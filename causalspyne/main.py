@@ -11,6 +11,8 @@ except Exception:
 
 from pathlib import Path
 
+import matplotlib.pyplot as plt
+
 from causalspyne.gen_dag_2level import GenDAG2Level
 from causalspyne.dag_gen import GenDAG
 from causalspyne.dag_viewer import DAGView
@@ -31,6 +33,9 @@ def gen_partially_observed(
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_")
     Path(output_dir).mkdir(parents=True, exist_ok=True)
 
+    fig, (ax1, ax2) = plt.subplots(1, 2)
+    fig.suptitle("DAGs")
+
     simple_dag_gen = GenDAG(num_nodes=size_micro_node_dag, degree=degree)
 
     # num_macro_nodes will overwrite behavior
@@ -38,9 +43,8 @@ def gen_partially_observed(
         dag_generator=simple_dag_gen, num_macro_nodes=num_macro_nodes
     )
     dag = dag_gen.run()
-
-    with chdir(output_dir):
-        dag.visualize(title="dag_complete" + timestamp)
+    dag.visualize(title="complete", ax=ax1)
+    ax1.set_title("complete")
 
     subview = DAGView(dag=dag)
     subview.run(
@@ -50,8 +54,9 @@ def gen_partially_observed(
     with chdir(output_dir):
         subview.to_csv()
     str_node2hide = subview.str_node2hide
+    subview.visualize(title="marginal_hide_" + str_node2hide, ax=ax2)
+    ax2.set_title("marginal_hide_" + str_node2hide)
     with chdir(output_dir):
-        subview.visualize(
-            title="dag_marginal_hide_" + timestamp + str_node2hide)
-        subview.to_csv()
+        fig.savefig(f"dags{timestamp}.pdf", format="pdf")
+        
     return subview.data
