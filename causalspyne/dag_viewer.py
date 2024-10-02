@@ -118,13 +118,16 @@ class DAGView():
         """
         return self._sub_dag.mat_adjacency
 
+    def check_if_subview_done(self):
+        if not self._success:
+            warnings.warn("no subview of DAG available, exit now!")
+            return
+
     def to_csv(self, title="data_subdag.csv"):
         """
         sub dataframe to  csv
         """
-        if not self._success:
-            warnings.warn("no subview of DAG available")
-            return
+        self.check_if_subview_done()
         node_names = [name for (i, name) in
                       enumerate(self._dag.list_node_names)
                       if i not in self._list_global_inds_unobserved]
@@ -135,6 +138,7 @@ class DAGView():
 
     @property
     def str_node2hide(self):
+        self.check_if_subview_done()
         if self._list_nodes2hide is None:
             raise RuntimeError("self._list_node2hide is None!")
         _str_node2hide = "_".join(map(str, self._list_nodes2hide))
@@ -144,7 +148,5 @@ class DAGView():
         """
         plot DAG
         """
-        if not self._success:
-            warnings.warn("no subview of DAG available")
-            return
+        self.check_if_subview_done()
         self._sub_dag.visualize(title=title)
