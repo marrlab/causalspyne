@@ -2,8 +2,8 @@
 generate DAG and its marginal DAG
 """
 
-
 from datetime import datetime
+
 try:
     from contextlib import chdir
 except Exception:
@@ -48,8 +48,7 @@ def gen_partially_observed(
 
     subview = DAGView(dag=dag)
     subview.run(
-        num_samples=num_sample, confound=True,
-        list_nodes2hide=list_confounder2hide
+        num_samples=num_sample, confound=True, list_nodes2hide=list_confounder2hide
     )
     with chdir(output_dir):
         subview.to_csv()
@@ -57,6 +56,6 @@ def gen_partially_observed(
     subview.visualize(title="marginal_hide_" + str_node2hide, ax=ax2)
     ax2.set_title("marginal_hide_" + str_node2hide)
     with chdir(output_dir):
-        fig.savefig(f"dags{timestamp}.pdf", format="pdf")
-        
+        fig.savefig(f"{timestamp}dags.pdf", format="pdf")
+
     return subview.data
