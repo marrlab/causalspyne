@@ -126,18 +126,21 @@ class DAGView():
             warnings.warn("no subview of DAG available, exit now!")
             return
 
+    @property
+    def node_names(self):
+        # filter out observed variable
+        _node_names = [name for (i, name) in
+                       enumerate(self._dag.list_node_names)
+                       if i not in self._list_global_inds_unobserved]
+        return _node_names
+
     def to_csv(self, title="data_subdag.csv"):
         """
         sub dataframe to  csv
         """
         self.check_if_subview_done()
 
-        # filter out observed variable
-        node_names = [name for (i, name) in
-                      enumerate(self._dag.list_node_names)
-                      if i not in self._list_global_inds_unobserved]
-
-        df = pd.DataFrame(self.data, columns=node_names)
+        df = pd.DataFrame(self.data, columns=self.node_names)
         df.to_csv(title[:-4] + "_" + self.str_node2hide + title[-4:],
                   index=False)
         subdag = MatDAG(self.mat_adj)

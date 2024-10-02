@@ -54,4 +54,4 @@ def gen_partially_observed(
         subview.visualize(
             title="dag_marginal_hide_" + timestamp + str_node2hide)
         subview.to_csv()
-    return subview.data
+    return subview.data, subview.node_names
