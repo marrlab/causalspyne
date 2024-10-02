@@ -129,10 +129,16 @@ class DAGView():
                       enumerate(self._dag.list_node_names)
                       if i not in self._list_global_inds_unobserved]
         df = pd.DataFrame(self.data, columns=node_names)
-        str_node2hide = '_'.join(map(str, self._list_nodes2hide))
-        df.to_csv(title[:-4] + "_" + str_node2hide + title[-4:], index=False)
+        df.to_csv(title[:-4] + "_" + self.str_node2hide + title[-4:], index=False)
         subdag = MatDAG(self.mat_adj)
         subdag.to_binary_csv()
+
+    @property
+    def str_node2hide(self):
+        if self._list_nodes2hide is None:
+            raise RuntimeError("self._list_node2hide is None!")
+        _str_node2hide = "_".join(map(str, self._list_nodes2hide))
+        return _str_node2hide
 
     def visualize(self, title):
         """

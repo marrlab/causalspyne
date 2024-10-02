@@ -218,13 +218,19 @@ class MatDAG():
         """
         subset adjacency matrix by deleting unobserved variables
         """
+        # delete first axis
         temp_mat_row = np.delete(
             self.mat_adjacency, list_ind_unobserved, axis=0)
+
+        # delete second axis
         mat_adj_subgraph = np.delete(
             temp_mat_row, list_ind_unobserved, axis=1)
+
+        # filter out subgraph node names
         list_node_names_subgraph = [x for i, x in
                                     enumerate(self.list_node_names)
                                     if i not in list_ind_unobserved]
+
         subdag = MatDAG(mat_adj_subgraph,
                         list_node_names=list_node_names_subgraph,
                         parent_list_node_names=self.list_node_names)

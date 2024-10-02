@@ -6,9 +6,10 @@ import matplotlib.pyplot as plt
 from networkx.drawing.nx_agraph import graphviz_layout
 
 
-def draw_dags_nx(adj_matrix, dict_ind2name=None, title="dag", show=False, graphviz=False):
+def draw_dags_nx(adj_matrix, dict_ind2name=None, title="dag", show=False,
+                 graphviz=False):
     """
-    networkx adjacency matrix (i,j) entry refers to edge from j pointing to i,
+    networkx adjacency matrix (i,j) entry refers to edge from i pointing to j,
     which is opposite to the CausalSpyne convention
     """
     plt.close('all')
@@ -25,6 +26,6 @@ def draw_dags_nx(adj_matrix, dict_ind2name=None, title="dag", show=False, graphv
     plt.title(title)
     plt.axis('off')
     plt.savefig(title + ".pdf", format="pdf")
-    plt.savefig(title + ".svg", format="svg")
+    # plt.savefig(title + ".svg", format="svg")
     if show:
         plt.show()

@@ -1,3 +1,9 @@
+"""
+generate DAG and its marginal DAG
+"""
+
+
+from datetime import datetime
 try:
     from contextlib import chdir
 except Exception:
@@ -22,6 +28,7 @@ def gen_partially_observed(
     sole function as user interface
     """
 
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_")
     Path(output_dir).mkdir(parents=True, exist_ok=True)
 
     simple_dag_gen = GenDAG(num_nodes=size_micro_node_dag, degree=degree)
@@ -31,17 +38,20 @@ def gen_partially_observed(
         dag_generator=simple_dag_gen, num_macro_nodes=num_macro_nodes
     )
     dag = dag_gen.run()
+
     with chdir(output_dir):
-        dag.visualize(title="dag_complete")
+        dag.visualize(title="dag_complete" + timestamp)
 
     subview = DAGView(dag=dag)
     subview.run(
-        num_samples=num_sample, confound=True, list_nodes2hide=list_confounder2hide
+        num_samples=num_sample, confound=True,
+        list_nodes2hide=list_confounder2hide
     )
     with chdir(output_dir):
         subview.to_csv()
-    str_node2hide = "_".join(map(str, subview._list_nodes2hide))
+    str_node2hide = subview.str_node2hide
     with chdir(output_dir):
-        subview.visualize(title="dag_marginal_hide_" + str_node2hide)
-        subview._sub_dag.to_binary_csv()
+        subview.visualize(
+            title="dag_marginal_hide_" + timestamp + str_node2hide)
+        subview.to_csv()
     return subview.data
