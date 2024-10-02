@@ -119,6 +119,9 @@ class DAGView():
         return self._sub_dag.mat_adjacency
 
     def check_if_subview_done(self):
+        """
+        check if DAG marginalizatino successfull or not
+        """
         if not self._success:
             warnings.warn("no subview of DAG available, exit now!")
             return
@@ -128,21 +131,32 @@ class DAGView():
         sub dataframe to  csv
         """
         self.check_if_subview_done()
+
+        # filter out observed variable
         node_names = [name for (i, name) in
                       enumerate(self._dag.list_node_names)
                       if i not in self._list_global_inds_unobserved]
+
         df = pd.DataFrame(self.data, columns=node_names)
-        df.to_csv(title[:-4] + "_" + self.str_node2hide + title[-4:], index=False)
+        df.to_csv(title[:-4] + "_" + self.str_node2hide + title[-4:],
+                  index=False)
         subdag = MatDAG(self.mat_adj)
         subdag.to_binary_csv()
 
     @property
     def str_node2hide(self):
+        """
+        string representation of nodes to hide(marginalize)
+        """
         self.check_if_subview_done()
         if self._list_nodes2hide is None:
             raise RuntimeError("self._list_node2hide is None!")
         _str_node2hide = "_".join(map(str, self._list_nodes2hide))
-        return _str_node2hide
+
+        _str_node2hide_ind = "_".join(
+            map(str, self._list_global_inds_unobserved))
+
+        return "_ind_".join([_str_node2hide, _str_node2hide_ind])
 
     def visualize(self, title):
         """
