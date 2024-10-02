@@ -69,4 +69,4 @@ jobs:
     - name: Deploy coverage report
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: htmlcov  
+        folder: htmlcov/
