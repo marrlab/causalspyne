@@ -29,7 +29,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y python3-dev graphviz libgraphviz-dev pkg-config
         python -m pip install --upgrade pip
-        python -m pip install flake8 pytest pytest-cov
+        python -m pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
@@ -39,11 +39,34 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest and generate coverage report
       run: |
-        pytest --cov=causalspyne --cov-report json
-        mkdir coverage
-        mv coverage.json coverage/coverage-summary.json
-    - name: Update coverage badge
-      # GitHub actions: default branch variable  
-      # https://stackoverflow.com/questions/64781462/github-actions-default-branch-variable
-      if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-      uses: we-cli/coverage-badge-action@main
+        pytest
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-dev graphviz libgraphviz-dev pkg-config
+        python -m pip install --upgrade pip
+        python -m pip install pytest pytest-cov genbadge[coverage]
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Test with pytest and generate coverage report
+      run: |
+        pytest --cov=causalspyne --cov-report xml --cov-report html
+    - name: Generate test coverage badge 
+      run: |
+        genbadge coverage -i - < coverage.xml
+        mv coverage-badge.svg htmlcov/
+    - name: Deploy coverage report
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: htmlcov  
