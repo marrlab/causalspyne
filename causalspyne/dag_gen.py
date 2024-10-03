@@ -46,7 +46,7 @@ class GenDAG:
         self.strategy_gen_dag = Erdos_Renyi_PLP()
         self.obj_gen_weight = obj_gen_weight
         if obj_gen_weight is None:
-            self.obj_gen_weight = WeightGenWishart()
+            self.obj_gen_weight = WeightGenWishart(rng=rng)
         self.dag_manipulator = None
         self.rng = rng
 
