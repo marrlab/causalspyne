@@ -1,17 +1,20 @@
 """
 generate Linear Gaussian
 """
+
 import numpy as np
+from numpy.random import default_rng
+
 from causalspyne.noise_idiosyncratic import Idiosyncratic
 from causalspyne.edge_models import EdgeModelLinear
 
 
-class DataGen():
-    def __init__(self, dag, edge_model=None, idiosynchratic=None):
+class DataGen:
+    def __init__(self, dag, edge_model=None, idiosynchratic=None, rng=default_rng(0)):
         self.dag = dag
         self.idiosyncratic = idiosynchratic
         if idiosynchratic is None:
-            self.idiosyncratic = Idiosyncratic()
+            self.idiosyncratic = Idiosyncratic(rng)
         self.edge_model = edge_model
         if edge_model is None:
             self.edge_model = EdgeModelLinear(self.dag)

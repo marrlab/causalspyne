@@ -2,9 +2,10 @@
 class method for DAG operations and check
 """
 
-import random
 import numpy as np
+from numpy.random import default_rng
 import pandas as pd
+
 from causalspyne.is_dag import is_dag
 from causalspyne.utils_topological_sort import topological_sort
 from causalspyne.draw_dags import draw_dags_nx
@@ -39,6 +40,7 @@ class MatDAG:
         separator="_",
         list_node_names=None,
         parent_list_node_names=None,
+        rng=default_rng(0),
     ):
         """ """
         self._obj_gen_weight = None
@@ -51,6 +53,7 @@ class MatDAG:
         self._parent_list_node_names = parent_list_node_names
         self._init_map()
         self._list_ind_nodes_sorted = None
+        self.rng = rng
 
     def _init_map(self):
         if self._list_node_names is not None:
@@ -150,7 +153,7 @@ class MatDAG:
         """
         randomly chose a node
         """
-        ind = random.randint(0, self.mat_adjacency.shape[0] - 1)
+        ind = self.rng.integers(0, self.mat_adjacency.shape[0])
         name = self.list_node_names[ind]
         return self.name_prefix + name, ind
 
@@ -232,21 +235,24 @@ class MatDAG:
         subset adjacency matrix by deleting unobserved variables
         """
         # delete first axis
-        temp_mat_row = np.delete(
-            self.mat_adjacency, list_ind_unobserved, axis=0)
+        temp_mat_row = np.delete(self.mat_adjacency, list_ind_unobserved, axis=0)
 
         # delete second axis
-        mat_adj_subgraph = np.delete(
-            temp_mat_row, list_ind_unobserved, axis=1)
+        mat_adj_subgraph = np.delete(temp_mat_row, list_ind_unobserved, axis=1)
 
         # filter out subgraph node names
-        list_node_names_subgraph = [x for i, x in
-                                    enumerate(self.list_node_names)
-                                    if i not in list_ind_unobserved]
+        list_node_names_subgraph = [
+            x
+            for i, x in enumerate(self.list_node_names)
+            if i not in list_ind_unobserved
+        ]
 
-        subdag = MatDAG(mat_adj_subgraph,
-                        list_node_names=list_node_names_subgraph,
-                        parent_list_node_names=self.list_node_names)
+        subdag = MatDAG(
+            mat_adj_subgraph,
+            list_node_names=list_node_names_subgraph,
+            parent_list_node_names=self.list_node_names,
+            rng=self.rng,
+        )
         return subdag
 
     def visualize(self, title="dag", hierarch_na=False, ax=None):
