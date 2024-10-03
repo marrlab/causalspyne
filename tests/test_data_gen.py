@@ -19,7 +19,7 @@ def test_data_gen_linear_gaussian():
         dag_generator=simple_dag_gen, num_macro_nodes=2, rng=default_rng(0)
     )
     dag = dag_gen.run()
-    gen_data = DataGen(dag)
+    gen_data = DataGen(dag, rng=default_rng(0))
     arr = gen_data.gen(num_samples=200)
     arr.shape
     df = pd.DataFrame(arr, columns=dag.list_node_names)

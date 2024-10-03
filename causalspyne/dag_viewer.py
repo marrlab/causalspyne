@@ -5,6 +5,7 @@ create different views for the same DAG by hiding some variables
 import warnings
 
 import numpy as np
+from numpy.random import default_rng
 import pandas as pd
 
 from causalspyne.data_gen import DataGen
@@ -42,7 +43,7 @@ class DAGView:
     with ground truth DAG intact, only show subgraph
     """
 
-    def __init__(self, dag):
+    def __init__(self, dag, rng=default_rng(0)):
         self._dag = dag
         # there is no need to use a full DAG to represent subdag
         # since sub-dag is not responsible for data generation
@@ -50,7 +51,7 @@ class DAGView:
         self._data_arr = None
         self._subset_data_arr = None
         self._list_global_inds_unobserved = None
-        self.data_gen = DataGen(self._dag)
+        self.data_gen = DataGen(self._dag, rng=rng)
         self._list_nodes2hide = None
         self._success = False
 

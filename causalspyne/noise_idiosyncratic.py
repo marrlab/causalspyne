@@ -1,26 +1,27 @@
 import numpy as np
+from numpy.random import default_rng
 
 
-class HyperPars():
+class HyperPars:
     def gen(self):
         return 0.1
 
 
-class Gaussian():
-    def __init__(self, std):
+class Gaussian:
+    def __init__(self, std, rng):
         self.mean = 0
         self.noise_std = std
+        self.rng = rng
 
     def gen(self, num_samples):
-        noise = np.random.normal(0, self.noise_std, num_samples)
+        noise = self.rng.normal(0, self.noise_std, num_samples)
         return noise
 
 
-class Idiosyncratic():
-    def __init__(self):
-        """
-        """
-        self.noise = Gaussian(HyperPars().gen())
+class Idiosyncratic:
+    def __init__(self, rng=default_rng(0)):
+        """ """
+        self.noise = Gaussian(HyperPars().gen(), rng)
 
     def gen(self, num_samples):
         noise = self.noise.gen(num_samples)

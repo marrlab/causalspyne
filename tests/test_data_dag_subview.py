@@ -3,9 +3,7 @@ test data and DAG subview
 """
 
 from numpy.random import default_rng
-import pandas as pd
 
-from causalspyne.data_gen import DataGen
 from causalspyne.gen_dag_2level import GenDAG2Level
 from causalspyne.dag_gen import GenDAG
 from causalspyne.dag_viewer import DAGView
