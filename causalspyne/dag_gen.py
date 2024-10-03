@@ -63,7 +63,7 @@ class GenDAG:
         # Hardarmard product
         mat_weighted_adjacency = mat_mask * mat_weight
 
-        dag = MatDAG(mat_weighted_adjacency, name_prefix=prefix)
+        dag = MatDAG(mat_weighted_adjacency, name_prefix=prefix, rng=self.rng)
         self.dag_manipulator = DAGManipulator(dag, self.obj_gen_weight, self.rng)
         flag_success = False
         count = 0

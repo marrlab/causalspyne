@@ -3,8 +3,10 @@ create different views for the same DAG by hiding some variables
 """
 
 import warnings
+
 import numpy as np
 import pandas as pd
+
 from causalspyne.data_gen import DataGen
 from causalspyne.dag_interface import MatDAG
 
@@ -147,13 +149,14 @@ class DAGView:
         self.check_if_subview_done()
 
         # filter out observed variable
-        node_names = [name for (i, name) in
-                      enumerate(self._dag.list_node_names)
-                      if i not in self._list_global_inds_unobserved]
+        node_names = [
+            name
+            for (i, name) in enumerate(self._dag.list_node_names)
+            if i not in self._list_global_inds_unobserved
+        ]
 
         df = pd.DataFrame(self.data, columns=node_names)
-        df.to_csv(title[:-4] + "_" + self.str_node2hide + title[-4:],
-                  index=False)
+        df.to_csv(title[:-4] + "_" + self.str_node2hide + title[-4:], index=False)
         subdag = MatDAG(self.mat_adj)
         subdag.to_binary_csv()
 
@@ -167,8 +170,7 @@ class DAGView:
             raise RuntimeError("self._list_node2hide is None!")
         _str_node2hide = "_".join(map(str, self._list_nodes2hide))
 
-        _str_node2hide_ind = "_".join(
-            map(str, self._list_global_inds_unobserved))
+        _str_node2hide_ind = "_".join(map(str, self._list_global_inds_unobserved))
 
         return "_ind_".join([_str_node2hide, _str_node2hide_ind])
 
