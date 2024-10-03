@@ -1,16 +1,21 @@
 """
 2-level DAG generation
 """
-import random
+
+from numpy.random import default_rng
+
 from causalspyne.dag_stack_indexer import DAGStackIndexer
 
 
-class GenDAG2Level():
+class GenDAG2Level:
     """
     generate a DAG with 2 levels: first level generate macro nodes, second
     level populate each macro node
     """
-    def __init__(self, dag_generator, num_macro_nodes, max_num_local_nodes=4):
+
+    def __init__(
+        self, dag_generator, num_macro_nodes, max_num_local_nodes=4, rng=default_rng()
+    ):
         self.dag_generator = dag_generator
         self.num_macro_nodes = num_macro_nodes
         self.max_num_local_nodes = max_num_local_nodes
@@ -19,6 +24,7 @@ class GenDAG2Level():
         self.dag_backbone = None
         self.dict_macro_node2dag = {}
         self.dag_refined = None
+        self.rng = rng
 
     def populate_macro_node(self):
         """
@@ -26,9 +32,10 @@ class GenDAG2Level():
         """
         # iterate each macro node
         for name in self.dag_backbone.list_node_names:
-            num_nodes = random.randint(2, self.max_num_local_nodes)
+            num_nodes = self.rng.integers(2, self.max_num_local_nodes + 1)
             self.dict_macro_node2dag[name] = self.dag_generator.gen_dag(
-                num_nodes=num_nodes, prefix=name)
+                num_nodes=num_nodes, prefix=name
+            )
         self.global_dag_indexer = DAGStackIndexer(self)
 
     def interconnection(self):
@@ -44,18 +51,18 @@ class GenDAG2Level():
         connect macro-DAG node edge (i,j) via local nodes
         """
         macro_arrow_tail, macro_arrow_head = arc
-        _, ind_local_tail = \
-            self.dict_macro_node2dag[macro_arrow_tail].sample_node()
-        _, ind_local_head = \
-            self.dict_macro_node2dag[macro_arrow_head].sample_node()
+        _, ind_local_tail = self.dict_macro_node2dag[macro_arrow_tail].sample_node()
+        _, ind_local_head = self.dict_macro_node2dag[macro_arrow_head].sample_node()
 
         ind_macro_tail = self.dag_backbone.get_node_ind(macro_arrow_tail)
         ind_macro_head = self.dag_backbone.get_node_ind(macro_arrow_head)
 
         ind_global_tail = self.global_dag_indexer.get_global_ind(
-            ind_macro_tail, ind_local_tail)
+            ind_macro_tail, ind_local_tail
+        )
         ind_global_head = self.global_dag_indexer.get_global_ind(
-            ind_macro_head, ind_local_head)
+            ind_macro_head, ind_local_head
+        )
 
         self.dag_refined.add_arc_ind(ind_global_tail, ind_global_head)
 

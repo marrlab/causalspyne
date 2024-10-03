@@ -12,6 +12,7 @@ except Exception:
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from numpy.random import default_rng
 
 from causalspyne.gen_dag_2level import GenDAG2Level
 from causalspyne.dag_gen import GenDAG
@@ -25,10 +26,12 @@ def gen_partially_observed(
     num_macro_nodes=4,
     num_sample=200,
     output_dir="output",
+    rng=default_rng(),
 ):
     """
     sole function as user interface
     """
+    rng = default_rng(rng)  # allows users to pass a seed or rng object
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_")
     Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -36,11 +39,11 @@ def gen_partially_observed(
     fig, (ax1, ax2) = plt.subplots(1, 2)
     fig.suptitle("DAGs")
 
-    simple_dag_gen = GenDAG(num_nodes=size_micro_node_dag, degree=degree)
+    simple_dag_gen = GenDAG(num_nodes=size_micro_node_dag, degree=degree, rng=rng)
 
     # num_macro_nodes will overwrite behavior
     dag_gen = GenDAG2Level(
-        dag_generator=simple_dag_gen, num_macro_nodes=num_macro_nodes
+        dag_generator=simple_dag_gen, num_macro_nodes=num_macro_nodes, rng=rng
     )
     dag = dag_gen.run()
     dag.visualize(title="complete", ax=ax1)
