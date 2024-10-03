@@ -31,8 +31,6 @@ def gen_partially_observed(
     """
     sole function as user interface
     """
-    rng = default_rng(rng)  # allows users to pass a seed or rng object
-
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_")
     Path(output_dir).mkdir(parents=True, exist_ok=True)
 
@@ -49,7 +47,7 @@ def gen_partially_observed(
     dag.visualize(title="complete", ax=ax1)
     ax1.set_title("complete")
 
-    subview = DAGView(dag=dag)
+    subview = DAGView(dag=dag, rng=rng)
     subview.run(
         num_samples=num_sample, confound=True, list_nodes2hide=list_confounder2hide
     )

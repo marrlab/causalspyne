@@ -27,7 +27,6 @@ class DAGManipulator:
             pos = self.dag.list_ind_nodes_sorted.index(ind_arbitrary_confound)
             # randomly choose one node which ranked later than the
             # current node
-            print(pos + 1, self.dag.num_nodes - 1)
             ind_toplogical_arrow_head = self.rng.integers(pos + 1, self.dag.num_nodes)
             ind_arbitrary_arrow_head = self.dag.list_ind_nodes_sorted[
                 ind_toplogical_arrow_head

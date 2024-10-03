@@ -1,5 +1,4 @@
 import numpy as np
-from numpy.random import default_rng
 
 
 class HyperPars:
@@ -19,7 +18,7 @@ class Gaussian:
 
 
 class Idiosyncratic:
-    def __init__(self, rng=default_rng(0)):
+    def __init__(self, rng):
         """ """
         self.noise = Gaussian(HyperPars().gen(), rng)
 

@@ -1,4 +1,3 @@
-import numpy as np
 from numpy.random import default_rng
 
 from causalspyne.wishart import gen_weight_matrix
@@ -21,9 +20,12 @@ class WeightGenUniform:
         )
 
         # set some edges randomly to negative: e.g. x_i = 2x_j - 3x_k
-        mat_weight[
-            self.rng.random((num_nodes, num_nodes)) < self.prob_neg_weights
-        ] *= -1
+        random_mask = self.rng.choice(
+            [True, False],
+            (num_nodes, num_nodes),
+            (self.prob_neg_weights, 1 - self.prob_neg_weights),
+        )
+        mat_weight[random_mask] *= -1
         if mat_weight.size == 1:
             return mat_weight.item()
         return mat_weight
@@ -38,16 +40,15 @@ class WeightGenWishart(WeightGenUniform):
         """
         generate complete graph, fully connected
         """
-        mat_weight = gen_weight_matrix(num_nodes)
+        mat_weight = gen_weight_matrix(self.rng, num_nodes)
 
         # set some edges randomly to negative: e.g. x_i = 2x_j - 3x_k
-        if num_nodes == 1:
-            if self.rng.random((1, 1)) < self.prob_neg_weights:
-                mat_weight *= -1
-        else:
-            mat_weight[
-                self.rng.random((num_nodes, num_nodes)) < self.prob_neg_weights
-            ] *= -1
-            if mat_weight.size == 1:
-                return mat_weight.item()
+        random_mask = self.rng.choice(
+            [True, False],
+            (num_nodes, num_nodes),
+            (self.prob_neg_weights, 1 - self.prob_neg_weights),
+        )
+        mat_weight[random_mask] *= -1
+        if mat_weight.size == 1:
+            return mat_weight.item()
         return mat_weight

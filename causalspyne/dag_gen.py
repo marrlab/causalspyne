@@ -9,7 +9,7 @@ import numpy as np
 from numpy.random import default_rng
 
 from causalspyne.dag_interface import MatDAG
-from causalspyne.weight import WeightGenUniform, WeightGenWishart
+from causalspyne.weight import WeightGenWishart
 from causalspyne.dag_manipulator import DAGManipulator
 
 
@@ -24,14 +24,17 @@ class Erdos_Renyi_PLP:
     column permutation
     """
 
-    def __call__(self, num_nodes, degree, rng):
+    def __init__(self, rng):
+        self.rng = rng
+
+    def __call__(self, num_nodes, degree):
         prob = float(degree) / (num_nodes - 1)
         # lower triagular, k=-1 is the lower off diagonal
         mat_lower_triangle_binary = np.tril(
-            (rng.random((num_nodes, num_nodes)) < prob).astype(float), k=-1
+            (self.rng.random((num_nodes, num_nodes)) < prob).astype(float), k=-1
         )
         # permutes first axis only
-        mat_perm = rng.permutation(np.eye(num_nodes, num_nodes))
+        mat_perm = self.rng.permutation(np.eye(num_nodes, num_nodes))
         mat_b_permuted = mat_perm.T.dot(mat_lower_triangle_binary).dot(mat_perm)
         return mat_b_permuted
 
@@ -43,7 +46,7 @@ class GenDAG:
         """
         self.num_nodes = num_nodes
         self.degree = degree
-        self.strategy_gen_dag = Erdos_Renyi_PLP()
+        self.strategy_gen_dag = Erdos_Renyi_PLP(rng)
         self.obj_gen_weight = obj_gen_weight
         if obj_gen_weight is None:
             self.obj_gen_weight = WeightGenWishart(rng=rng)
@@ -56,7 +59,7 @@ class GenDAG:
         """
         if num_nodes is None:
             num_nodes = self.num_nodes
-        mat_skeleton = self.strategy_gen_dag(num_nodes, self.degree, self.rng)
+        mat_skeleton = self.strategy_gen_dag(num_nodes, self.degree)
 
         mat_mask = (mat_skeleton != 0).astype(float)
         mat_weight = self.obj_gen_weight.gen(num_nodes)
