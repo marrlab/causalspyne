@@ -2,8 +2,8 @@
 toplogical sort on adjacency matrix
 """
 
-
 import numpy as np
+
 from causalspyne.is_dag import is_dag
 
 
@@ -36,8 +36,9 @@ def topological_sort(binary_adj_mat):
     # array([0, 6])
     arr_node_in_degree_volatile = np.sum(binary_adj_mat, axis=1)
     # list_queue_src_node_inds initially only contains all source nodes
-    list_queue_src_node_inds = [i for i in range(num_nodes)
-                                if arr_node_in_degree_volatile[i] == 0]
+    list_queue_src_node_inds = [
+        i for i in range(num_nodes) if arr_node_in_degree_volatile[i] == 0
+    ]
     if not list_queue_src_node_inds:
         raise RuntimeError("no source nodes!")
     list_sorted_node_inds = []
@@ -53,8 +54,10 @@ def topological_sort(binary_adj_mat):
                     list_queue_src_node_inds.append(neighbor)
 
     if len(list_sorted_node_inds) != num_nodes:
-        raise ValueError("sorted nodes not completed!: " + \
-                         str(list_sorted_node_inds) + \
-                         str(arr_node_in_degree_volatile))
+        raise ValueError(
+            "sorted nodes not completed!: "
+            + str(list_sorted_node_inds)
+            + str(arr_node_in_degree_volatile)
+        )
 
     return list_sorted_node_inds

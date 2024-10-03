@@ -2,8 +2,8 @@
 draw DAG using networkx
 """
 
-import networkx as nx
 import matplotlib.pyplot as plt
+import networkx as nx
 from networkx.drawing.nx_agraph import graphviz_layout
 
 
