@@ -157,6 +157,7 @@ class DAGView:
         """
         self.check_if_subview_done()
 
+        # FIXME: ensure self.node_names are consistent with self.data
         df = pd.DataFrame(self.data, columns=self.node_names)
         df.to_csv(title[:-4] + "_" + self.str_node2hide + title[-4:],
                   index=False)
