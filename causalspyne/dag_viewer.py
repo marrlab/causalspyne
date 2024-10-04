@@ -146,10 +146,13 @@ class DAGView:
     @property
     def node_names(self):
         # filter out observed variable
-        _node_names = [name for (i, name) in
-                       enumerate(self._dag.list_node_names)
-                       if i not in self._list_global_inds_unobserved]
-        return _node_names
+        # _node_names = [name for (i, name) in
+        #               enumerate(self._dag.list_node_names)
+        #               if i not in self._list_global_inds_unobserved]
+        _node_names = self._sub_dag.list_node_names
+        _node_names_ind = ["X" + str(self._sub_dag._parent_list_node_names.index(name)) for
+        name in _node_names]
+        return _node_names_ind
 
     def to_csv(self, title="data_subdag.csv"):
         """
