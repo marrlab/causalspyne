@@ -1,9 +1,11 @@
 """
 class method for DAG operations and check
 """
-import random
+
 import numpy as np
+from numpy.random import default_rng
 import pandas as pd
+
 from causalspyne.is_dag import is_dag
 from causalspyne.utils_topological_sort import topological_sort
 from causalspyne.draw_dags import draw_dags_nx
@@ -26,15 +28,21 @@ def add_prefix(string, prefix="", separator="u"):
     return separator.join([prefix, string])
 
 
-class MatDAG():
+class MatDAG:
     """
     DAG represented as a mat_adjacency
     """
-    def __init__(self, mat_adjacency, name_prefix="",
-                 separator="_", list_node_names=None,
-                 parent_list_node_names=None):
-        """
-        """
+
+    def __init__(
+        self,
+        mat_adjacency,
+        name_prefix="",
+        separator="_",
+        list_node_names=None,
+        parent_list_node_names=None,
+        rng=default_rng(0),
+    ):
+        """ """
         self._obj_gen_weight = None
         self.separator = separator
         self.name_prefix = name_prefix
@@ -45,11 +53,13 @@ class MatDAG():
         self._parent_list_node_names = parent_list_node_names
         self._init_map()
         self._list_ind_nodes_sorted = None
+        self.rng = rng
 
     def _init_map(self):
         if self._list_node_names is not None:
-            self._dict_node_names2ind = \
-                {name: i for (i, name) in enumerate(self._list_node_names)}
+            self._dict_node_names2ind = {
+                name: i for (i, name) in enumerate(self._list_node_names)
+            }
 
     @property
     def list_confounder(self):
@@ -68,11 +78,15 @@ class MatDAG():
         if hierarch_na:
             mdict = {i: name for (i, name) in enumerate(self.list_node_names)}
         elif self._parent_list_node_names is not None:
-            mdict = {i: str(self._parent_list_node_names.index(name))
-                     for (i, name) in enumerate(self.list_node_names)}
+            mdict = {
+                i: str(self._parent_list_node_names.index(name))
+                for (i, name) in enumerate(self.list_node_names)
+            }
         else:
-            mdict = {i: str(self.list_node_names.index(name))
-                     for (i, name) in enumerate(self.list_node_names)}
+            mdict = {
+                i: str(self.list_node_names.index(name))
+                for (i, name) in enumerate(self.list_node_names)
+            }
         return mdict
 
     def check(self):
@@ -98,7 +112,8 @@ class MatDAG():
         """
         self._list_node_names = [
             add_prefix(string="v" + str(i), prefix=self.name_prefix)
-            for i in range(self.num_nodes)]
+            for i in range(self.num_nodes)
+        ]
         self._init_map()
 
     def gen_node_names_stacked(self, dict_macro_node2dag):
@@ -128,16 +143,17 @@ class MatDAG():
         return the list of edges
         """
         list_i_j = list(zip(*self.mat_adjacency.nonzero()))
-        list_arcs = \
-            [(self.list_node_names[tuple(ij)[0]],
-              self.list_node_names[tuple(ij)[1]]) for ij in list_i_j]
+        list_arcs = [
+            (self.list_node_names[tuple(ij)[0]], self.list_node_names[tuple(ij)[1]])
+            for ij in list_i_j
+        ]
         return list_arcs
 
     def sample_node(self):
         """
         randomly chose a node
         """
-        ind = random.randint(0, self.mat_adjacency.shape[0] - 1)
+        ind = self.rng.integers(0, self.mat_adjacency.shape[0])
         name = self.list_node_names[ind]
         return self.name_prefix + name, ind
 
@@ -219,36 +235,41 @@ class MatDAG():
         subset adjacency matrix by deleting unobserved variables
         """
         # delete first axis
-        temp_mat_row = np.delete(
-            self.mat_adjacency, list_ind_unobserved, axis=0)
+        temp_mat_row = np.delete(self.mat_adjacency, list_ind_unobserved, axis=0)
 
         # delete second axis
-        mat_adj_subgraph = np.delete(
-            temp_mat_row, list_ind_unobserved, axis=1)
+        mat_adj_subgraph = np.delete(temp_mat_row, list_ind_unobserved, axis=1)
 
         # filter out subgraph node names
-        list_node_names_subgraph = [x for i, x in
-                                    enumerate(self.list_node_names)
-                                    if i not in list_ind_unobserved]
+        list_node_names_subgraph = [
+            x
+            for i, x in enumerate(self.list_node_names)
+            if i not in list_ind_unobserved
+        ]
 
-        subdag = MatDAG(mat_adj_subgraph,
-                        list_node_names=list_node_names_subgraph,
-                        parent_list_node_names=self.list_node_names)
+        subdag = MatDAG(
+            mat_adj_subgraph,
+            list_node_names=list_node_names_subgraph,
+            parent_list_node_names=self.list_node_names,
+            rng=self.rng,
+        )
         return subdag
 
-    def visualize(self, title="dag", hierarch_na=False):
+    def visualize(self, title="dag", hierarch_na=False, ax=None):
         """
         draw dag using networkx
         """
-        draw_dags_nx(self.mat_adjacency,
-                     dict_ind2name=self.gen_dict_ind2node_na(hierarch_na),
-                     title=title)
+        draw_dags_nx(
+            self.mat_adjacency,
+            dict_ind2name=self.gen_dict_ind2node_na(hierarch_na),
+            title=title,
+            ax=ax,
+        )
 
     @property
     def list_top_names(self):
         """
         return list of node names in toplogical order
         """
-        list_top_names = [self.list_node_names[i]
-                          for i in self.list_ind_nodes_sorted]
+        list_top_names = [self.list_node_names[i] for i in self.list_ind_nodes_sorted]
         return list_top_names
