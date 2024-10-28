@@ -63,11 +63,11 @@ def test_DAG2Ancestral_complicated():
             [0, 1, 0, 0, 1, 0, 0],  # D
             [0, 0, 0, 0, 0, 0, 0],  # B'
             [0, 1, 1, 0, 0, 0, 0],  # C
-            [1, 1, 1, 0, 1, 0, 0],  # A
+            [0, 1, 1, 0, 1, 0, 0],  # A
             [0, 0, 0, 0, 0, 1, 0],  # A'
         ]
     )
 
     obj = DAG2Ancestral(adj_matrix)
-    pred_ancestral_graph = obj.run([1])
+    pred_ancestral_graph = obj.run([5])  # hide B
     assert (ancestral_graph == pred_ancestral_graph).all()
