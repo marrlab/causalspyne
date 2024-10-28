@@ -28,5 +28,4 @@ def ancestor_matrix_transpose(adj_matrix):
         for j in range(num_vertex):
             if i != j:
                 ancestor[i][j] = closure[i][j]
-
     return ancestor

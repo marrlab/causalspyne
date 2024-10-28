@@ -21,14 +21,14 @@ class DAG2Ancestral:
     def __init__(self, adj):
         self.old_adj = copy.deepcopy(adj)
         self.mat4ancestral = copy.deepcopy(self.old_adj)
-        self.mat_ancestor = None
+        self.bmat_ancestor = None
 
     def pre_cal_n_hop(self):
         """
         check if one node is ancestor of another
         """
         mat = ancestor_matrix_transpose(self.old_adj)
-        self.mat_ancestor = np.transpose(mat)
+        self.bmat_ancestor = np.transpose(mat)
 
     def run(self, list_hidden):
         self.pre_cal_n_hop()
@@ -44,7 +44,7 @@ class DAG2Ancestral:
         return self.mat4ancestral
 
     def is_ancestor(self, c1, c2):
-        flag = self.mat_ancestor[c2, c1] > 0
+        flag = self.bmat_ancestor[c2, c1]
         return flag
 
     def deal_parent(self, h):
