@@ -34,7 +34,7 @@ def structural_hamming_distance(true_dag, true_hidden_nodes, prediction):
     cl_dag = Dag(range(n))
     for ch, pa in np.argwhere(true_dag):
         cl_dag.add_directed_edge(pa, ch)
-    true_pag = dag2pag(cl_dag, [true_hidden_nodes])
+    true_pag = dag2pag(cl_dag, true_hidden_nodes)
 
     total_shd = np.sum(true_pag != prediction)
 
