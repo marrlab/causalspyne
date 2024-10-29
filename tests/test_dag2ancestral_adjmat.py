@@ -11,17 +11,18 @@ def test_DAG2Ancestral_path():
     hide one node in a path
     """
     # lower triangular requires reverse top order
-    #     3, 2, 1, 0
+    #     0, 1, 2, 3
+    #     A, B, C, D
     adj_matrix = np.array(
-        [[0, 0, 0, 0],   # 3
-         [1, 0, 0, 0],   # 2
-         [0, 1, 0, 0],   # 1
-         [0, 0, 1, 0]])  # 0
+        [[0, 0, 0, 0],   # A
+         [1, 0, 0, 0],   # B
+         [0, 1, 0, 0],   # C
+         [0, 0, 1, 0]])  # D
 
-    # - entry(1,0): 0->1
-    # - entry(2,1): 1->2
-    # - entry(3,2): 2->3
-    # - reverse top order:  3, 2, 1, 0
+    # - entry(1,0): entry(B, A), A->B
+    # - entry(2,1): B->C
+    # - entry(3,2): A->B
+    #
 
     # if we hide 1
     # 0->2 * new
@@ -70,6 +71,7 @@ def test_DAG2Ancestral_complicated():
      F -> G
 
     """
+    #        0, 1, 2, 3, 4, 5, 6, 7
     #        G, F, E, D, C, H, B, A
     adj_matrix = np.array(
         [
