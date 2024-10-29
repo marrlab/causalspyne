@@ -1,37 +1,41 @@
 """
 """
 
+from causallearn.utils.DAG2PAG import dag2pag
+from causallearn.graph.Dag import Dag
+import numpy as np
+
 # class ancestral_shd():
-    #def __init__(mat_gt_ancestral, mat_fci):
-    #    self.mat_gt_ancestral = mat_gt_ancestral
+# def __init__(mat_gt_ancestral, mat_fci):
+#    self.mat_gt_ancestral = mat_gt_ancestral
 
 
 import numpy as np
 
-def structural_hamming_distance(target, prediction, double_for_anticausal=True):
+
+def structural_hamming_distance(true_dag, true_hidden_nodes, prediction):
     """
-    Compute the Structural Hamming Distance between two graphs.
+    Compute the standardized structural Hamming distance between two graphs.
 
     Parameters:
-    target (numpy.ndarray): Target graph adjacency matrix
-    prediction (numpy.ndarray): Predicted graph adjacency matrix
+    true_dag (numpy.ndarray): Target graph adjacency matrix
+    true_hidden_nodes (list): list of nodes in DAG to hide
+    prediction (numpy.ndarray): Predicted graph adjacency matrix  (pag.graph
+    from causal-learn)
     double_for_anticausal (bool): Count badly oriented edges as two mistakes
 
     Returns:
     int: Structural Hamming Distance
     """
-    if target.shape != prediction.shape:
+    n = len(true_dag) - len(true_hidden_nodes)
+    if (n, n) != prediction.shape:
         raise ValueError("Graphs must have the same number of nodes")
 
-    # Ensure the matrices are binary
-    target = (target != 0).astype(int)
-    prediction = (prediction != 0).astype(int)
+    cl_dag = Dag(range(n))
+    for ch, pa in np.argwhere(true_dag):
+        cl_dag.add_directed_edge(pa, ch)
+    true_pag = dag2pag(cl_dag, [true_hidden_nodes])
 
-    # Compute the difference
-    diff = np.abs(target - prediction)
+    total_shd = np.sum(true_pag != prediction)
 
-    if double_for_anticausal:
-        # Count reversed edges twice
-        return np.sum(diff)
-    # Count reversed edges once
-    return np.sum(np.maximum(diff, diff.T)) // 2
+    return total_shd / (n**2 - n)
