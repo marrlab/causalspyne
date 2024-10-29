@@ -50,6 +50,7 @@ class DAGManipulator:
         # now flag_success must be False
         if continue_top_up:
             # increase the toplogical order and try until success
+            # FIXME: ind_arbitary_confound is not top order
             if ind_arbitrary_confound - 1 < 0:
                 return False
             return self.mk_confound(
