@@ -10,11 +10,7 @@ def test_DAG2Ancestral_path():
     """
     hide one node in a path
     """
-    adj_matrix = np.array(
-        [[0, 0, 0, 0],
-         [1, 0, 0, 0],
-         [0, 1, 0, 0],
-         [0, 0, 1, 0]])
+    adj_matrix = np.array([[0, 0, 0, 0], [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0]])
     # - entry(1,0): 0->1
     # - entry(2,1): 1->2
     # - entry(3,2): 2->3
@@ -31,50 +27,51 @@ def test_DAG2Ancestral_path():
     assert (ancestor_graph_matrix == pred_ancestral_graph).all()
 
 
-def test_dag2ancestral_complicated():
+def test_DAG2Ancestral_complicated():
     """
-    hide a node with parents and multiple children, resulting in both
-    kinds of directed edges as well as bidirected edges
+     hide a node with parents and multiple children, resulting in both
+     kinds of directed edges as well as bidirected edges
 
-    Original DAG:
+     Original Graph:
 
-        A' -> A -> B -> {F, D, C}
-        B' -> F
-        C -> D -> E
+     A -> B -> H -> {C, E, F}
+     C -> D -> E
+     F -> G
 
-    Ancestral Graph after hiding {B}:
+    Updated Graph after hiding H:
 
-        A' -> A -> {E, F, D, C}
-        B' -> F
-        C -> F  (sibling, children of hidden)
-        F <-> D <-> C (sibling, chidren of hidden, no ancestor relation)
-
-    """    # E, F, D, B',C, B, A, A'
+     A -> B
+     B -> {C, E, F} *new
+     C -> D -> E
+     C -> E *new
+     F -> G
+     C <-> E <-> F *new
+    """
     adj_matrix = np.array(
         [
+            [0, 0, 0, 0, 0, 0, 0, 0],  # G
+            [1, 0, 0, 0, 0, 0, 0, 0],  # F
             [0, 0, 0, 0, 0, 0, 0, 0],  # E
-            [0, 0, 0, 0, 0, 0, 0, 0],  # F
-            [1, 0, 0, 0, 0, 0, 0, 0],  # D
-            [0, 1, 0, 0, 0, 0, 0, 0],  # B'
-            [0, 0, 0, 0, 0, 0, 0, 0],  # C
-            [0, 1, 1, 1, 1, 0, 0, 0],  # B
-            [0, 0, 0, 0, 0, 1, 0, 0],  # A
-            [0, 0, 0, 0, 0, 0, 1, 0],  # A'
+            [0, 1, 0, 0, 0, 0, 0, 0],  # D
+            [0, 0, 0, 1, 0, 0, 0, 0],  # C
+            [0, 1, 1, 0, 1, 0, 0, 0],  # H
+            [0, 0, 0, 0, 0, 1, 0, 0],  # B
+            [0, 0, 0, 0, 0, 0, 1, 0],  # A
         ]
     )
-    #        E, F, D, B',C, A, A'
+
     ancestral_graph = np.array(
         [
-            [0, 0, 0, 0, 0, 0, 0],  # E
-            [0, 0, 1, 0, 0, 0, 0],  # F
-            [0, 1, 0, 0, 1, 0, 0],  # D
-            [0, 0, 0, 0, 0, 0, 0],  # B'
-            [0, 1, 1, 0, 0, 0, 0],  # C
-            [0, 1, 1, 0, 1, 0, 0],  # A
-            [0, 0, 0, 0, 0, 1, 0],  # A'
+            [0, 0, 0, 0, 0, 0, 0],  # G
+            [1, 0, 1, 0, 1, 0, 0],  # F
+            [0, 1, 0, 0, 0, 0, 0],  # E
+            [0, 0, 1, 0, 0, 0, 0],  # D
+            [0, 1, 1, 1, 0, 0, 0],  # C
+            [0, 1, 1, 0, 1, 0, 0],  # B
+            [0, 0, 0, 0, 0, 1, 0],  # A
         ]
     )
 
     obj = DAG2Ancestral(adj_matrix)
-    pred_ancestral_graph = obj.run([5])  # hide B
+    pred_ancestral_graph = obj.run([2])  # hide H
     assert (ancestral_graph == pred_ancestral_graph).all()
