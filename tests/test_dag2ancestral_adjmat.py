@@ -10,8 +10,15 @@ def test_DAG2Ancestral_path():
     """
     hide one node in a path
     """
-    adj_matrix = np.array([[0, 0, 0, 0], [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0]])
-    # 0->1, 1->2, 2->3
+    adj_matrix = np.array(
+        [[0, 0, 0, 0],
+         [1, 0, 0, 0],
+         [0, 1, 0, 0],
+         [0, 0, 1, 0]])
+    # - entry(1,0): 0->1
+    # - entry(2,1): 1->2
+    # - entry(3,2): 2->3
+
     # if we hide 1
     # 0->2, 2->3
     # submatrix
@@ -24,25 +31,25 @@ def test_DAG2Ancestral_path():
     assert (ancestor_graph_matrix == pred_ancestral_graph).all()
 
 
-def test_DAG2Ancestral_complicated():
+def test_dag2ancestral_complicated():
     """
-        hide a node with parents and multiple children, resulting in both
-        kinds of directed edges as well as bidirected edges
+    hide a node with parents and multiple children, resulting in both
+    kinds of directed edges as well as bidirected edges
 
-        Original Graph:
+    Original DAG:
 
         A' -> A -> B -> {F, D, C}
         B' -> F
         C -> D -> E
 
-    Updated Graph:
+    Ancestral Graph after hiding {B}:
 
         A' -> A -> {E, F, D, C}
         B' -> F
-        C -> F
-        F <-> D <-> C
+        C -> F  (sibling, children of hidden)
+        F <-> D <-> C (sibling, chidren of hidden, no ancestor relation)
 
-    """
+    """    # E, F, D, B',C, B, A, A'
     adj_matrix = np.array(
         [
             [0, 0, 0, 0, 0, 0, 0, 0],  # E
@@ -55,7 +62,7 @@ def test_DAG2Ancestral_complicated():
             [0, 0, 0, 0, 0, 0, 1, 0],  # A'
         ]
     )
-
+    #        E, F, D, B',C, A, A'
     ancestral_graph = np.array(
         [
             [0, 0, 0, 0, 0, 0, 0],  # E
