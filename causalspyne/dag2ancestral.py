@@ -46,7 +46,6 @@ class DAG2Ancestral:
         for hidden in list_hidden:
             self.deal_children(hidden)
             self.deal_parent(hidden)
-
         # delete first axis
         temp_mat_row = np.delete(self.mat4ancestral, list_hidden, axis=0)
         # delete second axis
@@ -92,9 +91,10 @@ class DAG2Ancestral:
     def get_list_children(self, hidden):
         """
         adj[i,j] indicate arrow from j to i
+        adj[:, hidden]
         """
         arr = self.old_adj
-        nonzero_indices = np.nonzero(arr[hidden, :])[0]
+        nonzero_indices = np.nonzero(arr[:, hidden])[0]
         # np.nonzero() returns a tuple of arrays.
         # Each array in this tuple corresponds to a dimension of
         # the input array and contains the indices of non-zero elements
@@ -106,9 +106,11 @@ class DAG2Ancestral:
     def get_list_parents(self, hidden):
         """
         adj[i,j] indicate arrow from j to i
+        parents of hidden should be
+        adj[hidden,:]
         """
         arr = self.old_adj
-        nonzero_indices = np.nonzero(arr[:, hidden])[0]
+        nonzero_indices = np.nonzero(arr[hidden, :])[0]
         # np.nonzero() returns a tuple of arrays.
         # Each array in this tuple corresponds to a dimension of
         # the input array and contains the indices of non-zero elements

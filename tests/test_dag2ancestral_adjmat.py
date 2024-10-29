@@ -26,6 +26,24 @@ def test_DAG2Ancestral_path():
     # if we hide 1
     # 0->2 * new
     # 2->3 intact
+    # the full matrix
+
+    #      3, 2, 1, 0
+
+    #    [[0, 0, 0, 0],   # 3
+    #     [1, 0, 0, 0],   # 2
+    #     [0, 1, 0, 0],   # 1
+    #     [0, 1, 1, 0]])  # 0
+    # delete index 2 row
+    #    [[0, 0, 0, 0],   # 3
+    #     [1, 0, 0, 0],   # 2
+    #     [0, 1, 1, 0]])  # 0
+
+    # delete index 2 column
+    #    [[0, 0, 0],   # 3
+    #     [1, 0, 0],   # 2
+    #     [0, 1, 0]])  # 0
+
     # submatrix
     #     3, 2, 0
     sub_matrix = np.array(
