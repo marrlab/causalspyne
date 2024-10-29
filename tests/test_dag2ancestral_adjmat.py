@@ -47,6 +47,7 @@ def test_DAG2Ancestral_complicated():
      F -> G
      C <-> E <-> F *new
     """
+    #        G, F, E, D, C, H, B, A
     adj_matrix = np.array(
         [
             [0, 0, 0, 0, 0, 0, 0, 0],  # G
