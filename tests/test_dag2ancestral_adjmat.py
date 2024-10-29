@@ -103,5 +103,5 @@ def test_DAG2Ancestral_complicated():
     )
 
     obj = DAG2Ancestral(adj_matrix)
-    pred_ancestral_graph = obj.run([5])  # hide H
+    pred_ancestral_graph = obj.run([2])  # hide H
     assert (ancestral_graph == pred_ancestral_graph).all()

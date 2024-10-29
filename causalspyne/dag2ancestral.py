@@ -1,6 +1,7 @@
 """
 turn DAG into ancestral given list of variabels to hide
 """
+
 import itertools
 import copy
 import numpy as np
@@ -26,6 +27,7 @@ class DAG2Ancestral:
     """
     turn DAG into ancestral given list of variabels to hide
     """
+
     def __init__(self, adj):
         self.old_adj = copy.deepcopy(adj)
         self.mat4ancestral = copy.deepcopy(self.old_adj)
@@ -57,7 +59,7 @@ class DAG2Ancestral:
         """
         check if the first argument is an ancestor of the second
         """
-        flag = self.bmat_ancestor[global_ind_node_2, global_ind_node_1]
+        flag = self.bmat_ancestor[global_ind_node_1, global_ind_node_2]
         return flag
 
     def deal_parent(self, hidden):
@@ -93,7 +95,7 @@ class DAG2Ancestral:
         adj[i,j] indicate arrow from j to i
         """
         arr = self.old_adj
-        nonzero_indices = np.nonzero(arr[hidden, :])[0]
+        nonzero_indices = np.flatnonzero(arr[:, hidden])
         # np.nonzero() returns a tuple of arrays.
         # Each array in this tuple corresponds to a dimension of
         # the input array and contains the indices of non-zero elements
@@ -107,7 +109,7 @@ class DAG2Ancestral:
         adj[i,j] indicate arrow from j to i
         """
         arr = self.old_adj
-        nonzero_indices = np.nonzero(arr[:, hidden])[0]
+        nonzero_indices = np.flatnonzero(arr[hidden, :])
         # np.nonzero() returns a tuple of arrays.
         # Each array in this tuple corresponds to a dimension of
         # the input array and contains the indices of non-zero elements
