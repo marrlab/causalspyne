@@ -10,25 +10,33 @@ def test_DAG2Ancestral_path():
     """
     hide one node in a path
     """
+    # lower triangular requires reverse top order
+    #     3, 2, 1, 0
     adj_matrix = np.array(
-        [[0, 0, 0, 0],
-         [1, 0, 0, 0],
-         [0, 1, 0, 0],
-         [0, 0, 1, 0]])
+        [[0, 0, 0, 0],   # 3
+         [1, 0, 0, 0],   # 2
+         [0, 1, 0, 0],   # 1
+         [0, 0, 1, 0]])  # 0
 
     # - entry(1,0): 0->1
     # - entry(2,1): 1->2
     # - entry(3,2): 2->3
+    # - reverse top order:  3, 2, 1, 0
 
     # if we hide 1
-    # 0->2, 2->3
+    # 0->2 * new
+    # 2->3 intact
     # submatrix
-    # 0, 2, 3
-    sub_matrix = np.array([[0, 0, 0], [1, 0, 0], [0, 1, 0]])
+    #     3, 2, 0
+    sub_matrix = np.array(
+        [[0, 0, 0],   # 3
+         [1, 0, 0],   # 2
+         [0, 1, 0]])  # 0
+    # Y=Bu
     # correct ancestral graph
     ancestor_graph_matrix = sub_matrix
     obj = DAG2Ancestral(adj_matrix)
-    pred_ancestral_graph = obj.run([1])
+    pred_ancestral_graph = obj.run([2])
     assert (ancestor_graph_matrix == pred_ancestral_graph).all()
 
 

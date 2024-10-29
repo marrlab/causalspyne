@@ -67,6 +67,7 @@ class DAG2Ancestral:
         """
         list_parents = self.get_list_parents(hidden)
         list_children = self.get_list_children(hidden)
+        breakpoint()
         for global_ind_parent in list_parents:
             for global_ind_child in list_children:
                 self.mat4ancestral[global_ind_child, global_ind_parent] = 1
@@ -78,6 +79,7 @@ class DAG2Ancestral:
         list_children = self.get_list_children(hidden)
         if len(list_children) < 2:
             return
+        breakpoint()
         for pair in pairwise_combinations(list_children):
             c1_global_ind, c2_global_ind = pair
             if self.is_ancestor(c1_global_ind, c2_global_ind):
@@ -93,9 +95,8 @@ class DAG2Ancestral:
         """
         adj[i,j] indicate arrow from j to i
         """
-        column_index = hidden
         arr = self.old_adj
-        nonzero_indices = np.nonzero(arr[:, column_index])[0]
+        nonzero_indices = np.nonzero(arr[hidden, :])[0]
         # np.nonzero() returns a tuple of arrays.
         # Each array in this tuple corresponds to a dimension of
         # the input array and contains the indices of non-zero elements
@@ -108,9 +109,8 @@ class DAG2Ancestral:
         """
         adj[i,j] indicate arrow from j to i
         """
-        row_index = hidden
         arr = self.old_adj
-        nonzero_indices = np.nonzero(arr[row_index, :])[0]
+        nonzero_indices = np.nonzero(arr[:, hidden])[0]
         # np.nonzero() returns a tuple of arrays.
         # Each array in this tuple corresponds to a dimension of
         # the input array and contains the indices of non-zero elements
