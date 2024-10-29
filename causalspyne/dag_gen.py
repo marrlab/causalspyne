@@ -67,16 +67,11 @@ class GenDAG:
         mat_weighted_adjacency = mat_mask * mat_weight
 
         dag = MatDAG(mat_weighted_adjacency, name_prefix=prefix, rng=self.rng)
-        self.dag_manipulator = DAGManipulator(dag, self.obj_gen_weight, self.rng)
+        self.dag_manipulator = DAGManipulator(dag,
+                                              self.obj_gen_weight, self.rng)
         flag_success = False
-        count = 0
-        while not flag_success:
-            flag_success = self.dag_manipulator.mk_confound()
-            count += 1
-            if count > dag.num_nodes:
-                warnings.warn(
-                    f"failed to ensure confounder after \
-                              {dag.num_nodes} trails for {dag}"
-                )
-                break
+        flag_success = self.dag_manipulator.mk_confound()
+        if not flag_success:
+            warnings.warn(
+                f"failed to ensure confounder for \n{dag.mat_adjacency}")
         return dag
