@@ -5,7 +5,7 @@ turn DAG into ancestral given list of variabels to hide
 import itertools
 import copy
 import numpy as np
-from causalspyne.utils_closure import ancestor_matrix_transpose
+from causalspyne.utils_closure import ancestor_matrix
 
 
 def pairwise_combinations(lst):
@@ -37,8 +37,7 @@ class DAG2Ancestral:
         """
         check if one node is ancestor of another
         """
-        mat = ancestor_matrix_transpose(self.old_adj)
-        self.bmat_ancestor = np.transpose(mat)
+        self.bmat_ancestor = ancestor_matrix(self.old_adj)
 
     def run(self, list_hidden):
         """
@@ -59,7 +58,7 @@ class DAG2Ancestral:
         """
         check if the first argument is an ancestor of the second
         """
-        flag = self.bmat_ancestor[global_ind_node_1, global_ind_node_2]
+        flag = self.bmat_ancestor[global_ind_node_2, global_ind_node_1]
         return flag
 
     def deal_parent(self, hidden):
