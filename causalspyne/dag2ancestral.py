@@ -67,7 +67,6 @@ class DAG2Ancestral:
         """
         list_parents = self.get_list_parents(hidden)
         list_children = self.get_list_children(hidden)
-        breakpoint()
         for global_ind_parent in list_parents:
             for global_ind_child in list_children:
                 self.mat4ancestral[global_ind_child, global_ind_parent] = 1
@@ -79,7 +78,6 @@ class DAG2Ancestral:
         list_children = self.get_list_children(hidden)
         if len(list_children) < 2:
             return
-        breakpoint()
         for pair in pairwise_combinations(list_children):
             c1_global_ind, c2_global_ind = pair
             if self.is_ancestor(c1_global_ind, c2_global_ind):
