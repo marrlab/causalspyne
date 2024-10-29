@@ -76,18 +76,18 @@ def test_DAG2Ancestral_complicated():
      F -> G
 
     """
-    #        0, 1, 2, 3, 4, 5, 6, 7
-    #        A, B, H, C, D, E, F, G
+    #        0, 1, 2, 3, 4, 5, 6, 7 (column ind, parent)
+    #        A, B, H, C, D, E, F, G (as parent)
     adj_matrix = np.array(
         [
-            [0, 0, 0, 0, 0, 0, 0, 0],  # A
-            [1, 0, 0, 0, 0, 0, 0, 0],  # B
-            [0, 1, 0, 0, 0, 0, 0, 0],  # H
-            [0, 0, 1, 0, 0, 0, 0, 0],  # C
-            [0, 0, 0, 1, 0, 0, 0, 0],  # D
-            [0, 0, 1, 0, 1, 0, 0, 0],  # E
-            [0, 0, 1, 0, 0, 0, 0, 0],  # F
-            [0, 0, 0, 0, 0, 0, 1, 0],  # G
+            [0, 0, 0, 0, 0, 0, 0, 0],  # row ind 0, A as child
+            [1, 0, 0, 0, 0, 0, 0, 0],  # row ind 1, B as child
+            [0, 1, 0, 0, 0, 0, 0, 0],  # row ind 2, H as child
+            [0, 0, 1, 0, 0, 0, 0, 0],  # row ind 3, C as child
+            [0, 0, 0, 1, 0, 0, 0, 0],  # row ind 4, D as child
+            [0, 0, 1, 0, 1, 0, 0, 0],  # row ind 5, E as child
+            [0, 0, 1, 0, 0, 0, 0, 0],  # row ind 6, F as child
+            [0, 0, 0, 0, 0, 0, 1, 0],  # row ind 7, G as child
         ]
     )
 
@@ -98,17 +98,54 @@ def test_DAG2Ancestral_complicated():
     # C -> E *new
     # F -> G
     # C <-> F <-> E *new
+    #         0, 1, 2, 3, 4, 5, 6, 7 (column ind, parent)
+    #         A, B, H, C, D, E, F, G (as parent)
 
-    #        A, B, C, D, E, F, G
+    #        [0, 0, 0, 0, 0, 0, 0, 0],  # row ind 0, A as child
+    #        [1, 0, 0, 0, 0, 0, 0, 0],  # row ind 1, B as child
+    #        [0, 1, 0, 0, 0, 0, 0, 0],  # row ind 2, H as child
+    #        [0,(1),1, 0, 0, 0,{1},0],  # row ind 3, C as child
+    #        [0, 0, 0, 1, 0, 0, 0, 0],  # row ind 4, D as child
+    #        [0,(1),1,(1),1, 0,{1},0],  # row ind 5, E as child
+    #        [0,(1),1,{1},0,{1},0, 0],  # row ind 6, F as child
+    #        [0, 0, 0, 0, 0, 0, 1, 0],  # row ind 7, G as child
+
+    # delete H row
+
+    #         0, 1, 2, 3, 4, 5, 6, 7 (column ind, parent)
+    #         A, B, H, C, D, E, F, G (as parent)
+
+    #        [0, 0, 0, 0, 0, 0, 0, 0],  # row ind 0, A as child
+    #        [1, 0, 0, 0, 0, 0, 0, 0],  # row ind 1, B as child
+    #        [0,(1),1, 0, 0, 0,{1},0],  # row ind 3, C as child
+    #        [0, 0, 0, 1, 0, 0, 0, 0],  # row ind 4, D as child
+    #        [0,(1),1,(1),1, 0,{1},0],  # row ind 5, E as child
+    #        [0,(1),1,{1},0,{1},0, 0],  # row ind 6, F as child
+    #        [0, 0, 0, 0, 0, 0, 1, 0],  # row ind 7, G as child
+
+    # delete H column
+    #         0, 1, , 3, 4, 5, 6, 7 (column ind, parent)
+    #         A, B, , C, D, E, F, G (as parent)
+
+    #        [0, 0, , 0, 0, 0, 0, 0],  # row ind 0, A as child
+    #        [1, 0, , 0, 0, 0, 0, 0],  # row ind 1, B as child
+    #        [0,(1),, 0, 0, 0,{1},0],  # row ind 3, C as child
+    #        [0, 0, , 1, 0, 0, 0, 0],  # row ind 4, D as child
+    #        [0,(1),,(1),1, 0,{1},0],  # row ind 5, E as child
+    #        [0,(1),,{1},0,{1},0, 0],  # row ind 6, F as child
+    #        [0, 0, , 0, 0, 0, 1, 0],  # row ind 7, G as child
+
+    #        submatrix
+    #        A, B, C, D, E, F, G (parent)
     ancestral_graph = np.array(
         [
-            [0, 0, 0, 0, 0, 0, 0],  # A
-            [1, 0, 0, 0, 0, 0, 0],  # B
-            [0, 1, 0, 0, 0, 1, 0],  # C
-            [0, 0, 1, 0, 0, 0, 0],  # D
-            [0, 1, 1, 1, 0, 1, 0],  # E
-            [0, 1, 1, 0, 1, 0, 0],  # F
-            [0, 0, 0, 0, 0, 1, 0],  # G
+            [0, 0, 0, 0, 0, 0, 0],  # A as child
+            [1, 0, 0, 0, 0, 0, 0],  # B as child
+            [0, 1, 0, 0, 0, 1, 0],  # C as child
+            [0, 0, 1, 0, 0, 0, 0],  # D as child
+            [0, 1, 1, 1, 0, 1, 0],  # E as child
+            [0, 1, 1, 0, 1, 0, 0],  # F as child
+            [0, 0, 0, 0, 0, 1, 0],  # G as child
         ]
     )
 

@@ -93,7 +93,7 @@ class DAG2Ancestral:
         adj[i,j] indicate arrow from j to i
         """
         arr = self.old_adj
-        nonzero_indices = np.nonzero(arr[hidden, :])[0]
+        nonzero_indices = np.nonzero(arr[:, hidden])[0]
         # np.nonzero() returns a tuple of arrays.
         # Each array in this tuple corresponds to a dimension of
         # the input array and contains the indices of non-zero elements
@@ -107,10 +107,11 @@ class DAG2Ancestral:
         adj[i,j] indicate arrow from j to i
         """
         arr = self.old_adj
-        nonzero_indices = np.nonzero(arr[:, hidden])[0]
+        nonzero_indices = np.nonzero(arr[hidden, :])[0]
         # np.nonzero() returns a tuple of arrays.
         # Each array in this tuple corresponds to a dimension of
         # the input array and contains the indices of non-zero elements
+
         # along that dimension.
         # nonzero_elements = arr[nonzero_indices, column_index]
         list_non_zero_indices = nonzero_indices.tolist()
