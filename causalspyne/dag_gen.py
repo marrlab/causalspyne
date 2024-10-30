@@ -45,6 +45,8 @@ class GenDAG:
                                               self.obj_gen_weight, self.rng)
         counter = 0
         for _ in range(dag.num_nodes):
+            # FIXME: instead of randomly choose confounder, one could also
+            # start from the bottom of the DAG
             flag_success = self.dag_manipulator.mk_confound()
             if flag_success:
                 counter += 1
