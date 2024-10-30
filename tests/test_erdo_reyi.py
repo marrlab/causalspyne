@@ -1,6 +1,6 @@
 from numpy.random import default_rng
 
-from causalspyne.dag_gen import Erdos_Renyi_PLP
+from causalspyne.erdo_renyi_plp import Erdos_Renyi_PLP
 from causalspyne.is_dag import is_dag
 
 

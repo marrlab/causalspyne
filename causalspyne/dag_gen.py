@@ -4,43 +4,17 @@ concrete class to generate simple DAGs
 """
 
 import warnings
-
-import numpy as np
 from numpy.random import default_rng
 
+from causalspyne.erdo_renyi_plp import Erdos_Renyi_PLP
 from causalspyne.dag_interface import MatDAG
 from causalspyne.weight import WeightGenWishart
 from causalspyne.dag_manipulator import DAGManipulator
 
 
-class Erdos_Renyi_PLP:
-    """
-    uniformly (w.r.t. each edge) decide if the edge will exist w.r.t. a prob.
-    threshold
-    trick: PLP^T to ensure a DAG, L is lower triangular (topological order)
-    P is permutation, P permute the labels
-    (i,j) entry indicate j->i
-    row permutation  (i,j), (k,j) becomes (k,j) (i,j)
-    column permutation
-    """
-
-    def __init__(self, rng):
-        self.rng = rng
-
-    def __call__(self, num_nodes, degree):
-        prob = float(degree) / (num_nodes - 1)
-        # lower triagular, k=-1 is the lower off diagonal
-        mat_lower_triangle_binary = np.tril(
-            (self.rng.random((num_nodes, num_nodes)) < prob).astype(float), k=-1
-        )
-        # permutes first axis only
-        mat_perm = self.rng.permutation(np.eye(num_nodes, num_nodes))
-        mat_b_permuted = mat_perm.T.dot(mat_lower_triangle_binary).dot(mat_perm)
-        return mat_b_permuted
-
-
 class GenDAG:
-    def __init__(self, num_nodes, degree, obj_gen_weight=None, rng=default_rng()):
+    def __init__(self, num_nodes, degree, obj_gen_weight=None,
+                 rng=default_rng()):
         """
         degree: expected degree for each node
         """
