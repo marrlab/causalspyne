@@ -38,7 +38,9 @@ class DAGManipulator:
         if nnzero == 0:  # 0 means sink node
             # sink node can also be quite high in toplogical rank
             if not skip_sink:
-                flag_success = self.add_new_edge(ind_arbitrary_confound)
+                flag_success_1 = self.add_new_edge(ind_arbitrary_confound)
+                flag_success_2 = self.add_new_edge(ind_arbitrary_confound)
+                flag_success = flag_success_1 & flag_success_2
         elif nnzero == 1:  # not a sink node but only parent a single child
             # add another child to this current node
             flag_success = self.add_new_edge(ind_arbitrary_confound)
@@ -53,7 +55,7 @@ class DAGManipulator:
             pos = self.dag.global_arbitrary_ind2topind(ind_arbitrary_confound)
             if pos - 1 < 0:
                 return False
-            ind_arbitrary = self.dag.top_ind2global_arbitrary(pos-1)
+            ind_arbitrary = self.dag.top_ind2global_arbitrary(pos - 1)
             return self.mk_confound(
                 ind_arbitrary_confound_input=ind_arbitrary)
         return False

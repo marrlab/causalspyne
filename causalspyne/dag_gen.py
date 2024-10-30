@@ -77,7 +77,7 @@ class GenDAG:
             if counter >= target_num_confounder:
                 break
         num_confounder = len(dag.list_confounder)
-        if num_confounder < target_num_confounder:
+        if num_confounder < target_num_confounder and dag.num_nodes > 2:
             warnings.warn(
                 f"\n failed to ensure {target_num_confounder} confounders for \
                 adjacency matrix \n{dag.mat_adjacency}, \
