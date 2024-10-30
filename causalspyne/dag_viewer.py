@@ -23,7 +23,8 @@ def process_list2hide(list_ind_or_percentage, total_num):
         )
 
     list_ind = [
-        min(int(ele * total_num), total_num - 1) if isinstance(ele, float) else ele
+        min(int(ele * total_num), total_num - 1)
+        if isinstance(ele, float) else ele
         for ele in list_ind_or_percentage
     ]
 
@@ -65,36 +66,35 @@ class DAGView:
         if confound:
             self.hide_confounder(list_nodes2hide)
         else:
-            self.hide(list_nodes2hide)
+            self.hide_top_order(list_nodes2hide)
 
-    def hide_confounder(self, list_toporder_confounder2hide):
+    def hide_confounder(self, list_toporder_confounder2hide_input):
         """
         given a list of index, hide the confounder according to the toplogical
         order provided by the input index list_toporder_confounder2hide
         then call self.hide
         """
         if not self._dag.list_confounder:
-            warnings.warn(
+            raise RuntimeError(
                 f"there are no confounders in the graph {self._dag} \
                           !"
             )
-            return False
+
         list_toporder_confounder2hide = process_list2hide(
-            list_toporder_confounder2hide, len(self._dag.list_confounder)
+            list_toporder_confounder2hide_input, len(self._dag.list_confounder)
         )
 
-        list_ind_confounder_sorted = [
-            self._dag.list_ind_nodes_sorted.index(confounder)
-            for confounder in self._dag.list_confounder
-        ]
+        list_ind_confounder_sorted = self._dag.list_top_order_sorted_confounder
+
         list_toporder_confounder_sub = [
-            list_ind_confounder_sorted[i] for i in list_toporder_confounder2hide
+            list_ind_confounder_sorted[i]
+            for i in list_toporder_confounder2hide
         ]
 
-        self.hide(list_toporder_confounder_sub)
+        self.hide_top_order(list_toporder_confounder_sub)
         return True
 
-    def hide(self, list_toporder_unobserved):
+    def hide_top_order(self, list_toporder_unobserved):
         """
         hide variables according to a list of global index of topological sort
         """

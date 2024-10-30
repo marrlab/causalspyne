@@ -27,6 +27,7 @@ def gen_partially_observed(
     num_sample=200,
     output_dir="output",
     rng=default_rng(),
+    graphviz=False
 ):
     """
     sole function as user interface
@@ -37,24 +38,30 @@ def gen_partially_observed(
     fig, (ax1, ax2) = plt.subplots(1, 2)
     fig.suptitle("DAGs")
 
-    simple_dag_gen = GenDAG(num_nodes=size_micro_node_dag, degree=degree, rng=rng)
+    simple_dag_gen = GenDAG(
+        num_nodes=size_micro_node_dag,
+        degree=degree, rng=rng)
 
     # num_macro_nodes will overwrite behavior
     dag_gen = GenDAG2Level(
-        dag_generator=simple_dag_gen, num_macro_nodes=num_macro_nodes, rng=rng
+        dag_generator=simple_dag_gen,
+        num_macro_nodes=num_macro_nodes,
+        rng=rng
     )
     dag = dag_gen.run()
-    dag.visualize(title="complete", ax=ax1)
+    dag.visualize(title="complete", ax=ax1, graphviz=graphviz)
     ax1.set_title("complete")
 
     subview = DAGView(dag=dag, rng=rng)
     subview.run(
-        num_samples=num_sample, confound=True, list_nodes2hide=list_confounder2hide
+        num_samples=num_sample, confound=True,
+        list_nodes2hide=list_confounder2hide
     )
     with chdir(output_dir):
         subview.to_csv()
     str_node2hide = subview.str_node2hide
-    subview.visualize(title="marginal_hide_" + str_node2hide, ax=ax2)
+    subview.visualize(title="marginal_hide_" + str_node2hide, ax=ax2,
+                      graphviz=graphviz)
     ax2.set_title("marginal_hide_" + str_node2hide)
     with chdir(output_dir):
         # subview.visualize(

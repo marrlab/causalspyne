@@ -16,6 +16,7 @@ arr_data, node_names = gen_partially_observed(
     ],  # choie of confounder to hide: percentile or index of all toplogically sorted confounders
     num_sample=200,
     rng=np.random.default_rng(2),
+    graphviz=True
 )
 
 # default parameters
