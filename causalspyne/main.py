@@ -17,6 +17,10 @@ from numpy.random import default_rng
 from causalspyne.gen_dag_2level import GenDAG2Level
 from causalspyne.dag_gen import GenDAG
 from causalspyne.dag_viewer import DAGView
+from causalspyne.dag2ancestral import DAG2Ancestral
+
+from causalspyne.dag_interface import MatDAG
+from causalspyne.draw_dags import draw_dags_nx
 
 
 def gen_partially_observed(
@@ -35,8 +39,8 @@ def gen_partially_observed(
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_")
     Path(output_dir).mkdir(parents=True, exist_ok=True)
 
-    fig, (ax1, ax2) = plt.subplots(1, 2)
-    fig.suptitle("DAGs")
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3)
+    fig.suptitle("graph comparison")   # super-title
 
     simple_dag_gen = GenDAG(
         num_nodes=size_micro_node_dag,
@@ -60,9 +64,26 @@ def gen_partially_observed(
     with chdir(output_dir):
         subview.to_csv()
     str_node2hide = subview.str_node2hide
-    subview.visualize(title="marginal_hide_" + str_node2hide, ax=ax2,
+
+    dag2ancestral = DAG2Ancestral(dag.mat_adjacency)
+    list_confounder2hide_global_ind = subview.list_global_inds_nodes2hide
+    pred_ancestral_graph_mat = dag2ancestral.run(
+        list_confounder2hide_global_ind)
+
+    draw_dags_nx(
+        pred_ancestral_graph_mat,
+        dict_ind2name={i: name for i, name in
+                       enumerate(sorted(subview.node_names))},
+        title="ancestral",
+        ax=ax2,
+        graphviz=graphviz
+    )
+    ax2.set_title("hide_" + str_node2hide)
+
+    subview.visualize(title="marginal_hide_" + str_node2hide, ax=ax3,
                       graphviz=graphviz)
-    ax2.set_title("marginal_hide_" + str_node2hide)
+    ax3.set_title("")
+
     with chdir(output_dir):
         # subview.visualize(
         #    title="dag_marginal_hide_" + timestamp + str_node2hide)

@@ -52,6 +52,7 @@ class DAGView:
         self._data_arr = None
         self._subset_data_arr = None
         self._list_global_inds_unobserved = None
+        self._list_global_inds_observed = None
         self.data_gen = DataGen(self._dag, rng=rng)
         self._list_nodes2hide = None
         self._success = False
@@ -167,6 +168,21 @@ class DAGView:
 
         subdag = MatDAG(self.mat_adj)
         subdag.to_binary_csv()
+
+    @property
+    def list_global_inds_nodes2hide(self):
+        return self._list_global_inds_unobserved
+
+    @property
+    def list_global_inds_observed(self):
+        if self._list_global_inds_observed is None:
+            if self._list_global_inds_unobserved is None:
+                raise RuntimeError(
+                    "global inds for unobserved not initialized yet!")
+            self._list_global_inds_observed = \
+                [item for item in self._dag.list_ind_nodes_sorted
+                 if item not in self._list_global_inds_unobserved]
+        return self._list_global_inds_observed
 
     @property
     def str_node2hide(self):

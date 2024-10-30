@@ -83,6 +83,9 @@ class MatDAG:
                 for (i, name) in enumerate(self.list_node_names)
             }
         else:
+            # FIXME: if self.list_node_names is list of string,
+            # then it will be ignored, mdict will be {0:integer} style
+            # always
             mdict = {
                 i: str(self.list_node_names.index(name))
                 for (i, name) in enumerate(self.list_node_names)
