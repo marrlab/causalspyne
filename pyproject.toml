@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "causalspyne"
-version = "0.1.3"
+version = "0.1.4"
 description = "hierarchical data generation for causal discovery and abstraction"
 authors = ["Xudong Sun, Alex Markham"]
 readme = "README.md"
