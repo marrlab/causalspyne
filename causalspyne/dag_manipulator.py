@@ -50,11 +50,12 @@ class DAGManipulator:
         # now flag_success must be False
         if continue_top_up:
             # increase the toplogical order and try until success
-            # FIXME: ind_arbitary_confound is not top order
-            if ind_arbitrary_confound - 1 < 0:
+            pos = self.dag.global_arbitrary_ind2topind(ind_arbitrary_confound)
+            if pos - 1 < 0:
                 return False
+            ind_arbitrary = self.dag.top_ind2global_arbitrary(pos-1)
             return self.mk_confound(
-                ind_arbitrary_confound_input=ind_arbitrary_confound - 1)
+                ind_arbitrary_confound_input=ind_arbitrary)
         return False
 
     def add_new_edge(self, ind_arbitrary_confound):
@@ -62,16 +63,15 @@ class DAGManipulator:
         insert a new edge pointing to lower toplogical order
         """
         # get toplogical order of this node
-        pos = self.dag.list_ind_nodes_sorted.index(ind_arbitrary_confound)
+        pos = self.dag.global_arbitrary_ind2topind(ind_arbitrary_confound)
         # randomly choose one node which ranked later than the
         # current node
         if pos + 1 == self.dag.num_nodes:
             return False
         ind_toplogical_arrow_head = self.rng.integers(
             pos + 1, self.dag.num_nodes)
-        ind_arbitrary_arrow_head = self.dag.list_ind_nodes_sorted[
-            ind_toplogical_arrow_head
-        ]
+        ind_arbitrary_arrow_head = self.dag.top_ind2global_arbitrary(
+            ind_toplogical_arrow_head)
 
         if (
             self.dag.mat_adjacency[
