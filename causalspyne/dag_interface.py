@@ -144,7 +144,8 @@ class MatDAG:
         """
         list_i_j = list(zip(*self.mat_adjacency.nonzero()))
         list_arcs = [
-            (self.list_node_names[tuple(ij)[0]], self.list_node_names[tuple(ij)[1]])
+            (self.list_node_names[tuple(ij)[0]],
+             self.list_node_names[tuple(ij)[1]])
             for ij in list_i_j
         ]
         return list_arcs
@@ -235,10 +236,12 @@ class MatDAG:
         subset adjacency matrix by deleting unobserved variables
         """
         # delete first axis
-        temp_mat_row = np.delete(self.mat_adjacency, list_ind_unobserved, axis=0)
+        temp_mat_row = np.delete(
+            self.mat_adjacency, list_ind_unobserved, axis=0)
 
         # delete second axis
-        mat_adj_subgraph = np.delete(temp_mat_row, list_ind_unobserved, axis=1)
+        mat_adj_subgraph = np.delete(
+            temp_mat_row, list_ind_unobserved, axis=1)
 
         # filter out subgraph node names
         list_node_names_subgraph = [
@@ -271,5 +274,14 @@ class MatDAG:
         """
         return list of node names in toplogical order
         """
-        list_top_names = [self.list_node_names[i] for i in self.list_ind_nodes_sorted]
+        list_top_names = [self.list_node_names[i] for i in
+                          self.list_ind_nodes_sorted]
         return list_top_names
+
+    def global_arbitrary_ind2topind(self, ind_global_arbitrary):
+        ind_top = self.list_ind_nodes_sorted.index(ind_global_arbitrary)
+        return ind_top
+
+    def top_ind2global_arbitrary(self, ind_top):
+        ind_global_arbitrary = self.list_ind_nodes_sorted[ind_top]
+        return ind_global_arbitrary

@@ -4,43 +4,17 @@ concrete class to generate simple DAGs
 """
 
 import warnings
-
-import numpy as np
 from numpy.random import default_rng
 
+from causalspyne.erdo_renyi_plp import Erdos_Renyi_PLP
 from causalspyne.dag_interface import MatDAG
 from causalspyne.weight import WeightGenWishart
 from causalspyne.dag_manipulator import DAGManipulator
 
 
-class Erdos_Renyi_PLP:
-    """
-    uniformly (w.r.t. each edge) decide if the edge will exist w.r.t. a prob.
-    threshold
-    trick: PLP^T to ensure a DAG, L is lower triangular (topological order)
-    P is permutation, P permute the labels
-    (i,j) entry indicate j->i
-    row permutation  (i,j), (k,j) becomes (k,j) (i,j)
-    column permutation
-    """
-
-    def __init__(self, rng):
-        self.rng = rng
-
-    def __call__(self, num_nodes, degree):
-        prob = float(degree) / (num_nodes - 1)
-        # lower triagular, k=-1 is the lower off diagonal
-        mat_lower_triangle_binary = np.tril(
-            (self.rng.random((num_nodes, num_nodes)) < prob).astype(float), k=-1
-        )
-        # permutes first axis only
-        mat_perm = self.rng.permutation(np.eye(num_nodes, num_nodes))
-        mat_b_permuted = mat_perm.T.dot(mat_lower_triangle_binary).dot(mat_perm)
-        return mat_b_permuted
-
-
 class GenDAG:
-    def __init__(self, num_nodes, degree, obj_gen_weight=None, rng=default_rng()):
+    def __init__(self, num_nodes, degree, obj_gen_weight=None,
+                 rng=default_rng()):
         """
         degree: expected degree for each node
         """
@@ -53,7 +27,7 @@ class GenDAG:
         self.dag_manipulator = None
         self.rng = rng
 
-    def gen_dag(self, num_nodes=None, prefix=""):
+    def gen_dag(self, num_nodes=None, prefix="", target_num_confounder=1):
         """
         generate DAG and wrap it around with interface
         """
@@ -67,16 +41,21 @@ class GenDAG:
         mat_weighted_adjacency = mat_mask * mat_weight
 
         dag = MatDAG(mat_weighted_adjacency, name_prefix=prefix, rng=self.rng)
-        self.dag_manipulator = DAGManipulator(dag, self.obj_gen_weight, self.rng)
-        flag_success = False
-        count = 0
-        while not flag_success:
+        self.dag_manipulator = DAGManipulator(dag,
+                                              self.obj_gen_weight, self.rng)
+        counter = 0
+        for _ in range(dag.num_nodes):
+            # FIXME: instead of randomly choose confounder, one could also
+            # start from the bottom of the DAG
             flag_success = self.dag_manipulator.mk_confound()
-            count += 1
-            if count > dag.num_nodes:
-                warnings.warn(
-                    f"failed to ensure confounder after \
-                              {dag.num_nodes} trails for {dag}"
-                )
+            if flag_success:
+                counter += 1
+            if counter >= target_num_confounder:
                 break
+        num_confounder = len(dag.list_confounder)
+        if num_confounder < target_num_confounder and dag.num_nodes > 2:
+            warnings.warn(
+                f"\n failed to ensure {target_num_confounder} confounders for \
+                adjacency matrix \n{dag.mat_adjacency}, \
+                \n{num_confounder} confounders only")
         return dag
