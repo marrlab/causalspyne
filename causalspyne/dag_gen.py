@@ -53,7 +53,7 @@ class GenDAG:
         self.dag_manipulator = None
         self.rng = rng
 
-    def gen_dag(self, num_nodes=None, prefix=""):
+    def gen_dag(self, num_nodes=None, prefix="", target_num_confounder=1):
         """
         generate DAG and wrap it around with interface
         """
@@ -69,9 +69,17 @@ class GenDAG:
         dag = MatDAG(mat_weighted_adjacency, name_prefix=prefix, rng=self.rng)
         self.dag_manipulator = DAGManipulator(dag,
                                               self.obj_gen_weight, self.rng)
-        flag_success = False
-        flag_success = self.dag_manipulator.mk_confound()
-        if not flag_success:
+        counter = 0
+        for _ in range(dag.num_nodes):
+            flag_success = self.dag_manipulator.mk_confound()
+            if flag_success:
+                counter += 1
+            if counter >= target_num_confounder:
+                break
+        num_confounder = len(dag.list_confounder)
+        if num_confounder < target_num_confounder:
             warnings.warn(
-                f"failed to ensure confounder for \n{dag.mat_adjacency}")
+                f"\n failed to ensure {target_num_confounder} confounders for \
+                adjacency matrix \n{dag.mat_adjacency}, \
+                \n{num_confounder} confounders only")
         return dag
