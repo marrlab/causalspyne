@@ -45,8 +45,8 @@ class DAGManipulator:
             # add another child to this current node
             flag_success = self.add_new_edge(ind_arbitrary_confound)
             # not successul in making this node to have two children
-        else:
-            return True  # already a confounder
+        else:  # already a confounder
+            flag_success = False  # only when new confounder
         if flag_success:
             return True
         # now flag_success must be False

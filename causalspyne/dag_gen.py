@@ -43,15 +43,16 @@ class GenDAG:
         dag = MatDAG(mat_weighted_adjacency, name_prefix=prefix, rng=self.rng)
         self.dag_manipulator = DAGManipulator(dag,
                                               self.obj_gen_weight, self.rng)
-        counter = 0
         ind_arbitrary = dag.get_top_last()
+        counter = 0
         for _ in range(dag.num_nodes):
             flag_success = self.dag_manipulator.mk_confound(
                 ind_arbitrary_confound_input=ind_arbitrary)
-            if flag_success:
+            if not flag_success:
                 counter += 1
-            if counter >= target_num_confounder:
+            if dag.num_confounder >= target_num_confounder:
                 break
+            # FIXME: it can be the new ind_arbitrary has been tried out already
             ind_arbitrary = dag.climb(ind_arbitrary)
             if ind_arbitrary is None:
                 break
@@ -61,5 +62,6 @@ class GenDAG:
             warnings.warn(
                 f"\n failed to ensure {target_num_confounder} confounders for \
                 adjacency matrix \n{dag.mat_adjacency}, \
+                \n after {counter} failed trials, \
                 \n{num_confounder} confounders only")
         return dag
