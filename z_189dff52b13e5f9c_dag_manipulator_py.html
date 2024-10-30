@@ -54,8 +54,8 @@
             </div>
         </aside>
         <h2>
-            <span class="text">36 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">35<span class="text"> run</span></button>
+            <span class="text">38 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">37<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">1<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="z_189dff52b13e5f9c_dag_stack_indexer_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.4">coverage.py v7.6.4</a>,
-            created at 2024-10-29 16:41 +0000
+            created at 2024-10-30 08:28 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -132,28 +132,28 @@
     <p class="pln"><span class="n"><a id="t50" href="#t50">50</a></span><span class="t">        <span class="com"># now flag_success must be False</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t51" href="#t51">51</a></span><span class="t">        <span class="key">if</span> <span class="nam">continue_top_up</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t52" href="#t52">52</a></span><span class="t">            <span class="com"># increase the toplogical order and try until success</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t53" href="#t53">53</a></span><span class="t">            <span class="com"># FIXME: ind_arbitary_confound is not top order</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t54" href="#t54">54</a></span><span class="t">            <span class="key">if</span> <span class="nam">ind_arbitrary_confound</span> <span class="op">-</span> <span class="num">1</span> <span class="op">&lt;</span> <span class="num">0</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t53" href="#t53">53</a></span><span class="t">            <span class="nam">pos</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag</span><span class="op">.</span><span class="nam">global_arbitrary_ind2topind</span><span class="op">(</span><span class="nam">ind_arbitrary_confound</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t54" href="#t54">54</a></span><span class="t">            <span class="key">if</span> <span class="nam">pos</span> <span class="op">-</span> <span class="num">1</span> <span class="op">&lt;</span> <span class="num">0</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t55" href="#t55">55</a></span><span class="t">                <span class="key">return</span> <span class="key">False</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t56" href="#t56">56</a></span><span class="t">            <span class="key">return</span> <span class="nam">self</span><span class="op">.</span><span class="nam">mk_confound</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t57" href="#t57">57</a></span><span class="t">                <span class="nam">ind_arbitrary_confound_input</span><span class="op">=</span><span class="nam">ind_arbitrary_confound</span> <span class="op">-</span> <span class="num">1</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t58" href="#t58">58</a></span><span class="t">        <span class="key">return</span> <span class="key">False</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t59" href="#t59">59</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t60" href="#t60">60</a></span><span class="t">    <span class="key">def</span> <span class="nam">add_new_edge</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">ind_arbitrary_confound</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t61" href="#t61">61</a></span><span class="t">        <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t62" href="#t62">62</a></span><span class="t"><span class="str">        insert a new edge pointing to lower toplogical order</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t63" href="#t63">63</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t64" href="#t64">64</a></span><span class="t">        <span class="com"># get toplogical order of this node</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t65" href="#t65">65</a></span><span class="t">        <span class="nam">pos</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag</span><span class="op">.</span><span class="nam">list_ind_nodes_sorted</span><span class="op">.</span><span class="nam">index</span><span class="op">(</span><span class="nam">ind_arbitrary_confound</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t66" href="#t66">66</a></span><span class="t">        <span class="com"># randomly choose one node which ranked later than the</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t67" href="#t67">67</a></span><span class="t">        <span class="com"># current node</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t68" href="#t68">68</a></span><span class="t">        <span class="key">if</span> <span class="nam">pos</span> <span class="op">+</span> <span class="num">1</span> <span class="op">==</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag</span><span class="op">.</span><span class="nam">num_nodes</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t69" href="#t69">69</a></span><span class="t">            <span class="key">return</span> <span class="key">False</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t70" href="#t70">70</a></span><span class="t">        <span class="nam">ind_toplogical_arrow_head</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">rng</span><span class="op">.</span><span class="nam">integers</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t71" href="#t71">71</a></span><span class="t">            <span class="nam">pos</span> <span class="op">+</span> <span class="num">1</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag</span><span class="op">.</span><span class="nam">num_nodes</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t72" href="#t72">72</a></span><span class="t">        <span class="nam">ind_arbitrary_arrow_head</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag</span><span class="op">.</span><span class="nam">list_ind_nodes_sorted</span><span class="op">[</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t73" href="#t73">73</a></span><span class="t">            <span class="nam">ind_toplogical_arrow_head</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t74" href="#t74">74</a></span><span class="t">        <span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t56" href="#t56">56</a></span><span class="t">            <span class="nam">ind_arbitrary</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag</span><span class="op">.</span><span class="nam">top_ind2global_arbitrary</span><span class="op">(</span><span class="nam">pos</span><span class="op">-</span><span class="num">1</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t57" href="#t57">57</a></span><span class="t">            <span class="key">return</span> <span class="nam">self</span><span class="op">.</span><span class="nam">mk_confound</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t58" href="#t58">58</a></span><span class="t">                <span class="nam">ind_arbitrary_confound_input</span><span class="op">=</span><span class="nam">ind_arbitrary</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t59" href="#t59">59</a></span><span class="t">        <span class="key">return</span> <span class="key">False</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t60" href="#t60">60</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t61" href="#t61">61</a></span><span class="t">    <span class="key">def</span> <span class="nam">add_new_edge</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">ind_arbitrary_confound</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t62" href="#t62">62</a></span><span class="t">        <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t63" href="#t63">63</a></span><span class="t"><span class="str">        insert a new edge pointing to lower toplogical order</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t64" href="#t64">64</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t65" href="#t65">65</a></span><span class="t">        <span class="com"># get toplogical order of this node</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t66" href="#t66">66</a></span><span class="t">        <span class="nam">pos</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag</span><span class="op">.</span><span class="nam">global_arbitrary_ind2topind</span><span class="op">(</span><span class="nam">ind_arbitrary_confound</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t67" href="#t67">67</a></span><span class="t">        <span class="com"># randomly choose one node which ranked later than the</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t68" href="#t68">68</a></span><span class="t">        <span class="com"># current node</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t69" href="#t69">69</a></span><span class="t">        <span class="key">if</span> <span class="nam">pos</span> <span class="op">+</span> <span class="num">1</span> <span class="op">==</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag</span><span class="op">.</span><span class="nam">num_nodes</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t70" href="#t70">70</a></span><span class="t">            <span class="key">return</span> <span class="key">False</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t71" href="#t71">71</a></span><span class="t">        <span class="nam">ind_toplogical_arrow_head</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">rng</span><span class="op">.</span><span class="nam">integers</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t72" href="#t72">72</a></span><span class="t">            <span class="nam">pos</span> <span class="op">+</span> <span class="num">1</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag</span><span class="op">.</span><span class="nam">num_nodes</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t73" href="#t73">73</a></span><span class="t">        <span class="nam">ind_arbitrary_arrow_head</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag</span><span class="op">.</span><span class="nam">top_ind2global_arbitrary</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t74" href="#t74">74</a></span><span class="t">            <span class="nam">ind_toplogical_arrow_head</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t75" href="#t75">75</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t76" href="#t76">76</a></span><span class="t">        <span class="key">if</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t77" href="#t77">77</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">dag</span><span class="op">.</span><span class="nam">mat_adjacency</span><span class="op">[</span>&nbsp;</span><span class="r"></span></p>
@@ -177,7 +177,7 @@
             <a class="nav" href="z_189dff52b13e5f9c_dag_stack_indexer_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.4">coverage.py v7.6.4</a>,
-            created at 2024-10-29 16:41 +0000
+            created at 2024-10-30 08:28 +0000
         </p>
     </div>
 </footer>
