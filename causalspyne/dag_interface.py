@@ -258,7 +258,8 @@ class MatDAG:
         )
         return subdag
 
-    def visualize(self, title="dag", hierarch_na=False, ax=None):
+    def visualize(self, title="dag", hierarch_na=False, ax=None,
+                  graphviz=False):
         """
         draw dag using networkx
         """
@@ -267,6 +268,7 @@ class MatDAG:
             dict_ind2name=self.gen_dict_ind2node_na(hierarch_na),
             title=title,
             ax=ax,
+            graphviz=graphviz
         )
 
     @property
@@ -285,3 +287,18 @@ class MatDAG:
     def top_ind2global_arbitrary(self, ind_top):
         ind_global_arbitrary = self.list_ind_nodes_sorted[ind_top]
         return ind_global_arbitrary
+
+    def get_top_last(self):
+        ind_global_arbitrary = self.list_ind_nodes_sorted[-1]
+        return ind_global_arbitrary
+
+    def climb(self, ind_arbitrary):
+        ind_top = self.global_arbitrary_ind2topind(ind_arbitrary)
+        if ind_top - 1 >= 0:
+            ind_arbi = self.top_ind2global_arbitrary(ind_top - 1)
+            return ind_arbi
+        return None
+
+    @property
+    def num_confounder(self):
+        return len(self.list_confounder)

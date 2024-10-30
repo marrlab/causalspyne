@@ -27,7 +27,7 @@ class GenDAG:
         self.dag_manipulator = None
         self.rng = rng
 
-    def gen_dag(self, num_nodes=None, prefix="", target_num_confounder=1):
+    def gen_dag(self, num_nodes=None, prefix="", target_num_confounder=2):
         """
         generate DAG and wrap it around with interface
         """
@@ -44,16 +44,20 @@ class GenDAG:
         self.dag_manipulator = DAGManipulator(dag,
                                               self.obj_gen_weight, self.rng)
         counter = 0
+        ind_arbitrary = dag.get_top_last()
         for _ in range(dag.num_nodes):
-            # FIXME: instead of randomly choose confounder, one could also
-            # start from the bottom of the DAG
-            flag_success = self.dag_manipulator.mk_confound()
+            flag_success = self.dag_manipulator.mk_confound(
+                ind_arbitrary_confound_input=ind_arbitrary)
             if flag_success:
                 counter += 1
             if counter >= target_num_confounder:
                 break
+            ind_arbitrary = dag.climb(ind_arbitrary)
+            if ind_arbitrary is None:
+                break
         num_confounder = len(dag.list_confounder)
-        if num_confounder < target_num_confounder and dag.num_nodes > 2:
+        if num_confounder < target_num_confounder and \
+                dag.num_nodes - target_num_confounder > 1:
             warnings.warn(
                 f"\n failed to ensure {target_num_confounder} confounders for \
                 adjacency matrix \n{dag.mat_adjacency}, \

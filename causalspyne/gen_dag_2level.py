@@ -5,6 +5,8 @@
 from numpy.random import default_rng
 
 from causalspyne.dag_stack_indexer import DAGStackIndexer
+from causalspyne.dag_manipulator import DAGManipulator
+from causalspyne.weight import WeightGenWishart
 
 
 class GenDAG2Level:
@@ -25,6 +27,7 @@ class GenDAG2Level:
         self.dict_macro_node2dag = {}
         self.dag_refined = None
         self.rng = rng
+        self.dag_manipulator = None
 
     def populate_macro_node(self):
         """
@@ -66,6 +69,21 @@ class GenDAG2Level:
 
         self.dag_refined.add_arc_ind(ind_global_tail, ind_global_head)
 
+    def inject_additional_confounder(self):
+        """
+        make confounder in the big graph
+        """
+        obj_gen_weight = WeightGenWishart(rng=self.rng)
+        self.dag_manipulator = DAGManipulator(self.dag_refined,
+                                              obj_gen_weight, self.rng)
+
+        ind_arbitrary = self.dag_refined.get_top_last()
+        self.dag_manipulator.mk_confound(ind_arbitrary)
+        print(self.dag_refined.num_confounder)
+        ind_arbitrary = self.dag_refined.climb(ind_arbitrary)
+        self.dag_manipulator.mk_confound(ind_arbitrary)
+        print(self.dag_refined.num_confounder)
+
     def run(self):
         """
         generation
@@ -76,4 +94,5 @@ class GenDAG2Level:
         self.populate_macro_node()
         self.interconnection()
         self.dag_refined.check()
+        self.inject_additional_confounder()
         return self.dag_refined
