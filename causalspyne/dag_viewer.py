@@ -84,12 +84,11 @@ class DAGView:
             list_toporder_confounder2hide_input, len(self._dag.list_confounder)
         )
 
-        list_ind_confounder_sorted = [
-            self._dag.list_ind_nodes_sorted.index(confounder)
-            for confounder in self._dag.list_confounder
-        ]
+        list_ind_confounder_sorted = self._dag.list_top_order_sorted_confounder
+
         list_toporder_confounder_sub = [
-            list_ind_confounder_sorted[i] for i in list_toporder_confounder2hide
+            list_ind_confounder_sorted[i]
+            for i in list_toporder_confounder2hide
         ]
 
         self.hide_top_order(list_toporder_confounder_sub)

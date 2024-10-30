@@ -302,3 +302,12 @@ class MatDAG:
     @property
     def num_confounder(self):
         return len(self.list_confounder)
+
+    @property
+    def list_top_order_sorted_confounder(self):
+        list_top_oder_confounder = [
+            self.list_ind_nodes_sorted.index(confounder)
+            for confounder in self.list_confounder
+        ]
+        list_top_oder_confounder_sorted = sorted(list_top_oder_confounder)
+        return list_top_oder_confounder_sorted
