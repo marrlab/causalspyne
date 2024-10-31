@@ -180,7 +180,7 @@ class MatDAG:
         else:
             self.mat_adjacency[ind_tail, ind_head] = weight
 
-    def to_binary_csv(self, benchpress=True):
+    def to_binary_csv(self, benchpress=True, name="adj.csv"):
         """
         adjacency matrix to csv format
         """
@@ -188,7 +188,7 @@ class MatDAG:
         if benchpress:
             binary_adj_mat = np.transpose(binary_adj_mat)
         df = pd.DataFrame(binary_adj_mat, columns=self.list_node_names)
-        df.to_csv("adj.csv", index=False)
+        df.to_csv(name, index=False)
 
     def topological_sort(self):
         """

@@ -51,6 +51,8 @@ def gen_partially_observed(
         dag_generator=simple_dag_gen, num_macro_nodes=num_macro_nodes, rng=rng
     )
     dag = dag_gen.run()
+    dag_gen.to_binary_csv(benchpress=False,
+                          name=output_dir + "ground_truth.csv")
 
     if plot:
         dag.visualize(title="complete", ax=ax1, graphviz=graphviz)
