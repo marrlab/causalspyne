@@ -52,7 +52,7 @@ def gen_partially_observed(
     )
     dag = dag_gen.run()
     dag.to_binary_csv(benchpress=False,
-                      name=output_dir + "ground_truth_dag.csv")
+                      name=output_dir + "/ground_truth_dag.csv")
 
     if plot:
         dag.visualize(title="complete", ax=ax1, graphviz=graphviz)
