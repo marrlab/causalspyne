@@ -43,14 +43,17 @@ def gen_partially_observed(
         fig, (ax1, ax2, ax3) = plt.subplots(1, 3)
         fig.suptitle("graph comparison")  # super-title
 
-    simple_dag_gen = GenDAG(num_nodes=size_micro_node_dag, degree=degree, rng=rng)
+    simple_dag_gen = GenDAG(num_nodes=size_micro_node_dag,
+                            degree=degree, rng=rng)
 
     # num_macro_nodes will overwrite behavior
     dag_gen = GenDAG2Level(
-        dag_generator=simple_dag_gen, num_macro_nodes=num_macro_nodes, rng=rng
+        dag_generator=simple_dag_gen,
+        num_macro_nodes=num_macro_nodes, rng=rng
     )
     dag = dag_gen.run()
-    dag.to_binary_csv(benchpress=False, name=output_dir + "ground_truth_dag.csv")
+    dag.to_binary_csv(benchpress=False,
+                      name=output_dir + "ground_truth_dag.csv")
 
     if plot:
         dag.visualize(title="complete", ax=ax1, graphviz=graphviz)
@@ -58,7 +61,8 @@ def gen_partially_observed(
 
     subview = DAGView(dag=dag, rng=rng)
     subview.run(
-        num_samples=num_sample, confound=True, list_nodes2hide=list_confounder2hide
+        num_samples=num_sample, confound=True,
+        list_nodes2hide=list_confounder2hide
     )
     with chdir(output_dir):
         subview.to_csv()
@@ -66,7 +70,8 @@ def gen_partially_observed(
 
     dag2ancestral = DAG2Ancestral(dag.mat_adjacency)
     list_confounder2hide_global_ind = subview.list_global_inds_nodes2hide
-    pred_ancestral_graph_mat = dag2ancestral.run(list_confounder2hide_global_ind)
+    pred_ancestral_graph_mat = dag2ancestral.run(
+        list_confounder2hide_global_ind)
 
     if plot:
         draw_dags_nx(
@@ -89,8 +94,10 @@ def gen_partially_observed(
         subview.to_csv()
         if plot:
             fig.savefig(f"graph_compare_{timestamp}dags.pdf", format="pdf")
+            fig.savefig(f"graph_compare_{timestamp}dags.svg", format="svg")
         with open("hidden_nodes.csv", "w") as outfile:
             outfile.write(
-                ",".join(str(node) for node in subview._list_global_inds_unobserved)
+                ",".join(str(node) for node in
+                         subview._list_global_inds_unobserved)
             )
     return subview.data, subview.node_names
