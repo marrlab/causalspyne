@@ -39,10 +39,6 @@ def gen_partially_observed(
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_")
     Path(output_dir).mkdir(parents=True, exist_ok=True)
 
-    if plot:
-        fig, (ax1, ax2, ax3) = plt.subplots(1, 3)
-        fig.suptitle("graph comparison")  # super-title
-
     simple_dag_gen = GenDAG(num_nodes=size_micro_node_dag,
                             degree=degree, rng=rng)
 
@@ -54,10 +50,6 @@ def gen_partially_observed(
     dag = dag_gen.run()
     dag.to_binary_csv(benchpress=False,
                       name=output_dir + "ground_truth_dag.csv")
-
-    if plot:
-        dag.visualize(title="complete", ax=ax1, graphviz=graphviz)
-        ax1.set_title("complete")
 
     subview = DAGView(dag=dag, rng=rng)
     subview.run(
@@ -74,6 +66,15 @@ def gen_partially_observed(
         list_confounder2hide_global_ind)
 
     if plot:
+        fig, (ax1, ax2, ax3) = plt.subplots(1, 3)
+        mtitle = "hide_" + str_node2hide
+        fig.suptitle(mtitle)  # super-title
+
+        # ax1
+        dag.visualize(title="DAG", ax=ax1, graphviz=graphviz)
+        ax1.set_title("DAG")
+
+        # ax2
         draw_dags_nx(
             pred_ancestral_graph_mat,
             dict_ind2name={
@@ -83,12 +84,12 @@ def gen_partially_observed(
             ax=ax2,
             graphviz=graphviz,
         )
-        ax2.set_title("hide_" + str_node2hide)
-
+        ax2.set_title("ancestral")
+        # ax3
         subview.visualize(
-            title="marginal_hide_" + str_node2hide, ax=ax3, graphviz=graphviz
+            title="subDAG", ax=ax3, graphviz=graphviz
         )
-        ax3.set_title("")
+        ax3.set_title("subDAG")
 
     with chdir(output_dir):
         subview.to_csv()
