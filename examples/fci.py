@@ -52,4 +52,4 @@ g.graph with rng(2)
 """
 
 pdy = GraphUtils.to_pydot(g, labels=node_names)
-pdy.write_png("output_causallearn.png")
+pdy.write_png("output_causallearn_fci.png")
