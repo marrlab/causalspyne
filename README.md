@@ -20,3 +20,9 @@ gen_partially_observed(size_micro_node_dag=4,
                        output_dir="output",
                        rng=0)
 ```
+
+## Submodules
+
+```
+git submodule update --init
+```
