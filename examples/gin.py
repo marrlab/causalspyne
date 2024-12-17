@@ -25,6 +25,8 @@ arr_data, node_names = gen_partially_observed(
 
 G, K = GIN(arr_data)
 
+print(G.graph)  # numpy array of PAG, see https://causal-learn.readthedocs.io/en/latest/search_methods_index/Constraint-based%20causal%20discovery%20methods/FCI.html#usage
+
 pyd = GraphUtils.to_pydot(G)
 pyd.write_png("output_causallearn_gin.png")
 
