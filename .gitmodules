@@ -4,3 +4,6 @@
 [submodule "submodules/causal-learn"]
 	path = submodules/causal-learn
 	url = https://github.com/py-why/causal-learn.git
+[submodule "submodules/causalspyne-expt"]
+	path = submodules/causalspyne-expt
+	url = git@github.com:Alex-Markham/causalspyne-expt.git
