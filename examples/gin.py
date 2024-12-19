@@ -1,4 +1,5 @@
 import numpy as np
+from causalspyne.utils_causallearn_g2ancestral import get_causal_order
 from causalspyne import gen_partially_observed
 from causallearn.search.HiddenCausal.GIN.GIN import GIN
 from causallearn.graph.NodeType import NodeType
@@ -26,27 +27,21 @@ arr_data, node_names = gen_partially_observed(
 
 G, K = GIN(arr_data)
 
-nodes_order = G.get_causal_ordering()
+labels, labels_latent = get_causal_order(G, node_names)
 
-for node in nodes_order:
-    if node.get_node_type() == NodeType.LATENT:
-        continue
-    fake_name = node.get_name()
-    index = int(fake_name.removeprefix("X")) - 1
-    print(f"{node_names[index]}")
+print(f"latent cluster order: {K}, type: {type(K)}, len: {len(K)}")
 
-print(f"latent order: {K}, type: {type(K)}, len: {len(K)}")
+print(G.graph)  # numpy array of PAG,
+# see https://causal-learn.readthedocs.io/en/latest/search_methods_index/Constraint-based%20causal%20discovery%20methods/FCI.html#usage
 
-print(G.graph)  # numpy array of PAG, see https://causal-learn.readthedocs.io/en/latest/search_methods_index/Constraint-based%20causal%20discovery%20methods/FCI.html#usage
-
-breakpoint()
-pyd = GraphUtils.to_pydot(G, labels=node_names)
+# FIXME: directly providing labels to "to_pydot" cause inconsistency of GraphUtils
+pyd = GraphUtils.to_pydot(G)
 pyd.write_png("output_causallearn_gin.png")
 
 # for showing image
-tmp_png = pyd.create_png(f="png")
-fp = io.BytesIO(tmp_png)
-img = mpimg.imread(fp, format='png')
-plt.axis('off')
-plt.imshow(img)
+# tmp_png = pyd.create_png(f="png")
+# fp = io.BytesIO(tmp_png)
+# img = mpimg.imread(fp, format='png')
+# plt.axis('off')
+# plt.imshow(img)
 # plt.show()
