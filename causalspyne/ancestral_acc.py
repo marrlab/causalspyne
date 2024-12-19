@@ -18,11 +18,11 @@ def ancestral_acc(true_dag, pred_order, list_hidden_nodes=None):
     """
     dag2ancestral = DAG2Ancestral(true_dag.mat_adjacency)
     size_dag = true_dag.num_nodes
-    if true_hidden_nodes is not None:
-        n_obs = size_dag - len(true_hidden_nodes)
+    if list_hidden_nodes is not None:
+        n_obs = size_dag - len(list_hidden_nodes)
     else:
         n_obs = size_dag
-    if n_obs != len(pred_order[1]):
+    if n_obs != len(pred_order):
         raise ValueError("predicted causal order does not \
                          have the same number of observables!")
 
