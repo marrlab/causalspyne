@@ -4,6 +4,8 @@ among all pairwise variables' ancestral relationships (binary)
 """
 from itertools import combinations
 
+from causalspyne.dag2ancestral import DAG2Ancestral
+
 
 def ancestral_acc(true_dag, true_hidden_nodes, pred_order):
     """
@@ -14,6 +16,7 @@ def ancestral_acc(true_dag, true_hidden_nodes, pred_order):
     Returns:
     int:
     """
+    dag2ancestral = DAG2Ancestral(true_dag.mat_adjacency)
     n_obs = len(true_dag) - len(true_hidden_nodes)
     if n_obs != len(pred_order[1]):
         raise ValueError("predicted causal order does not \
@@ -24,6 +27,6 @@ def ancestral_acc(true_dag, true_hidden_nodes, pred_order):
     n_correct = 0
     for pair in pairwise_combinations:
         ancestor, offspring = pair
-        if true_dag.is_ancestor(ancestor, offspring):
+        if dag2ancestral.is_ancestor(ancestor, offspring):
             n_correct += 1
     return float(n_correct) / n_obs
