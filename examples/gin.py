@@ -32,7 +32,7 @@ G, K = GIN(arr_data)
 labels, labels_latent = get_causal_order(G, node_names)
 
 
-ancestral_acc(dag, pred_order=dag.list_node_names)
+ancestral_acc(dag, pred_order=labels)
 
 print(f"latent cluster order: {K}, type: {type(K)}, len: {len(K)}")
 
