@@ -7,3 +7,6 @@
 [submodule "submodules/causalspyne-expt"]
 	path = submodules/causalspyne-expt
 	url = git@github.com:Alex-Markham/causalspyne-expt.git
+[submodule "submodules/ngBap"]
+	path = submodules/ngBap
+	url = https://github.com/ysamwang/ngBap.git
