@@ -1,11 +1,8 @@
 """
+ancestral accuracy calculate the percentage of correct prediction
+among all pairwise variables' ancestral relationships (binary)
 """
-
-from causallearn.utils.DAG2PAG import dag2pag
-from causallearn.graph.Dag import Dag
-import numpy as np
-
-import numpy as np
+from itertools import combinations
 
 
 def ancestral_acc(true_dag, true_hidden_nodes, pred_order):
@@ -17,15 +14,16 @@ def ancestral_acc(true_dag, true_hidden_nodes, pred_order):
     Returns:
     int:
     """
-    n = len(true_dag) - len(true_hidden_nodes)
-    if (n, n) != prediction.shape:
-        raise ValueError("Graphs must have the same number of nodes")
+    n_obs = len(true_dag) - len(true_hidden_nodes)
+    if n_obs != len(pred_order[1]):
+        raise ValueError("predicted causal order does not \
+                         have the same number of observables!")
 
-    cl_dag = Dag(range(len(true_dag)))
-    for ch, pa in np.argwhere(true_dag):
-        cl_dag.add_directed_edge(pa, ch)
-    true_pag = dag2pag(cl_dag, true_hidden_nodes)
+    pairwise_combinations = list(combinations(pred_order, 2))
 
-    total_shd = np.sum(true_pag.graph != prediction)
-
-    return total_shd / (n**2 - n)
+    n_correct = 0
+    for pair in pairwise_combinations:
+        ancestor, offspring = pair
+        if true_dag.is_ancestor(ancestor, offspring):
+            n_correct += 1
+    return float(n_correct) / n_obs
