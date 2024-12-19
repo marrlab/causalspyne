@@ -24,7 +24,6 @@ def test_ancestral_acc():
     )
 
     acc = ancestral_acc(true_dag=dag,
-                        true_hidden_nodes=,
-                        pred_order=[1, 2, 3])
+                        pred_order=dag.list_node_names)
 
     print(f"ancestral acc: {acc}")
