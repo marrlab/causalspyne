@@ -29,7 +29,7 @@ print(f"order: {K}, type: {type(K)}, len: {len(K)}")
 
 print(G.graph)  # numpy array of PAG, see https://causal-learn.readthedocs.io/en/latest/search_methods_index/Constraint-based%20causal%20discovery%20methods/FCI.html#usage
 
-pyd = GraphUtils.to_pydot(G)
+pyd = GraphUtils.to_pydot(G, labels=node_names)
 pyd.write_png("output_causallearn_gin.png")
 
 # for showing image
