@@ -17,6 +17,7 @@ def ancestral_acc(true_dag, pred_order, list_hidden_nodes=None):
     int:
     """
     dag2ancestral = DAG2Ancestral(true_dag.mat_adjacency)
+    dag2ancestral.pre_cal_n_hop()
     size_dag = true_dag.num_nodes
     if list_hidden_nodes is not None:
         n_obs = size_dag - len(list_hidden_nodes)
@@ -31,6 +32,8 @@ def ancestral_acc(true_dag, pred_order, list_hidden_nodes=None):
     n_correct = 0
     for pair in pairwise_combinations:
         ancestor, offspring = pair
-        if dag2ancestral.is_ancestor(ancestor, offspring):
+        id_ancestor = true_dag._dict_node_names2ind[ancestor]
+        id_offspring = true_dag._dict_node_names2ind[offspring]
+        if dag2ancestral.is_ancestor(id_ancestor, id_offspring):
             n_correct += 1
     return float(n_correct) / n_obs
