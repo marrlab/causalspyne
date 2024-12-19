@@ -21,7 +21,7 @@ def test_ancestral_acc():
         ],  # choie of confounder to hide: percentile or index of all toplogically sorted confounders
         num_sample=200,
         rng=np.random.default_rng(1),
-        graphviz=True
+        graphviz=False
     )
 
     acc = ancestral_acc(true_dag=dag,
