@@ -1,6 +1,7 @@
 import numpy as np
 from causalspyne import gen_partially_observed
 from causallearn.search.HiddenCausal.GIN.GIN import GIN
+from causallearn.graph.NodeType import NodeType
 
 # visualization
 from causallearn.utils.GraphUtils import GraphUtils
@@ -19,16 +20,26 @@ arr_data, node_names = gen_partially_observed(
         1.0,
     ],  # choie of confounder to hide: percentile or index of all toplogically sorted confounders
     num_sample=200,
-    rng=np.random.default_rng(2),
+    rng=np.random.default_rng(1),
     graphviz=True
 )
 
 G, K = GIN(arr_data)
 
-print(f"order: {K}, type: {type(K)}, len: {len(K)}")
+nodes_order = G.get_causal_ordering()
+
+for node in nodes_order:
+    if node.get_node_type() == NodeType.LATENT:
+        continue
+    fake_name = node.get_name()
+    index = int(fake_name.removeprefix("X")) - 1
+    print(f"{node_names[index]}")
+
+print(f"latent order: {K}, type: {type(K)}, len: {len(K)}")
 
 print(G.graph)  # numpy array of PAG, see https://causal-learn.readthedocs.io/en/latest/search_methods_index/Constraint-based%20causal%20discovery%20methods/FCI.html#usage
 
+breakpoint()
 pyd = GraphUtils.to_pydot(G, labels=node_names)
 pyd.write_png("output_causallearn_gin.png")
 
