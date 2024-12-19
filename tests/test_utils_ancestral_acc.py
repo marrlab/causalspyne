@@ -4,6 +4,7 @@ test if ancestral acc runs
 
 import numpy as np
 from causalspyne.ancestral_acc import ancestral_acc
+from causalspyne import gen_partially_observed
 
 
 def test_ancestral_acc():
