@@ -7,17 +7,20 @@ from itertools import combinations
 from causalspyne.dag2ancestral import DAG2Ancestral
 
 
-def ancestral_acc(true_dag, true_hidden_nodes, pred_order):
+def ancestral_acc(true_dag, pred_order, list_hidden_nodes=None):
     """
 
     Parameters:
-    true_dag (numpy.ndarray): Target graph adjacency matrix
-    true_hidden_nodes (list): list of nodes in DAG to hide
+    true_dag: Target causalspyne graph
+    list_hidden_nodes (list): list of nodes in DAG to hide
     Returns:
     int:
     """
     dag2ancestral = DAG2Ancestral(true_dag.mat_adjacency)
-    n_obs = len(true_dag) - len(true_hidden_nodes)
+    if true_hidden_nodes is not None:
+        n_obs = len(true_dag) - len(true_hidden_nodes)
+    else:
+        n_obs =
     if n_obs != len(pred_order[1]):
         raise ValueError("predicted causal order does not \
                          have the same number of observables!")
