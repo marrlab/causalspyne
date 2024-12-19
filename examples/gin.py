@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import io
 
 
-arr_data, node_names = gen_partially_observed(
+arr_data, node_names, dag = gen_partially_observed(
     size_micro_node_dag=3,
     num_macro_nodes=2,
     degree=2,  # average vertex/node degree
@@ -32,7 +32,7 @@ G, K = GIN(arr_data)
 labels, labels_latent = get_causal_order(G, node_names)
 
 
-ancestral_acc(true_dag, true_hidden_nodes, pred_order)
+ancestral_acc(dag, pred_order=dag.list_node_names)
 
 print(f"latent cluster order: {K}, type: {type(K)}, len: {len(K)}")
 
