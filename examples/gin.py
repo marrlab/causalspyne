@@ -1,6 +1,8 @@
 import numpy as np
 from causalspyne.utils_causallearn_g2ancestral import get_causal_order
 from causalspyne import gen_partially_observed
+from causalspyne.ancestral_acc import ancestral_acc
+
 from causallearn.search.HiddenCausal.GIN.GIN import GIN
 from causallearn.graph.NodeType import NodeType
 
@@ -12,7 +14,7 @@ import matplotlib.pyplot as plt
 import io
 
 
-arr_data, node_names = gen_partially_observed(
+arr_data, node_names, dag = gen_partially_observed(
     size_micro_node_dag=3,
     num_macro_nodes=2,
     degree=2,  # average vertex/node degree
@@ -28,6 +30,9 @@ arr_data, node_names = gen_partially_observed(
 G, K = GIN(arr_data)
 
 labels, labels_latent = get_causal_order(G, node_names)
+
+
+ancestral_acc(dag, pred_order=labels)
 
 print(f"latent cluster order: {K}, type: {type(K)}, len: {len(K)}")
 
