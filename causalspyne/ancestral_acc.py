@@ -35,4 +35,5 @@ def ancestral_acc(true_dag, pred_order, list_hidden_nodes=None):
         ancestor, offspring = pair
         if dag2ancestral.is_ancestor(ancestor, offspring):
             n_correct += 1
-    return float(n_correct) / n_obs
+    num_combos = n_obs * (n_obs - 1) /2
+    return float(n_correct) / num_combos
