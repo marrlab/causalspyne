@@ -23,7 +23,8 @@ def test_ancestral_acc():
         rng=np.random.default_rng(1),
         graphviz=False
     )
+    pred_order_inds = [true_dag._dict_node_names2ind[name] for name in dag.list_node_names]
     acc = ancestral_acc(true_dag=dag,
-                        pred_order=dag.list_node_names)
+                        pred_order=pred_order_inds)
 
     print(f"ancestral acc: {acc}")
