@@ -6,7 +6,7 @@ from causalspyne import gen_partially_observed
 from causallearn.utils.GraphUtils import GraphUtils
 
 
-arr_data, node_names = gen_partially_observed(
+arr_data, node_names, dag = gen_partially_observed(
     size_micro_node_dag=3,
     num_macro_nodes=2,
     degree=2,  # average vertex/node degree

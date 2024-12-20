@@ -101,4 +101,4 @@ def gen_partially_observed(
                 ",".join(str(node) for node in
                          subview._list_global_inds_unobserved)
             )
-    return subview.data, subview.node_names
+    return subview.data, subview.node_names, dag
