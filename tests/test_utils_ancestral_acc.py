@@ -23,8 +23,7 @@ def test_ancestral_acc():
         rng=np.random.default_rng(1),
         graphviz=False
     )
-
-    acc = ancestral_acc(true_dag=dag,
+    acc = ancestral_acc(true_dag=dag.mat_adjacency,
                         pred_order=dag.list_node_names)
 
     print(f"ancestral acc: {acc}")
