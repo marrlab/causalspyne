@@ -7,7 +7,7 @@ from itertools import combinations
 from causalspyne.dag2ancestral import DAG2Ancestral
 
 
-def ancestral_acc(true_dag_mat_adjacency, pred_order, list_hidden_nodes=None):
+def ancestral_acc(true_dag, pred_order, list_hidden_nodes=None):
     """
 
     Parameters:
@@ -16,7 +16,7 @@ def ancestral_acc(true_dag_mat_adjacency, pred_order, list_hidden_nodes=None):
     Returns:
     int:
     """
-    dag2ancestral = DAG2Ancestral(true_dag_mat_adjacency)
+    dag2ancestral = DAG2Ancestral(true_dag.mat_adjacency)
     dag2ancestral.pre_cal_n_hop()
     size_dag = true_dag.num_nodes
     if list_hidden_nodes is not None:
