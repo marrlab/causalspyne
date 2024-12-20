@@ -3,6 +3,7 @@ ancestral accuracy calculate the percentage of correct prediction
 among all pairwise variables' ancestral relationships (binary)
 """
 from itertools import combinations
+import warnings
 
 from causalspyne.dag2ancestral import DAG2Ancestral
 
@@ -24,8 +25,8 @@ def ancestral_acc(true_dag, pred_order, list_hidden_nodes=None):
     else:
         n_obs = size_dag
     if n_obs != len(pred_order):
-        raise ValueError("predicted causal order does not \
-                         have the same number of observables!")
+        warnings.warn(f"predicted causal order {pred_order} does not \
+                      have the same number of observables!, hidden are: {list_hidden_nodes}")
 
     pairwise_combinations = list(combinations(pred_order, 2))
 
