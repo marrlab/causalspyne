@@ -29,17 +29,17 @@ arr_data, node_names, dag = gen_partially_observed(
 
 G, K = GIN(arr_data)
 
-labels, labels_latent = get_causal_order(G, node_names)
+pred_obs_order, pred_latent_order = get_causal_order(G, node_names)
+print(f"predicted observable order:{pred_obs_order}")
 
-
-ancestral_acc(dag, pred_order=labels)
+ancestral_acc(dag, pred_order=pred_obs_order)
 
 print(f"latent cluster order: {K}, type: {type(K)}, len: {len(K)}")
 
 print(G.graph)  # numpy array of PAG,
 # see https://causal-learn.readthedocs.io/en/latest/search_methods_index/Constraint-based%20causal%20discovery%20methods/FCI.html#usage
 
-# FIXME: directly providing labels to "to_pydot" cause inconsistency of GraphUtils
+# FIXME: directly providing pred_obs_order to "to_pydot" cause inconsistency of GraphUtils
 pyd = GraphUtils.to_pydot(G)
 pyd.write_png("output_causallearn_gin.png")
 
