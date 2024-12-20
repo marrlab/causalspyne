@@ -31,6 +31,7 @@ def ancestral_acc(true_dag, pred_order, list_hidden_nodes=None):
     pairwise_combinations = list(combinations(pred_order, 2))
 
     n_correct = 0
+    print(f"available keys are: {true_dag._dict_node_names2ind.key()}")
     for pair in pairwise_combinations:
         ancestor, offspring = pair
         id_ancestor = true_dag._dict_node_names2ind[ancestor]
