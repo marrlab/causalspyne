@@ -29,7 +29,7 @@ def ancestral_acc(true_dag, pred_order, list_hidden_nodes=None):
                       have the same number of observables!, hidden are: {list_hidden_nodes}")
 
     pairwise_combinations = list(combinations(pred_order, 2))
-    ind2names = dict((ind, name, for name, ind in true_dag._dict_node_names2ind.items())
+    ind2names = dict((ind, name for name, ind in true_dag._dict_node_names2ind.items())
 
     n_correct = 0
     for pair in pairwise_combinations:
