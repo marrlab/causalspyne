@@ -29,13 +29,15 @@ def ancestral_acc(true_dag, pred_order, list_hidden_nodes=None):
                       have the same number of observables!, hidden are: {list_hidden_nodes}")
 
     pairwise_combinations = list(combinations(pred_order, 2))
-    ind2names = dict((ind, name) for name, ind in true_dag._dict_node_names2ind.items())
 
+    print(f"available keys and vals are: {true_dag._dict_node_names2ind}")
+    print(f"generated keys (pred order) are: {pred_order}")
+    
     n_correct = 0
     for pair in pairwise_combinations:
         ancestor, offspring = pair
-        id_ancestor = ind2names[ancestor]
-        id_offspring = ind2names[offspring]
+        id_ancestor = true_dag._dict_node_names2ind[ancestor]
+        id_offspring = true_dag._dict_node_names2ind[offspring]
         if dag2ancestral.is_ancestor(id_ancestor, id_offspring):
             n_correct += 1
     return float(n_correct) / n_obs
