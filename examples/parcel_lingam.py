@@ -36,9 +36,6 @@ flat_list = [item for sublist in nested_list for item in (sublist if isinstance(
 pred_obs_order = flat_list
 
 
-# pred_obs_order, pred_latent_order = get_causal_order(model.adjacency_matrix_, node_names)
-# print(f"predicted observable order:{pred_obs_order}")
-
 acc = ancestral_acc(dag, pred_order=pred_obs_order)
 
 print(f"ancestral acc:{acc}")
