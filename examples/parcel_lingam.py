@@ -1,5 +1,4 @@
 import numpy as np
-from causalspyne.utils_causallearn_g2ancestral import get_causal_order
 from causalspyne import gen_partially_observed
 from causalspyne.ancestral_acc import ancestral_acc
 

@@ -32,7 +32,7 @@ def project_causallearn_g2ancestral_admg(mat_graph_causallearn):
     return mat_graph_causallearn
 
 
-def get_causal_order(g_causal_learn, node_names=None):
+def get_causalearn_order(g_causal_learn, node_names=None):
     """
     get causal order
     """
