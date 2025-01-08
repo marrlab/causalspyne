@@ -1,5 +1,5 @@
 import numpy as np
-from causalspyne.utils_causallearn_g2ancestral import get_causal_order
+from causalspyne.utils_causallearn_g2ancestral import get_causalearn_order
 from causalspyne import gen_partially_observed
 from causalspyne.ancestral_acc import ancestral_acc
 
@@ -29,7 +29,7 @@ arr_data, node_names, dag = gen_partially_observed(
 
 G, K = GIN(arr_data)
 
-pred_obs_order, pred_latent_order = get_causal_order(G, node_names)
+pred_obs_order, pred_latent_order = get_causalearn_order(G, node_names)
 print(f"predicted observable order:{pred_obs_order}")
 
 ancestral_acc(dag, pred_order=pred_obs_order)
