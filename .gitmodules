@@ -10,3 +10,6 @@
 [submodule "submodules/ngBap"]
 	path = submodules/ngBap
 	url = https://github.com/ysamwang/ngBap.git
+[submodule "submodules/ngBap_smilesun"]
+	path = submodules/ngBap_smilesun
+	url = https://github.com/smilesun/ngBap
