@@ -1,5 +1,5 @@
 import numpy as np
-from causalspyne import gen_partially_observed
+from causalspyne import gen_partially_observed, ordered_ind_col2global_ind
 from causalspyne.main import ordered_ind_col2global_ind
 from causalspyne.ancestral_acc import ancestral_acc
 
@@ -36,7 +36,6 @@ flat_list = [item for sublist in nested_list for item in (sublist if isinstance(
 
 pred_obs_order = ordered_ind_col2global_ind(inds_cols=flat_list,
                                             subview_global_inds=subview_global_inds)
-
 
 
 acc = ancestral_acc(dag, pred_order=pred_obs_order)
