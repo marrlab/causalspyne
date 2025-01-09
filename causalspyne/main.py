@@ -111,5 +111,5 @@ def ordered_ind_col2global_ind(inds_cols, subview_global_inds):
     given a predicted causal order in the form of column indices, transform it
     into global index of ground truth DAG
     """
-    list_global_inds = [subview_global_inds[ind_col] for ind_col_in in inds_cols]
+    list_global_inds = [subview_global_inds[ind_col] for ind_col in inds_cols]
     return list_global_inds
