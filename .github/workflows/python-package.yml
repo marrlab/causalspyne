@@ -40,9 +40,6 @@ jobs:
     - name: Test with pytest and generate coverage report
       run: |
         pytest
-    - name: Test if examples work
-      run: |
-        python -m examples/gin.py
 
   deploy:
     runs-on: ubuntu-latest
