@@ -102,5 +102,5 @@ def gen_partially_observed(
                          subview._list_global_inds_unobserved)
             )
     subview_global_inds = [dag._dict_node_names2ind[name]
-                           for name in subview.node_names]
+                           for name in dag.list_node_names if name not in str_node2hide]
     return subview.data, subview.node_names, dag, subview_global_inds
