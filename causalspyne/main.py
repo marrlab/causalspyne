@@ -104,3 +104,12 @@ def gen_partially_observed(
     subview_global_inds = [dag._dict_node_names2ind[name]
                            for name in dag.list_node_names if name not in str_node2hide]
     return subview.data, subview.node_names, dag, subview_global_inds
+
+
+def ordered_ind_col2global_ind(inds_cols, subview_global_inds):
+    """
+    given a predicted causal order in the form of column indices, transform it
+    into global index of ground truth DAG
+    """
+    list_global_inds = [subview_global_inds[ind_col] for ind_col_in in inds_cols]
+    return list_global_inds
