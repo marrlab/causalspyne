@@ -54,8 +54,8 @@
             </div>
         </aside>
         <h2>
-            <span class="text">46 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">44<span class="text"> run</span></button>
+            <span class="text">47 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">45<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">2<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="z_189dff52b13e5f9c_noise_idiosyncratic_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.10">coverage.py v7.6.10</a>,
-            created at 2025-01-08 13:00 +0000
+            created at 2025-01-09 10:14 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -183,7 +183,9 @@
     <p class="pln"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t">                <span class="str">","</span><span class="op">.</span><span class="nam">join</span><span class="op">(</span><span class="nam">str</span><span class="op">(</span><span class="nam">node</span><span class="op">)</span> <span class="key">for</span> <span class="nam">node</span> <span class="key">in</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">                         <span class="nam">subview</span><span class="op">.</span><span class="nam">_list_global_inds_unobserved</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t103" href="#t103">103</a></span><span class="t">            <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t104" href="#t104">104</a></span><span class="t">    <span class="key">return</span> <span class="nam">subview</span><span class="op">.</span><span class="nam">data</span><span class="op">,</span> <span class="nam">subview</span><span class="op">.</span><span class="nam">node_names</span><span class="op">,</span> <span class="nam">dag</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t104" href="#t104">104</a></span><span class="t">    <span class="nam">subview_global_inds</span> <span class="op">=</span> <span class="op">[</span><span class="nam">dag</span><span class="op">.</span><span class="nam">_dict_node_names2ind</span><span class="op">[</span><span class="nam">name</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t105" href="#t105">105</a></span><span class="t">                           <span class="key">for</span> <span class="nam">name</span> <span class="key">in</span> <span class="nam">dag</span><span class="op">.</span><span class="nam">list_node_names</span> <span class="key">if</span> <span class="nam">name</span> <span class="key">not</span> <span class="key">in</span> <span class="nam">str_node2hide</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t106" href="#t106">106</a></span><span class="t">    <span class="key">return</span> <span class="nam">subview</span><span class="op">.</span><span class="nam">data</span><span class="op">,</span> <span class="nam">subview</span><span class="op">.</span><span class="nam">node_names</span><span class="op">,</span> <span class="nam">dag</span><span class="op">,</span> <span class="nam">subview_global_inds</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -193,7 +195,7 @@
             <a class="nav" href="z_189dff52b13e5f9c_noise_idiosyncratic_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.10">coverage.py v7.6.10</a>,
-            created at 2025-01-08 13:00 +0000
+            created at 2025-01-09 10:14 +0000
         </p>
     </div>
 </footer>
