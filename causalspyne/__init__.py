@@ -1,1 +1,1 @@
-from causalspyne.main import gen_partially_observed
+from causalspyne.main import gen_partially_observed, ordered_ind_col2global_ind

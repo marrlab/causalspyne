@@ -34,7 +34,8 @@ def project_causallearn_g2ancestral_admg(mat_graph_causallearn):
 
 def get_causalearn_order(g_causal_learn, node_names=None):
     """
-    get causal order
+    get causal order from causal learn graph using api like
+    'node.get_node_type() == NodeType.LATENT:'
     """
     real_name_order = []
     real_na_order_latent = []

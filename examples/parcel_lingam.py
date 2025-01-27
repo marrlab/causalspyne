@@ -1,5 +1,6 @@
 import numpy as np
-from causalspyne import gen_partially_observed
+from causalspyne import gen_partially_observed, ordered_ind_col2global_ind
+from causalspyne.main import ordered_ind_col2global_ind
 from causalspyne.ancestral_acc import ancestral_acc
 
 import graphviz
@@ -7,7 +8,7 @@ import lingam
 from lingam.utils import print_causal_directions, print_dagc, make_dot
 
 
-arr_data, node_names, dag = gen_partially_observed(
+arr_data, node_names, dag, subview_global_inds  = gen_partially_observed(
     size_micro_node_dag=3,
     num_macro_nodes=2,
     degree=2,  # average vertex/node degree
@@ -32,7 +33,9 @@ print(f"causal order {nested_list}")
 
 flat_list = [item for sublist in nested_list for item in (sublist if isinstance(sublist, list) else [sublist])]
 
-pred_obs_order = flat_list
+
+pred_obs_order = ordered_ind_col2global_ind(inds_cols=flat_list,
+                                            subview_global_inds=subview_global_inds)
 
 
 acc = ancestral_acc(dag, pred_order=pred_obs_order)

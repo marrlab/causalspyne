@@ -1,6 +1,6 @@
 import numpy as np
 from causalspyne.utils_causallearn_g2ancestral import get_causalearn_order
-from causalspyne import gen_partially_observed
+from causalspyne import gen_partially_observed, ordered_ind_col2global_ind
 from causalspyne.ancestral_acc import ancestral_acc
 
 from causallearn.search.HiddenCausal.GIN.GIN import GIN
@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import io
 
 
-arr_data, node_names, dag = gen_partially_observed(
+arr_data, node_names, dag, subview_global_inds  = gen_partially_observed(
     size_micro_node_dag=3,
     num_macro_nodes=2,
     degree=2,  # average vertex/node degree
@@ -26,13 +26,17 @@ arr_data, node_names, dag = gen_partially_observed(
     rng=np.random.default_rng(1),
     graphviz=True
 )
-
+print(f"subview global inds: {subview_global_inds}")
 G, K = GIN(arr_data)
 
 pred_obs_order, pred_latent_order = get_causalearn_order(G, node_names)
 print(f"predicted observable order:{pred_obs_order}")
 
-ancestral_acc(dag, pred_order=pred_obs_order)
+ind_cols = [int(name.removeprefix("X")) for name in pred_obs_order]
+# pred_obs_order_aligned = ordered_ind_col2global_ind(ind_cols, subview_global_inds)
+acc = ancestral_acc(dag, pred_order=ind_cols)
+
+print(f"acc: {acc}")
 
 print(f"latent cluster order: {K}, type: {type(K)}, len: {len(K)}")
 
