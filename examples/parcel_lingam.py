@@ -8,7 +8,7 @@ import lingam
 from lingam.utils import print_causal_directions, print_dagc, make_dot
 
 
-arr_data, node_names, dag, subview_global_inds  = gen_partially_observed(
+subview, node_names, dag, subview_global_inds  = gen_partially_observed(
     size_micro_node_dag=3,
     num_macro_nodes=2,
     degree=2,  # average vertex/node degree
@@ -23,7 +23,7 @@ arr_data, node_names, dag, subview_global_inds  = gen_partially_observed(
 
 
 model = lingam.BottomUpParceLiNGAM()
-model.fit(arr_data)
+model.fit(subview.data)
 
 print(f"predicted observable order:{model.causal_order_}")
 

@@ -102,8 +102,9 @@ def gen_partially_observed(
                          subview._list_global_inds_unobserved)
             )
     subview_global_inds = [dag._dict_node_names2ind[name]
-                           for name in dag.list_node_names if name not in str_node2hide]
-    return subview.data, subview.node_names, dag, subview_global_inds
+                           for name in dag.list_node_names if
+                           name not in str_node2hide]
+    return subview, subview.node_names, dag, subview_global_inds
 
 
 def ordered_ind_col2global_ind(inds_cols, subview_global_inds):

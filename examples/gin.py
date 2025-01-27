@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import io
 
 
-arr_data, node_names, dag, subview_global_inds  = gen_partially_observed(
+subview, node_names, dag, subview_global_inds  = gen_partially_observed(
     size_micro_node_dag=3,
     num_macro_nodes=2,
     degree=2,  # average vertex/node degree
@@ -27,7 +27,7 @@ arr_data, node_names, dag, subview_global_inds  = gen_partially_observed(
     graphviz=True
 )
 print(f"subview global inds: {subview_global_inds}")
-G, K = GIN(arr_data)
+G, K = GIN(subview.data)
 
 pred_obs_order, pred_latent_order = get_causalearn_order(G, node_names)
 print(f"predicted observable order:{pred_obs_order}")
