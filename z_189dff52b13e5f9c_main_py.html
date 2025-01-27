@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="z_189dff52b13e5f9c_noise_idiosyncratic_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.10">coverage.py v7.6.10</a>,
-            created at 2025-01-27 14:24 +0000
+            created at 2025-01-27 14:30 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -184,17 +184,18 @@
     <p class="pln"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">                         <span class="nam">subview</span><span class="op">.</span><span class="nam">_list_global_inds_unobserved</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t103" href="#t103">103</a></span><span class="t">            <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t104" href="#t104">104</a></span><span class="t">    <span class="nam">subview_global_inds</span> <span class="op">=</span> <span class="op">[</span><span class="nam">dag</span><span class="op">.</span><span class="nam">_dict_node_names2ind</span><span class="op">[</span><span class="nam">name</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t105" href="#t105">105</a></span><span class="t">                           <span class="key">for</span> <span class="nam">name</span> <span class="key">in</span> <span class="nam">dag</span><span class="op">.</span><span class="nam">list_node_names</span> <span class="key">if</span> <span class="nam">name</span> <span class="key">not</span> <span class="key">in</span> <span class="nam">str_node2hide</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t106" href="#t106">106</a></span><span class="t">    <span class="key">return</span> <span class="nam">subview</span><span class="op">.</span><span class="nam">data</span><span class="op">,</span> <span class="nam">subview</span><span class="op">.</span><span class="nam">node_names</span><span class="op">,</span> <span class="nam">dag</span><span class="op">,</span> <span class="nam">subview_global_inds</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t107" href="#t107">107</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t105" href="#t105">105</a></span><span class="t">                           <span class="key">for</span> <span class="nam">name</span> <span class="key">in</span> <span class="nam">dag</span><span class="op">.</span><span class="nam">list_node_names</span> <span class="key">if</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t106" href="#t106">106</a></span><span class="t">                           <span class="nam">name</span> <span class="key">not</span> <span class="key">in</span> <span class="nam">str_node2hide</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t107" href="#t107">107</a></span><span class="t">    <span class="key">return</span> <span class="nam">subview</span><span class="op">,</span> <span class="nam">subview</span><span class="op">.</span><span class="nam">node_names</span><span class="op">,</span> <span class="nam">dag</span><span class="op">,</span> <span class="nam">subview_global_inds</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t108" href="#t108">108</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t109" href="#t109">109</a></span><span class="t"><span class="key">def</span> <span class="nam">ordered_ind_col2global_ind</span><span class="op">(</span><span class="nam">inds_cols</span><span class="op">,</span> <span class="nam">subview_global_inds</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t110" href="#t110">110</a></span><span class="t">    <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t111" href="#t111">111</a></span><span class="t"><span class="str">    given a predicted causal order in the form of column indices, transform it</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t112" href="#t112">112</a></span><span class="t"><span class="str">    into global index of ground truth DAG</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t113" href="#t113">113</a></span><span class="t"><span class="str">    """</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t114" href="#t114">114</a></span><span class="t">    <span class="nam">list_global_inds</span> <span class="op">=</span> <span class="op">[</span><span class="nam">subview_global_inds</span><span class="op">[</span><span class="nam">ind_col</span><span class="op">]</span> <span class="key">for</span> <span class="nam">ind_col</span> <span class="key">in</span> <span class="nam">inds_cols</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t115" href="#t115">115</a></span><span class="t">    <span class="key">return</span> <span class="nam">list_global_inds</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t109" href="#t109">109</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t110" href="#t110">110</a></span><span class="t"><span class="key">def</span> <span class="nam">ordered_ind_col2global_ind</span><span class="op">(</span><span class="nam">inds_cols</span><span class="op">,</span> <span class="nam">subview_global_inds</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t111" href="#t111">111</a></span><span class="t">    <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t112" href="#t112">112</a></span><span class="t"><span class="str">    given a predicted causal order in the form of column indices, transform it</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t113" href="#t113">113</a></span><span class="t"><span class="str">    into global index of ground truth DAG</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t114" href="#t114">114</a></span><span class="t"><span class="str">    """</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t115" href="#t115">115</a></span><span class="t">    <span class="nam">list_global_inds</span> <span class="op">=</span> <span class="op">[</span><span class="nam">subview_global_inds</span><span class="op">[</span><span class="nam">ind_col</span><span class="op">]</span> <span class="key">for</span> <span class="nam">ind_col</span> <span class="key">in</span> <span class="nam">inds_cols</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t116" href="#t116">116</a></span><span class="t">    <span class="key">return</span> <span class="nam">list_global_inds</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -204,7 +205,7 @@
             <a class="nav" href="z_189dff52b13e5f9c_noise_idiosyncratic_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.10">coverage.py v7.6.10</a>,
-            created at 2025-01-27 14:24 +0000
+            created at 2025-01-27 14:30 +0000
         </p>
     </div>
 </footer>
