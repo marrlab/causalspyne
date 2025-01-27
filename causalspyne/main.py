@@ -114,3 +114,59 @@ def ordered_ind_col2global_ind(inds_cols, subview_global_inds):
     """
     list_global_inds = [subview_global_inds[ind_col] for ind_col in inds_cols]
     return list_global_inds
+
+
+def re_hide(subview, dag, num_sample, list_confounder2hide, output_dir, plot=True):
+    subview.run(
+        num_samples=num_sample, confound=True,
+        list_nodes2hide=list_confounder2hide
+    )
+    with chdir(output_dir):
+        subview.to_csv()
+    str_node2hide = subview.str_node2hide
+
+    dag2ancestral = DAG2Ancestral(dag.mat_adjacency)
+    list_confounder2hide_global_ind = subview.list_global_inds_nodes2hide
+    pred_ancestral_graph_mat = dag2ancestral.run(
+        list_confounder2hide_global_ind)
+
+    if plot:
+        fig, (ax1, ax2, ax3) = plt.subplots(1, 3)
+        mtitle = "hide_" + str_node2hide
+        fig.suptitle(mtitle)  # super-title
+
+        # ax1
+        dag.visualize(title="DAG", ax=ax1, graphviz=graphviz)
+        ax1.set_title("DAG")
+
+        # ax2
+        draw_dags_nx(
+            pred_ancestral_graph_mat,
+            dict_ind2name={
+                i: name for i, name in enumerate(sorted(subview.node_names))
+            },
+            title="ancestral",
+            ax=ax2,
+            graphviz=graphviz,
+        )
+        ax2.set_title("ancestral")
+        # ax3
+        subview.visualize(
+            title="subDAG", ax=ax3, graphviz=graphviz
+        )
+        ax3.set_title("subDAG")
+
+    with chdir(output_dir):
+        subview.to_csv()
+        if plot:
+            fig.savefig(f"graph_compare_{timestamp}dags.pdf", format="pdf")
+            fig.savefig(f"graph_compare_{timestamp}dags.svg", format="svg")
+        with open("hidden_nodes.csv", "w") as outfile:
+            outfile.write(
+                ",".join(str(node) for node in
+                         subview._list_global_inds_unobserved)
+            )
+    subview_global_inds = [dag._dict_node_names2ind[name]
+                           for name in dag.list_node_names if
+                           name not in str_node2hide]
+
