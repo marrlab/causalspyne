@@ -69,7 +69,7 @@ jobs:
         mv coverage-badge.svg htmlcov/
     - name: check if examples work
       run: |
-        pip install graphviz
+        pip install pygraphviz
         pip install .
         python examples/fci.py
     - name: Deploy coverage report
