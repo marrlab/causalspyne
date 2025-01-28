@@ -67,6 +67,15 @@ jobs:
       run: |
         genbadge coverage -i - < coverage.xml
         mv coverage-badge.svg htmlcov/
+    - name: check if examples work
+      run: |
+        pip install pygraphviz
+        pip install .
+        python examples/example.py
+        python examples/fci.py
+        python examples/gin.py
+        pip install lingam
+        python examples/parcel_lingam.py
     - name: Deploy coverage report
       uses: JamesIves/github-pages-deploy-action@v4
       with:
