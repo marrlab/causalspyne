@@ -11,7 +11,7 @@ def test_ancestral_acc():
     """
     test if ancestral accuracy runs
     """
-    arr_data, node_names, dag, subview_global_inds = gen_partially_observed(
+    subview = gen_partially_observed(
         size_micro_node_dag=3,
         num_macro_nodes=2,
         degree=2,  # average vertex/node degree
@@ -23,8 +23,10 @@ def test_ancestral_acc():
         rng=np.random.default_rng(1),
         graphviz=False
     )
-    pred_order_inds = [dag._dict_node_names2ind[name] for name in dag.list_node_names]
-    acc = ancestral_acc(true_dag=dag,
+    pred_order_inds = \
+        [subview.dag._dict_node_names2ind[name]
+         for name in subview.dag.list_node_names]
+    acc = ancestral_acc(true_dag=subview.dag,
                         pred_order=pred_order_inds)
 
     print(f"ancestral acc: {acc}")
