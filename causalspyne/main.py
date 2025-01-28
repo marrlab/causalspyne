@@ -52,6 +52,21 @@ def gen_partially_observed(
                       name=output_dir + "ground_truth_dag.csv")
 
     subview = DAGView(dag=dag, rng=rng)
+    return re_hide(subview, dag, num_sample, list_confounder2hide, output_dir,
+                   graphviz, timestamp, plot=True)
+
+
+def ordered_ind_col2global_ind(inds_cols, subview_global_inds):
+    """
+    given a predicted causal order in the form of column indices, transform it
+    into global index of ground truth DAG
+    """
+    list_global_inds = [subview_global_inds[ind_col] for ind_col in inds_cols]
+    return list_global_inds
+
+
+def re_hide(subview, dag, num_sample, list_confounder2hide, output_dir,
+            graphviz, timestamp, plot=True):
     subview.run(
         num_samples=num_sample, confound=True,
         list_nodes2hide=list_confounder2hide
@@ -104,13 +119,5 @@ def gen_partially_observed(
     subview_global_inds = [dag._dict_node_names2ind[name]
                            for name in dag.list_node_names if
                            name not in str_node2hide]
+
     return subview, subview.node_names, dag, subview_global_inds
-
-
-def ordered_ind_col2global_ind(inds_cols, subview_global_inds):
-    """
-    given a predicted causal order in the form of column indices, transform it
-    into global index of ground truth DAG
-    """
-    list_global_inds = [subview_global_inds[ind_col] for ind_col in inds_cols]
-    return list_global_inds
