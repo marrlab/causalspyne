@@ -6,14 +6,16 @@ from causalspyne import gen_partially_observed
 from causallearn.utils.GraphUtils import GraphUtils
 
 
-subview, dag, subview_global_inds  = gen_partially_observed(
+subview = gen_partially_observed(
     size_micro_node_dag=3,
     num_macro_nodes=2,
     degree=2,  # average vertex/node degree
     list_confounder2hide=[
         0.5,
         1.0,
-    ],  # choie of confounder to hide: percentile or index of all toplogically sorted confounders
+    ],
+    # choie of confounder to hide:
+    # percentile or index of all toplogically sorted confounders
     num_sample=200,
     rng=np.random.default_rng(2),
     graphviz=True

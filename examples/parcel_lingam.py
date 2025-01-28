@@ -8,7 +8,7 @@ import lingam
 from lingam.utils import print_causal_directions, print_dagc, make_dot
 
 
-subview, dag, subview_global_inds  = gen_partially_observed(
+subview = gen_partially_observed(
     size_micro_node_dag=3,
     num_macro_nodes=2,
     degree=2,  # average vertex/node degree
@@ -35,10 +35,10 @@ flat_list = [item for sublist in nested_list for item in (sublist if isinstance(
 
 
 pred_obs_order = ordered_ind_col2global_ind(inds_cols=flat_list,
-                                            subview_global_inds=subview_global_inds)
+                                            subview_global_inds=subview.col_inds)
 
 
-acc = ancestral_acc(dag, pred_order=pred_obs_order)
+acc = ancestral_acc(subview.dag, pred_order=pred_obs_order)
 
 print(f"ancestral acc:{acc}")
 
