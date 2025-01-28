@@ -67,6 +67,10 @@ jobs:
       run: |
         genbadge coverage -i - < coverage.xml
         mv coverage-badge.svg htmlcov/
+    - name: check if examples work
+      run: |
+        pip install graphviz
+        python examples/fci.py
     - name: Deploy coverage report
       uses: JamesIves/github-pages-deploy-action@v4
       with:
