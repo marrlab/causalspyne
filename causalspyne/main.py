@@ -49,7 +49,7 @@ def gen_partially_observed(
     )
     dag = dag_gen.run()
     dag.to_binary_csv(benchpress=False,
-                      name=output_dir + "ground_truth_dag.csv")
+                      name=output_dir + f"ground_truth_dag_{timestamp}d.csv")
 
     subview = DAGView(dag=dag, rng=rng)
     return re_hide(subview, dag, num_sample, list_confounder2hide, output_dir,
