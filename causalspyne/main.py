@@ -120,4 +120,4 @@ def re_hide(subview, dag, num_sample, list_confounder2hide, output_dir,
                            for name in dag.list_node_names if
                            name not in str_node2hide]
 
-    return subview, subview.node_names, dag, subview_global_inds
+    return subview, dag, subview_global_inds

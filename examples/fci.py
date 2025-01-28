@@ -6,7 +6,7 @@ from causalspyne import gen_partially_observed
 from causallearn.utils.GraphUtils import GraphUtils
 
 
-subview, node_names, dag, subview_global_inds  = gen_partially_observed(
+subview, dag, subview_global_inds  = gen_partially_observed(
     size_micro_node_dag=3,
     num_macro_nodes=2,
     degree=2,  # average vertex/node degree
@@ -50,6 +50,5 @@ g.graph with rng(2)
 [0 0 1 0 0 1]
 [0 0 0 0 2 0]]
 """
-
-pdy = GraphUtils.to_pydot(g, labels=node_names)
+pdy = GraphUtils.to_pydot(g, labels=subview.node_names)
 pdy.write_png("output_causallearn_fci.png")
