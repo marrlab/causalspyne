@@ -116,8 +116,4 @@ def re_hide(subview, dag, num_sample, list_confounder2hide, output_dir,
                 ",".join(str(node) for node in
                          subview._list_global_inds_unobserved)
             )
-    subview_global_inds = [dag._dict_node_names2ind[name]
-                           for name in dag.list_node_names if
-                           name not in str_node2hide]
-
-    return subview, dag, subview_global_inds
+    return subview

@@ -57,6 +57,10 @@ class DAGView:
         self._list_nodes2hide = None
         self._success = False
 
+    @property
+    def dag(self):
+        return self._dag
+
     def run(self, num_samples, list_nodes2hide=None, confound=False):
         """
         generate subgraph adjcency matrix and corresponding data
@@ -172,6 +176,14 @@ class DAGView:
     @property
     def list_global_inds_nodes2hide(self):
         return self._list_global_inds_unobserved
+
+    @property
+    def col_inds(self):
+        subview_global_inds = \
+            [self.dag._dict_node_names2ind[name]
+             for name in self.dag.list_node_names
+             if name not in self.str_node2hide]
+        return subview_global_inds
 
     @property
     def list_global_inds_observed(self):
