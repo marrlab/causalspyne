@@ -24,6 +24,5 @@ def gen_joint_w_omega(p_ob_v=4, ave_degree=2, max_omega=0.7):
     print(f"rho, 2*rho: {rho}, {2 * rho}")
     return mat_w, mat_omega
 
-
 if __name__ == "__main__":
     gen_joint_w_omega()
