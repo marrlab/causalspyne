@@ -13,14 +13,16 @@ from causalspyne.erdo_renyi_plp import Erdos_Renyi_PLP
 from causalspyne.implicit_omega import gen_omega, get_extreme_eigenvalue
 
 
-def gen_joint_w_omega():
-    mat_w = Erdos_Renyi_PLP(default_rng(0))(num_nodes=6, degree=2)
-    max_omega = 0.7
-    mat, rho = gen_omega(3, max_omega)
-    print(mat)
-    max_eig, min_eig = get_extreme_eigenvalue(mat)
+def gen_joint_w_omega(p_ob_v=4, ave_degree=2, max_omega=0.7):
+    mat_w = Erdos_Renyi_PLP(default_rng(0))(num_nodes=p_ob_v,
+                                            degree=ave_degree)
+    print(f"adjacency:\n {mat_w}")
+    mat_omega, rho = gen_omega(p_ob_v, max_omega)
+    print(f"omega:\n {mat_omega}")
+    max_eig, min_eig = get_extreme_eigenvalue(mat_omega)
     print(f"min, max eigenvalue {min_eig, max_eig}")
-    print(rho, 2 * rho)
+    print(f"rho, 2*rho: {rho}, {2 * rho}")
+    return mat_w, mat_omega
 
 
 if __name__ == "__main__":
