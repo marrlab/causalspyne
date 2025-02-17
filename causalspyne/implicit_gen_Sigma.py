@@ -14,11 +14,17 @@ def congruent(mat_op, mat):
     return mat_rst
 
 
-def gen_sigma_y():
+def gen_sigma_y(max_w=0.5):
     """
     generate Sigma matrix according to $${(I-W)}^{-1}\Omega{(I-W)}^{-1}$$
     """
-    mat_w, mat_omega = gen_joint_w_omega()
+    mat_w_binary, mat_omega = gen_joint_w_omega()
+    mat_weight = np.random.uniform(
+        low=-max_w, high=max_w, size=mat_w_binary.shape)
+
+    mat_w = mat_w_binary * mat_weight
+    print(f"adjacency weighted: {mat_w}")
+
     dmax = get_max_degree(mat_w)
     kernel = np.identity(mat_w.shape[0]) - mat_w
     inv_id_minus_w = np.linalg.inv(kernel)
