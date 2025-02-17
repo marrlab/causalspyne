@@ -54,6 +54,9 @@ def gen_omega(n_ob_v, max_omega, delta=1.0, p_sparse=0.1):
 
 
 def get_extreme_eigenvalue(matrix):
+    """
+    return: max, min
+    """
     eigenvalues = np.linalg.eigvals(matrix)
     return np.max(np.real(eigenvalues)), np.min(np.real(eigenvalues))
 

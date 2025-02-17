@@ -2,6 +2,7 @@
 """
 import numpy as np
 from causalspyne.implicit_omega_condition_on_w import gen_joint_w_omega
+from causalspyne.implicit_omega import get_extreme_eigenvalue
 
 
 def congruent(mat_op, mat):
@@ -26,4 +27,7 @@ def gen_sigma_y():
 
 if __name__ == "__main__":
     mat_sigma = gen_sigma_y()
-    print(mat_sigma)
+    print(f"sigma: {mat_sigma}")
+    inv_sigma = np.linalg.inv(mat_sigma)
+    eigv_max, _ = get_extreme_eigenvalue(inv_sigma)
+    print(f"max eigen value: {eigv_max}")
