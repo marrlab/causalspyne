@@ -47,6 +47,23 @@ class Gamma:
         return noise
 
 
+class Bernouli:
+    def __init__(self, rng, params):
+        self.mean = 0
+        if "p" in params:
+            self.p = params["p"]
+        else:
+            self.p = 0.5
+        self.rng = rng
+
+    def gen(self, num_samples):
+        noise = self.rng.binomial(size=num_samples, p=self.p, n=1)
+        return noise
+
+
+
+
+
 class Idiosyncratic:
     def __init__(self, rng, class_name="Gamma", **additional_info):
         """ """
