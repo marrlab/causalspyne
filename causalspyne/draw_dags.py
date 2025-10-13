@@ -4,7 +4,14 @@ draw DAG using networkx
 
 import matplotlib.pyplot as plt
 import networkx as nx
-from networkx.drawing.nx_agraph import graphviz_layout
+try:
+    import pygraphviz
+    has_graphviz = True
+    from networkx.drawing.nx_agraph import graphviz_layout
+except ImportError:
+    graphviz_layout = None
+    has_graphviz = False
+
 
 
 def draw_dags_nx(
@@ -15,6 +22,7 @@ def draw_dags_nx(
     networkx adjacency matrix (i,j) entry refers to edge from i pointing to j,
     which is opposite to the CausalSpyne convention
     """
+    graphviz = has_graphviz and graphviz
     plt.close("all")
     nx_graph = nx.from_numpy_array(adj_matrix.transpose(),
                                    create_using=nx.DiGraph)
