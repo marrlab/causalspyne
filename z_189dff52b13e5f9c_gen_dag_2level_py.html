@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Coverage for causalspyne/gen_dag_2level.py: 100%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
-    <link rel="stylesheet" href="style_cb_8e611ae1.css" type="text/css">
+    <link rel="stylesheet" href="style_cb_6b508a39.css" type="text/css">
     <script src="coverage_html_cb_6fb7b396.js" defer></script>
 </head>
 <body class="pyfile">
@@ -64,8 +64,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_189dff52b13e5f9c_implicit_gen_Sigma_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.12">coverage.py v7.6.12</a>,
-            created at 2025-02-19 14:58 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.7">coverage.py v7.10.7</a>,
+            created at 2025-10-13 10:17 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -98,8 +98,8 @@
     <p class="pln"><span class="n"><a id="t16" href="#t16">16</a></span><span class="t"><span class="str">    """</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t17" href="#t17">17</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t18" href="#t18">18</a></span><span class="t">    <span class="key">def</span> <span class="nam">__init__</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t19" href="#t19">19</a></span><span class="t">        <span class="nam">self</span><span class="op">,</span> <span class="nam">dag_generator</span><span class="op">,</span> <span class="nam">num_macro_nodes</span><span class="op">,</span> <span class="nam">max_num_local_nodes</span><span class="op">=</span><span class="num">4</span><span class="op">,</span> <span class="nam">rng</span><span class="op">=</span><span class="nam">default_rng</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t20" href="#t20">20</a></span><span class="t">    <span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t19" href="#t19">19</a></span><span class="t">        <span class="nam">self</span><span class="op">,</span> <span class="nam">dag_generator</span><span class="op">,</span> <span class="nam">num_macro_nodes</span><span class="op">,</span> <span class="nam">max_num_local_nodes</span><span class="op">=</span><span class="num">4</span><span class="op">,</span> <span class="nam">rng</span><span class="op">=</span><span class="nam">default_rng</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t20" href="#t20">20</a></span><span class="t">    <span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t21" href="#t21">21</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">dag_generator</span> <span class="op">=</span> <span class="nam">dag_generator</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t22" href="#t22">22</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">num_macro_nodes</span> <span class="op">=</span> <span class="nam">num_macro_nodes</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t23" href="#t23">23</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">max_num_local_nodes</span> <span class="op">=</span> <span class="nam">max_num_local_nodes</span>&nbsp;</span><span class="r"></span></p>
@@ -119,8 +119,8 @@
     <p class="run"><span class="n"><a id="t37" href="#t37">37</a></span><span class="t">        <span class="key">for</span> <span class="nam">name</span> <span class="key">in</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag_backbone</span><span class="op">.</span><span class="nam">list_node_names</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t38" href="#t38">38</a></span><span class="t">            <span class="nam">num_nodes</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">rng</span><span class="op">.</span><span class="nam">integers</span><span class="op">(</span><span class="num">2</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">max_num_local_nodes</span> <span class="op">+</span> <span class="num">1</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t39" href="#t39">39</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">dict_macro_node2dag</span><span class="op">[</span><span class="nam">name</span><span class="op">]</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag_generator</span><span class="op">.</span><span class="nam">gen_dag</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t40" href="#t40">40</a></span><span class="t">                <span class="nam">num_nodes</span><span class="op">=</span><span class="nam">num_nodes</span><span class="op">,</span> <span class="nam">prefix</span><span class="op">=</span><span class="nam">name</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t41" href="#t41">41</a></span><span class="t">            <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t40" href="#t40">40</a></span><span class="t">                <span class="nam">num_nodes</span><span class="op">=</span><span class="nam">num_nodes</span><span class="op">,</span> <span class="nam">prefix</span><span class="op">=</span><span class="nam">name</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t41" href="#t41">41</a></span><span class="t">            <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t42" href="#t42">42</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">global_dag_indexer</span> <span class="op">=</span> <span class="nam">DAGStackIndexer</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t43" href="#t43">43</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t44" href="#t44">44</a></span><span class="t">    <span class="key">def</span> <span class="nam">interconnection</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -143,11 +143,11 @@
     <p class="run"><span class="n"><a id="t61" href="#t61">61</a></span><span class="t">        <span class="nam">ind_macro_head</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag_backbone</span><span class="op">.</span><span class="nam">get_node_ind</span><span class="op">(</span><span class="nam">macro_arrow_head</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t62" href="#t62">62</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t63" href="#t63">63</a></span><span class="t">        <span class="nam">ind_global_tail</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">global_dag_indexer</span><span class="op">.</span><span class="nam">get_global_ind</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t64" href="#t64">64</a></span><span class="t">            <span class="nam">ind_macro_tail</span><span class="op">,</span> <span class="nam">ind_local_tail</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t65" href="#t65">65</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t64" href="#t64">64</a></span><span class="t">            <span class="nam">ind_macro_tail</span><span class="op">,</span> <span class="nam">ind_local_tail</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t65" href="#t65">65</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t66" href="#t66">66</a></span><span class="t">        <span class="nam">ind_global_head</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">global_dag_indexer</span><span class="op">.</span><span class="nam">get_global_ind</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t67" href="#t67">67</a></span><span class="t">            <span class="nam">ind_macro_head</span><span class="op">,</span> <span class="nam">ind_local_head</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t68" href="#t68">68</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t67" href="#t67">67</a></span><span class="t">            <span class="nam">ind_macro_head</span><span class="op">,</span> <span class="nam">ind_local_head</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t68" href="#t68">68</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t69" href="#t69">69</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t70" href="#t70">70</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">dag_refined</span><span class="op">.</span><span class="nam">add_arc_ind</span><span class="op">(</span><span class="nam">ind_global_tail</span><span class="op">,</span> <span class="nam">ind_global_head</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t71" href="#t71">71</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -157,7 +157,7 @@
     <p class="pln"><span class="n"><a id="t75" href="#t75">75</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t76" href="#t76">76</a></span><span class="t">        <span class="nam">obj_gen_weight</span> <span class="op">=</span> <span class="nam">WeightGenWishart</span><span class="op">(</span><span class="nam">rng</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">rng</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t77" href="#t77">77</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">dag_manipulator</span> <span class="op">=</span> <span class="nam">DAGManipulator</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">dag_refined</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t78" href="#t78">78</a></span><span class="t">                                              <span class="nam">obj_gen_weight</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">rng</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t78" href="#t78">78</a></span><span class="t">                                              <span class="nam">obj_gen_weight</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">rng</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t79" href="#t79">79</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t80" href="#t80">80</a></span><span class="t">        <span class="nam">ind_arbitrary</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">dag_refined</span><span class="op">.</span><span class="nam">get_top_last</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t81" href="#t81">81</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">dag_manipulator</span><span class="op">.</span><span class="nam">mk_confound</span><span class="op">(</span><span class="nam">ind_arbitrary</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
@@ -186,8 +186,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_189dff52b13e5f9c_implicit_gen_Sigma_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.12">coverage.py v7.6.12</a>,
-            created at 2025-02-19 14:58 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.7">coverage.py v7.10.7</a>,
+            created at 2025-10-13 10:17 +0000
         </p>
     </div>
 </footer>
