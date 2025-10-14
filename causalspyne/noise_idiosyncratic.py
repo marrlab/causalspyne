@@ -47,7 +47,7 @@ class Gamma:
         return noise
 
 
-class Bernouli:
+class Bernoulli:
     def __init__(self, rng, params):
         self.mean = 0
         if "p" in params:
