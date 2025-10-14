@@ -30,6 +30,7 @@ def gen_partially_observed(
     num_sample=200,
     output_dir="output/",
     rng=default_rng(),
+    dft_noise="Gaussian",
     graphviz=False,
     plot=True,
 ):
@@ -51,7 +52,7 @@ def gen_partially_observed(
     dag.to_binary_csv(benchpress=False,
                       name=output_dir + f"ground_truth_dag_{timestamp}d.csv")
 
-    subview = DAGView(dag=dag, rng=rng)
+    subview = DAGView(dag=dag, rng=rng, dft_noise=dft_noise)
     return re_hide(subview, dag, num_sample, list_confounder2hide, output_dir,
                    graphviz, timestamp, plot=True)
 

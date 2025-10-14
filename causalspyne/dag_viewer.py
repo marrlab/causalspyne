@@ -44,7 +44,7 @@ class DAGView:
     with ground truth DAG intact, only show subgraph
     """
 
-    def __init__(self, dag, rng=default_rng(0)):
+    def __init__(self, dag, dft_noise, rng=default_rng(0)):
         self._dag = dag
         # there is no need to use a full DAG to represent subdag
         # since sub-dag is not responsible for data generation
@@ -53,7 +53,9 @@ class DAGView:
         self._subset_data_arr = None
         self._list_global_inds_unobserved = None
         self._list_global_inds_observed = None
-        self.data_gen = DataGen(self._dag, rng=rng)
+        self.data_gen = DataGen(dag=self._dag,
+                                dft_noise=dft_noise,
+                                rng=rng)
         self._list_nodes2hide = None
         self._success = False
 
