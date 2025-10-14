@@ -65,10 +65,10 @@ class Bernoulli:
 
 
 class Idiosyncratic:
-    def __init__(self, rng, class_name="Gamma", **additional_info):
+    def __init__(self, rng, class_name="Gamma", **dict_params):
         """ """
         class_gen = getattr(sys.modules[__name__], class_name)
-        self.noise = class_gen(rng, additional_info)
+        self.noise = class_gen(rng, dict_params)
 
     def gen(self, num_samples):
         noise = self.noise.gen(num_samples)

@@ -2,7 +2,7 @@ import numpy as np
 from numpy.random import default_rng
 
 from causalspyne.dag_interface import MatDAG
-from causalspyne.noise_idiosyncratic import Bernoulli
+from causalspyne.noise_idiosyncratic import Idiosyncratic
 from causalspyne.data_gen import  DataGen
 
 def simpson():
@@ -20,8 +20,13 @@ def simpson():
                 name_prefix="V",
                 rng=default_rng())
 
+    confounder = Idiosyncratic(rng=default_rng(),
+                               class_name="Bernoulli",
+                               dict_params={"p":0.2})
+
     data_gen = DataGen(dag, edge_model=None,
-                   idiosynchratic={0:Bernoulli(rng=default_rng(), params={"p":0.2})})
+                       idiosynchratic={0:confounder})
+
     print(data_gen.gen(200))
 
 simpson()
