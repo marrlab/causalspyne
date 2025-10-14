@@ -10,11 +10,11 @@ from causalspyne.edge_models import EdgeModelLinear
 
 
 class DataGen:
-    def __init__(self, dag, edge_model=None, idiosynchratic=None, rng=default_rng(0)):
+    def __init__(self, dag, edge_model=None, idiosynchratic: dict[int, Idiosyncratic] ={}, rng=default_rng(0)):
         self.dag = dag
-        self.idiosyncratic = idiosynchratic
-        if idiosynchratic is None:
-            self.idiosyncratic = Idiosyncratic(rng)
+        self.dict_idiosyncratic = idiosynchratic
+
+        self.idiosyncratic = Idiosyncratic(rng)
         self.edge_model = edge_model
         if edge_model is None:
             self.edge_model = EdgeModelLinear(self.dag)
@@ -41,7 +41,10 @@ class DataGen:
         # Generate data for each node in topological order
         for node in list_ind_nodes_topo_order:
             list_parents_inds = self.dag.get_list_parents_inds(node)
-            noise = self.idiosyncratic.gen(num_samples)
+            if node in self.dict_idiosyncratic:
+                noise = self.dict_idiosyncratic[node].gen(num_samples)
+            else:
+                noise = self.idiosyncratic.gen(num_samples)
             data[:, node] = noise
             if list_parents_inds:
                 bias = self.edge_model.run(node, data[:, list_parents_inds])
