@@ -1,5 +1,7 @@
-from causalspyne.dataset import simpson
+from causalspyne.dataset import simpson, visualize
 
 
 def test_simpson():
-    simpson(200)
+    arr = simpson(200)
+    plot = visualize(arr)
+    plot.close()
