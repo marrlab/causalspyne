@@ -5,7 +5,7 @@ from causalspyne.dag_interface import MatDAG
 from causalspyne.noise_idiosyncratic import Idiosyncratic
 from causalspyne.data_gen import  DataGen
 
-def simpson():
+def simpson(size_sample=200):
     # 0 as confounder: 0->1, 0->2, 1->2
     mat_weighted_adjacency = np.array(
         [
@@ -27,6 +27,4 @@ def simpson():
     data_gen = DataGen(dag, edge_model=None,
                        idiosynchratic={0:confounder})
 
-    print(data_gen.gen(200))
-
-simpson()
+    print(data_gen.gen(size_sample))
