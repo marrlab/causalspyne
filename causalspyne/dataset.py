@@ -20,9 +20,10 @@ def simpson(size_sample=200):
                 name_prefix="V",
                 rng=default_rng())
 
-    confounder = Idiosyncratic(rng=default_rng(),
-                               class_name="Bernoulli",
-                               dict_params={"p":0.2})
+    confounder = Idiosyncratic(class_name="Bernoulli",
+                               dict_params={"p":0.2},
+                               rng=default_rng()
+                               )
 
     data_gen = DataGen(dag, edge_model=None,
                        idiosynchratic={0:confounder})

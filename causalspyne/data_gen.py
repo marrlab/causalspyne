@@ -10,11 +10,15 @@ from causalspyne.edge_models import EdgeModelLinear
 
 
 class DataGen:
-    def __init__(self, dag, edge_model=None, idiosynchratic: dict[int, Idiosyncratic] ={}, rng=default_rng(0)):
+    def __init__(self, dag, edge_model=None,
+                 dft_noise: str="Gaussian",
+                 idiosynchratic: dict[int, Idiosyncratic]={},
+                 rng=default_rng(0)):
         self.dag = dag
         self.dict_idiosyncratic = idiosynchratic
 
-        self.idiosyncratic = Idiosyncratic(rng)
+        self.idiosyncratic = Idiosyncratic(class_name=dft_noise,
+                                           rng=rng)
         self.edge_model = edge_model
         if edge_model is None:
             self.edge_model = EdgeModelLinear(self.dag)

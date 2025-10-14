@@ -1,3 +1,4 @@
+
 """
 test data and DAG subview
 """
@@ -19,8 +20,7 @@ def test_data_dag_subview():
     )
     dag = dag_gen.run()
     dag.visualize(title="dag_complete")
-
-    subview = DAGView(dag=dag)
+    subview = DAGView(dag=dag, dft_noise="Gaussian")
     # subview.run(num_samples=200)
     subview.run(num_samples=200, list_nodes2hide=[1, 2])
     subview.to_csv()
@@ -38,7 +38,7 @@ def test_data_dag_subview_confounder():
     dag = dag_gen.run()
     dag.visualize(title="dag_complete_confounder")
 
-    subview = DAGView(dag=dag)
+    subview = DAGView(dag=dag,dft_noise="Gaussian")
     subview.run(num_samples=200, confound=True, list_nodes2hide=[0])
     subview.to_csv()
     subview.visualize(title="dag_marginal_confounder")
@@ -55,7 +55,7 @@ def test_data_dag_subview_confounder_percentage():
     dag = dag_gen.run()
     dag.visualize(title="dag_complete_confounder")
 
-    subview = DAGView(dag=dag)
+    subview = DAGView(dag=dag,dft_noise="Gaussian")
     subview.run(num_samples=200, confound=True, list_nodes2hide=[0.99])
     subview.to_csv()
     subview.visualize(title="dag_marginal_confounder")
@@ -72,7 +72,7 @@ def test_data_dag_subview_confounder_percentage():
     dag = dag_gen.run()
     dag.visualize(title="dag_complete_confounder2")
 
-    subview = DAGView(dag=dag)
+    subview = DAGView(dag=dag,dft_noise="Gaussian")
     subview.run(num_samples=200, confound=True, list_nodes2hide=[0.1, 1.0])
     subview.to_csv()
     subview.visualize(title="dag_marginal_confounder2")
