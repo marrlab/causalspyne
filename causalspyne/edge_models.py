@@ -27,6 +27,5 @@ class EdgeModelIfElse():
         weights = self._dag.get_weights_from_list_parents(ind_node)
         weights_mod = np.where(data_realization_parents == 0,
                                -weights, weights)
-        bias = np.dot(data_realization_parents, weightsdata_realization_parents_mod
-                      )
+        bias = np.dot(data_realization_parents, weights_mod)
         return bias
