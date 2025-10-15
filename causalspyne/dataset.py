@@ -43,9 +43,9 @@ def simpson(size_sample=200, p=0.2,
     return scenario, treatment, effect
 
 
-def visualize(scenario, treatment, effect,
-              na_treatment="algorithm", na_confounder="scenario",
-              cut_off=0.75):
+def visualize_simpson(scenario, treatment, effect,
+                      na_treatment="algorithm", na_confounder="scenario",
+                      cut_off=0.75):
     x = treatment
     y = effect
     y = (y - np.min(y)) / (np.max(y) - np.min(y))
@@ -95,8 +95,7 @@ def visualize(scenario, treatment, effect,
     axs[0, 0].legend(title=f'{na_confounder}', handles=[proxy_o, proxy_s],
                      labels=[f'{na_confounder} {ints_scenarios[0]}',
                              f'{na_confounder} {ints_scenarios[1]}'])
-    axs[0, 0].set_title(
-        f"jittered scatter plot: color for {na_treatment} and marker for {na_confounder}")
+    axs[0, 0].set_title("jittered scatter plot")
 
     grouped_data = [y[discrete_treatment == g] for g in ints_treatment]
     axs[0, 1].boxplot(grouped_data, labels=ints_treatment)
@@ -120,4 +119,5 @@ def visualize(scenario, treatment, effect,
     axs[1, 1].set_ylabel('performance')
 
     fig.suptitle('simpson treatment effect')
+    fig.tight_layout()
     return fig
