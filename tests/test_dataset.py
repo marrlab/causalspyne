@@ -2,6 +2,5 @@ from causalspyne.dataset import simpson, visualize
 
 
 def test_simpson():
-    arr = simpson(200)
-    plot = visualize(arr)
-    plot.close()
+    scenario, treatment, effect = simpson(200)
+    visualize(scenario, treatment, effect)
