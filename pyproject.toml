@@ -1,18 +1,29 @@
-[tool.poetry]
+[project]
 name = "causalspyne"
-version = "0.1.4"
-description = "hierarchical data generation for causal discovery and abstraction"
-authors = ["Xudong Sun, Alex Markham"]
+version = "0.1.5"
+description = "Add your description here"
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.9"
-matplotlib = "^3.9.0"
-networkx = "^3.2.1"
-numpy = "^1.26.4"
-pandas = "^2.2.2"
-scipy = "^1.7.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires-python = ">=3.12"
+dependencies = [
+    "causal-learn==0.1.3.8 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "contourpy==1.2.1 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "cycler==0.12.1 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "fonttools==4.53.1 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "importlib-resources==6.4.0 ; python_full_version == '3.9.*'",
+    "kiwisolver==1.4.5 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "matplotlib==3.9.0 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "networkx==3.2.1 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "numpy==1.26.0 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "packaging==24.1 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "pandas==2.2.2 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "pillow==10.4.0 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "pyparsing==3.1.2 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "python-dateutil==2.9.0.post0 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "pytz==2024.1 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "scipy==1.13.1 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "six==1.16.0 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "tzdata==2024.1 ; python_full_version >= '3.9' and python_full_version < '4'",
+    "zipp==3.19.2 ; python_full_version == '3.9.*'",
+]
+[tool.setuptools.packages.find]
+where = ["causalspyne"]
