@@ -44,6 +44,7 @@ def visualize(arr, na_treatment="algorithm", na_confounder="scenario"):
     scenario = arr[:, 0]  # 1st column for scenario/confounder
     x = arr[:, 1]  # 2nd column: treatment
     y = arr[:, 2]  # 3rd column: effect/performance
+    y = (y - np.min(y)) / (np.max(y) - np.min(y))
 
     ints_scenarios = np.unique(scenario)
 
@@ -75,7 +76,7 @@ def visualize(arr, na_treatment="algorithm", na_confounder="scenario"):
     axs[0, 0].set_xlabel(f'jittered {na_treatment} w.r.t. {na_confounder}')
     axs[0, 0].set_ylabel('performance')
     axs[0, 0].tick_params(axis='x', labelbottom=False)
-    axs[0, 0].tick_params(axis='y', labelleft=False)
+    axs[0, 0].tick_params(axis='y', labelleft=True)
     cbar = fig.colorbar(scatter, boundaries=bounds,
                         ticks=[ints_treatment[0], ints_treatment[1]])
     cbar.ax.set_yticklabels([f'{na_treatment} {ints_treatment[0]}',
@@ -87,20 +88,28 @@ def visualize(arr, na_treatment="algorithm", na_confounder="scenario"):
     axs[0, 0].legend(title=f'{na_confounder}', handles=[proxy_o, proxy_s],
                labels=[f'{na_confounder} {ints_scenarios[0]}',
                        f'{na_confounder} {ints_scenarios[1]}'])
+    axs[0, 0].set_title(f"jittered scatter plot: color for {na_treatment} and marker for {na_confounder}")
 
     grouped_data = [y[discrete_treatment == g] for g in ints_treatment]
     axs[0, 1].boxplot(grouped_data, labels=ints_treatment)
-
+    axs[0, 1].set_title(f"{na_confounder}s combined")
+    axs[0, 1].set_xlabel(f'{na_treatment}')
+    axs[0, 1].set_ylabel('performance')
     y0 = y[scenario==ints_scenarios[0]]
     discrete_treatment0 = discrete_treatment[scenario==ints_scenarios[0]]
     grouped_data0 = [y0[discrete_treatment0 == g] for g in ints_treatment]
     axs[1, 0].boxplot(grouped_data0, labels=ints_treatment)
+    axs[1, 0].set_title(f"{na_confounder} {ints_scenarios[0]}")
+    axs[1, 0].set_xlabel(f'{na_treatment}')
+    axs[1, 0].set_ylabel('performance')
 
     y1 = y[scenario==ints_scenarios[1]]
     discrete_treatment1 = discrete_treatment[scenario==ints_scenarios[1]]
     grouped_data1 = [y1[discrete_treatment1 == g] for g in ints_treatment]
     axs[1, 1].boxplot(grouped_data1, labels=ints_treatment)
-
+    axs[1, 1].set_title(f"{na_confounder} {ints_scenarios[1]}")
+    axs[1, 1].set_xlabel(f'{na_treatment}')
+    axs[1, 1].set_ylabel('performance')
 
     fig.suptitle('simpson treatment effect')
     return fig
