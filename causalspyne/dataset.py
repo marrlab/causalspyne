@@ -12,7 +12,8 @@ from causalspyne.data_gen import DataGen
 def simpson(size_sample=200, p=0.2,
             confounder_effect: float = -5,
             treatment_effect: float = 0.1,
-            propensity: float = 3):
+            propensity: float = 3,
+            std: float = 1.5):
     # 0 as confounder: 0->1, 0->2, 1->2
     mat_weighted_adjacency = np.array(
         [
@@ -33,7 +34,7 @@ def simpson(size_sample=200, p=0.2,
                                )
 
     data_gen = DataGen(dag, edge_model=None,
-                       dict_params={"std": 1.5},
+                       dict_params={"std": std},
                        idiosynchratic={0: confounder})
 
     arr = data_gen.gen(size_sample)
@@ -70,20 +71,21 @@ def visualize_simpson(scenario, treatment, effect,
     norm = mcolors.BoundaryNorm(bounds, cmap.N)
     marker_map = {ints_scenarios[0]: 'o', ints_scenarios[1]: 's'}
 
-    fig, axs = plt.subplots(2, 2)
+    # fig, axs = plt.subplots(2, 2); ax=axs[0]
+    fig, ax = plt.subplots()
     for ind_scenario in ints_scenarios:
         idx = np.where(scenario == ind_scenario)
-        scatter = axs[0, 0].scatter(
+        scatter = ax.scatter(
             x[idx], y[idx], c=discrete_treatment[idx],
             marker=marker_map[ind_scenario],
             edgecolor='k',
             label=f'scenario {ind_scenario}',
             cmap=cmap, norm=norm, s=100)
 
-    axs[0, 0].set_xlabel(f'jittered {na_treatment} w.r.t. {na_confounder}')
-    axs[0, 0].set_ylabel('performance')
-    axs[0, 0].tick_params(axis='x', labelbottom=False)
-    axs[0, 0].tick_params(axis='y', labelleft=True)
+    ax.set_xlabel(f'jittered {na_treatment} w.r.t. {na_confounder}')
+    ax.set_ylabel('performance')
+    ax.tick_params(axis='x', labelbottom=False)
+    ax.tick_params(axis='y', labelleft=True)
     cbar = fig.colorbar(scatter, boundaries=bounds,
                         ticks=[ints_treatment[0], ints_treatment[1]])
     cbar.ax.set_yticklabels([f'{na_treatment} {ints_treatment[0]}',
@@ -92,11 +94,13 @@ def visualize_simpson(scenario, treatment, effect,
                      markerfacecolor='none')
     proxy_s = Line2D([0], [0], marker='s', color='black', linestyle='None',
                      markerfacecolor='none')
-    axs[0, 0].legend(title=f'{na_confounder}', handles=[proxy_o, proxy_s],
-                     labels=[f'{na_confounder} {ints_scenarios[0]}',
-                             f'{na_confounder} {ints_scenarios[1]}'])
-    axs[0, 0].set_title("jittered scatter plot")
+    ax.legend(title=f'{na_confounder}', handles=[proxy_o, proxy_s],
+              labels=[f'{na_confounder} {ints_scenarios[0]}',
+                      f'{na_confounder} {ints_scenarios[1]}'])
+    ax.set_title("jittered scatter plot")
+    fig.savefig("simpson_jitter.pdf")
 
+    fig, axs = plt.subplots(2, 2)
     grouped_data = [y[discrete_treatment == g] for g in ints_treatment]
     axs[0, 1].boxplot(grouped_data, labels=ints_treatment)
     axs[0, 1].set_title(f"{na_confounder}s combined")
