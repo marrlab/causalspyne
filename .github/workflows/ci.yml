@@ -31,19 +31,6 @@ jobs:
             --cov-report=xml:coverage.xml \
             --cov-report=html:htmlcov
 
-      - name: Deploy coverage preview
-        if: github.event_name == 'pull_request'
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: htmlcov
-          clean: false
-          token: ${{ secrets.GITHUB_TOKEN }}
-          target-folder: pr-${{ github.event.number }}
-
-      - name: "View coverage report: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr-${{ github.event.number }}/index.html"
-        if: github.event_name == 'pull_request'
-        run: echo "Preview deployed at https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr-${{ github.event.number }}/index.html"
-
       - name: Generate coverage badge
         if: github.ref == 'refs/heads/main'
         run: |
