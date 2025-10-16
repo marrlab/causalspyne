@@ -11,9 +11,6 @@ jobs:
   test:
     name: Run tests and generate coverage
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: causalspyne
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
