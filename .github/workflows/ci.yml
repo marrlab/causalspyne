@@ -42,5 +42,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          clean: true
           folder: htmlcov
