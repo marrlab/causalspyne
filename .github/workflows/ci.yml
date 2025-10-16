@@ -35,7 +35,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           python -m pip install genbadge[coverage]
-          genbadge coverage -i - < coverage.xml > coverage-badge.svg
+          genbadge coverage -i - < coverage.xml > htmlcov/coverage-badge.svg
 
       - name: Deploy production coverage
         if: github.ref == 'refs/heads/main'
