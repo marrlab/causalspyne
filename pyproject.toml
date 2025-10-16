@@ -1,6 +1,6 @@
 [project]
 name = "causalspyne"
-version = "0.1.5"
+version = "0.1.6"
 description = "hierarchical data generation for causal discovery and abstraction"
 readme = "README.md"
 requires-python = ">=3.12"
