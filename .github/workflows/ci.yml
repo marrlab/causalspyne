@@ -33,7 +33,7 @@ jobs:
 
       - name: Generate coverage badge
         if: github.ref == 'refs/heads/main'
-        run: uv run genbadge coverage -i - < coverage.xml > coverage-badge.svg
+        run: uv run genbadge coverage -i - < coverage.xml > htmlcov/coverage-badge.svg
 
       - name: Deploy production coverage
         if: github.ref == 'refs/heads/main'
@@ -41,6 +41,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           clean: true
-          folder:
-            - htmlcov
-            - coverage-badge.svg
+          folder: htmlcov
