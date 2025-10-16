@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    name: Run tests and generate coverage
+    name: Run tests, generate coverage, and deploy
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -44,40 +44,12 @@ jobs:
           python -m pip install genbadge[coverage]
           genbadge coverage -i - < coverage.xml > htmlcov/coverage-badge.svg
 
-  deploy-preview:
-    name: Deploy Preview Coverage
-    runs-on: ubuntu-latest
-    needs: test
-    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
-    environment:
-      name: preview
-      url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/uv-preview/
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Deploy to Preview
+      - name: Deploy Coverage to Preview or Production
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: htmlcov
           clean: true
           token: ${{ secrets.GITHUB_TOKEN }}
-
-  deploy-production:
-    name: Deploy Production Coverage
-    runs-on: ubuntu-latest
-    needs: test
-    if: github.ref == 'refs/heads/main'
-    environment:
-      name: github-pages
-      url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Deploy to Production
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: htmlcov
-          clean: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
