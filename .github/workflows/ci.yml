@@ -33,7 +33,9 @@ jobs:
 
       - name: Generate coverage badge
         if: github.ref == 'refs/heads/main'
-        run: uv run genbadge coverage -i - < coverage.xml > htmlcov/coverage-badge.svg
+        run: |
+          mkdir -p htmlcov
+          uv run genbadge coverage -i coverage.xml -o htmlcov/coverage-badge.svg
 
       - name: Deploy production coverage
         if: github.ref == 'refs/heads/main'
