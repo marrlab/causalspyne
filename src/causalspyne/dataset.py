@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 from matplotlib.lines import Line2D
 
+import pandas as pd
+
 from causalspyne.dag_interface import MatDAG
 from causalspyne.noise_idiosyncratic import Idiosyncratic
 from causalspyne.data_gen import DataGen
@@ -44,13 +46,18 @@ def simpson(size_sample=200, p=0.2,
     return scenario, treatment, effect
 
 
-def visualize_simpson(scenario, treatment, effect,
-                      na_treatment="algorithm", na_confounder="scenario",
-                      cut_off=0.75):
-    x = treatment
+def tablize_simpson(scenario, treatment, effect, cut_off=0.75):
     y = effect
-    y = (y - np.min(y)) / (np.max(y) - np.min(y))
+    effect = (y - np.min(y)) / (np.max(y) - np.min(y))
+    if cut_off > 0:
+        discrete_treatment = convert2discrete(scenario, treatment, cut_off)
+    else:
+        discrete_treatment = treatment
+    arr_discrete_aug = np.column_stack((scenario, discrete_treatment, effect))
+    return arr_discrete_aug
 
+
+def convert2discrete(scenario, x, cut_off):
     ints_scenarios = np.unique(scenario)
 
     median_treatment = np.quantile(x, cut_off)
@@ -60,7 +67,19 @@ def visualize_simpson(scenario, treatment, effect,
         (scenario == ints_scenarios[0]) & (x > median_treatment)] = 1
     discrete_treatment[
         (scenario == ints_scenarios[1]) & (x > median_treatment)] = 1
-    # arr_discrete_aug = np.column_stack((arr, di[crete_treatment))
+    return discrete_treatment
+
+
+def visualize_simpson(scenario, treatment, effect,
+                      na_treatment="algorithm", na_confounder="scenario",
+                      cut_off=0.75):
+    x = treatment
+    y = effect
+    y = (y - np.min(y)) / (np.max(y) - np.min(y))
+
+    ints_scenarios = np.unique(scenario)
+
+    discrete_treatment = convert2discrete(scenario, x, cut_off)
 
     ints_treatment = np.unique(discrete_treatment)
 
@@ -125,3 +144,42 @@ def visualize_simpson(scenario, treatment, effect,
     fig.suptitle('simpson treatment effect')
     fig.tight_layout()
     return fig
+
+
+def adjust_simpson(scenario, treatment, effect):
+    tab = tablize_simpson(scenario, treatment, effect)
+    df = pd.DataFrame(tab, columns=["scenario", "treatment", "effect"])
+    df_sampled = df.groupby(['scenario', 'treatment']).apply(
+        lambda x: x.sample(n=3, random_state=42)).reset_index(drop=True)
+    to_latex(df_sampled, "dataste", index=False)
+
+    df_scenario = df['scenario'].value_counts(normalize=True).rename("p")
+    to_latex(df_scenario, "scenarioPrior")
+
+    df_treatment = df['treatment'].value_counts(normalize=True)
+    to_latex(df_treatment, "treatmentMarginal")
+
+    df_t_s = df.groupby('scenario')['treatment'].value_counts(
+        normalize=True).rename('p(treatment | scenario)')
+    to_latex(df_t_s, "treatmentScenario")
+
+    df_s_t = df.groupby('treatment')['scenario'].value_counts(
+        normalize=True).rename('p(scenario | treatment)')
+    to_latex(df_s_t, "scenarioTreatment")
+
+    df_e_st = df.groupby(['scenario', 'treatment'])['effect'].mean().rename(
+        'E(effect | scenario, treatment)')
+    to_latex(df_e_st, "effectScenarioTreatment")
+    return df_scenario
+
+
+def to_latex(df, na, index=True):
+    latex_table = df.to_latex(
+        index=index,
+        buf=na + ".tex",
+        caption=na,
+        label="tab:mean_example",
+        column_format="l l r",
+        float_format="{:0.2f}".format,
+        escape=False)
+    return latex_table
