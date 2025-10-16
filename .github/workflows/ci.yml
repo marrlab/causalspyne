@@ -52,9 +52,6 @@ jobs:
     environment:
       name: preview
       url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/uv-preview/
-    defaults:
-      run:
-        working-directory: causalspyne
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -74,9 +71,6 @@ jobs:
     environment:
       name: github-pages
       url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
-    defaults:
-      run:
-        working-directory: causalspyne
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
