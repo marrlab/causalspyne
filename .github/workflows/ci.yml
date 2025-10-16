@@ -16,7 +16,7 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-      - run: uv sync
+      - run: uv sync --with dev
       - run: |
           rm -rf htmlcov coverage.xml
           uv run pytest \
