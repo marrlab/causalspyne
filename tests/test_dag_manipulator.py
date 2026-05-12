@@ -19,10 +19,11 @@ def test_data_gen_linear_gaussian():
     # DAGManipulator(dag)
 
 
-def test_data_dag_subview():
+def test_data_dag_subview(tmp_path, monkeypatch):
     """
     test linear gaussian data gen
     """
+    monkeypatch.chdir(tmp_path)
     simple_dag_gen = GenDAG(num_nodes=3, degree=2, rng=default_rng(0))
     dag_gen = GenDAG2Level(
         dag_generator=simple_dag_gen, num_macro_nodes=2, rng=default_rng(0)

@@ -10,10 +10,11 @@ from causalspyne.is_dag import is_dag
 from causalspyne.draw_dags import draw_dags_nx
 
 
-def test_gen_dag_2level():
+def test_gen_dag_2level(tmp_path, monkeypatch):
     """
     test 2 level generation of DAGs
     """
+    monkeypatch.chdir(tmp_path)
 
     dag_gen = GenDAG(num_nodes=3, degree=2, rng=default_rng(0))
     gen = GenDAG2Level(dag_generator=dag_gen, num_macro_nodes=3, rng=default_rng(0))

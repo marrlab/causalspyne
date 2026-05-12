@@ -8,11 +8,10 @@ from causalspyne.dag_gen import GenDAG
 from causalspyne.dag_viewer import DAGView
 from causalspyne.dag2ancestral import DAG2Ancestral
 
-
-
-def test_data_dag2ancestral():
+def test_data_dag2ancestral(tmp_path, monkeypatch):
     """
     """
+    monkeypatch.chdir(tmp_path)
     simple_dag_gen = GenDAG(num_nodes=3, degree=2, rng=default_rng(0))
     dag_gen = GenDAG2Level(
         dag_generator=simple_dag_gen, num_macro_nodes=3, rng=default_rng(0)

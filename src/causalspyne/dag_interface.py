@@ -3,12 +3,12 @@ class method for DAG operations and check
 """
 
 import numpy as np
-from numpy.random import default_rng
 import pandas as pd
 
 from causalspyne.is_dag import is_dag
 from causalspyne.utils_topological_sort import topological_sort
 from causalspyne.draw_dags import draw_dags_nx
+from causalspyne.utils_random import coerce_rng
 
 
 def add_prefix(string, prefix="", separator="u"):
@@ -40,9 +40,10 @@ class MatDAG:
         separator="_",
         list_node_names=None,
         parent_list_node_names=None,
-        rng=default_rng(0),
+        rng=None,
     ):
         """ """
+        rng = coerce_rng(rng, seed=0)
         self._obj_gen_weight = None
         self.separator = separator
         self.name_prefix = name_prefix

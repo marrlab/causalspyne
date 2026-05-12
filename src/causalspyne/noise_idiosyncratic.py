@@ -3,8 +3,9 @@ import numpy as np
 
 
 class Idiosyncratic:
-    def __init__(self, class_name, rng, dict_params={}):
+    def __init__(self, class_name, rng, dict_params=None):
         """ """
+        dict_params = dict_params or {}
         class_gen = getattr(sys.modules[__name__], class_name)
         if bool(dict_params):
             self.noise = class_gen(rng=rng,
@@ -18,7 +19,9 @@ class Idiosyncratic:
 
 
 class Gaussian:
-    def __init__(self, rng, dict_params={"std":1.0}):
+    def __init__(self, rng, dict_params=None):
+        if dict_params is None:
+            dict_params = {"std": 1.0}
         self.mean = 0.0
         self.noise_std = dict_params["std"]
         self.rng = rng
@@ -30,7 +33,9 @@ class Gaussian:
 
 
 class Gamma:
-    def __init__(self, rng, dict_params={"shape":1, "scale":2.0}):
+    def __init__(self, rng, dict_params=None):
+        if dict_params is None:
+            dict_params = {"shape": 1, "scale": 2.0}
         # shape: The shape parameter of the gamma distribution (k > 0)
         # scale: The scale parameter of the gamma distribution
         # (theta > 0, default is 1.0)
@@ -49,7 +54,9 @@ class Gamma:
 
 
 class Bernoulli:
-    def __init__(self, rng, dict_params={"p":0.5}):
+    def __init__(self, rng, dict_params=None):
+        if dict_params is None:
+            dict_params = {"p": 0.5}
         self.p = dict_params["p"]
         self.rng = rng
 

@@ -4,20 +4,21 @@ concrete class to generate simple DAGs
 """
 
 import warnings
-from numpy.random import default_rng
 
 from causalspyne.erdo_renyi_plp import Erdos_Renyi_PLP
 from causalspyne.dag_interface import MatDAG
 from causalspyne.weight import WeightGenWishart
 from causalspyne.dag_manipulator import DAGManipulator
+from causalspyne.utils_random import coerce_rng
 
 
 class GenDAG:
     def __init__(self, num_nodes, degree, obj_gen_weight=None,
-                 rng=default_rng()):
+                 rng=None):
         """
         degree: expected degree for each node
         """
+        rng = coerce_rng(rng)
         self.num_nodes = num_nodes
         self.degree = degree
         self.strategy_gen_dag = Erdos_Renyi_PLP(rng)

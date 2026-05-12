@@ -3,24 +3,25 @@ generate Linear Gaussian
 """
 
 import numpy as np
-from numpy.random import default_rng
 
 from causalspyne.noise_idiosyncratic import Idiosyncratic
 from causalspyne.edge_models import EdgeModelLinear
+from causalspyne.utils_random import coerce_rng
 
 
 class DataGen:
     def __init__(self, dag, edge_model=None,
                  dft_noise: str="Gaussian",
-                 dict_params: dict={},
-                 idiosynchratic: dict[int, Idiosyncratic]={},
-                 rng=default_rng(0)):
+                 dict_params: dict | None=None,
+                 idiosynchratic: dict[int, Idiosyncratic] | None=None,
+                 rng=None):
+        rng = coerce_rng(rng, seed=0)
         self.dag = dag
-        self.dict_idiosyncratic = idiosynchratic
+        self.dict_idiosyncratic = idiosynchratic or {}
 
         self.idiosyncratic = Idiosyncratic(class_name=dft_noise,
                                            rng=rng,
-                                           dict_params=dict_params)
+                                           dict_params=dict_params or {})
         self.edge_model = edge_model
         if edge_model is None:
             self.edge_model = EdgeModelLinear(self.dag)

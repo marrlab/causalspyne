@@ -3,7 +3,6 @@ generate DAG and its marginal DAG
 """
 
 from datetime import datetime
-
 try:
     from contextlib import chdir
 except Exception:
@@ -12,7 +11,6 @@ except Exception:
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from numpy.random import default_rng
 
 from causalspyne.gen_dag_2level import GenDAG2Level
 from causalspyne.dag_gen import GenDAG
@@ -20,16 +18,17 @@ from causalspyne.dag_viewer import DAGView
 from causalspyne.dag2ancestral import DAG2Ancestral
 
 from causalspyne.draw_dags import draw_dags_nx
+from causalspyne.utils_random import coerce_rng
 
 
 def gen_partially_observed(
     degree=2,
-    list_confounder2hide=[0.5, 0.9],
+    list_confounder2hide=None,
     size_micro_node_dag=4,
     num_macro_nodes=4,
     num_sample=200,
     output_dir="output/",
-    rng=default_rng(),
+    rng=None,
     dft_noise="Gaussian",
     graphviz=False,
     plot=True,
@@ -37,8 +36,12 @@ def gen_partially_observed(
     """
     sole function as user interface
     """
+    if list_confounder2hide is None:
+        list_confounder2hide = [0.5, 0.9]
+    rng = coerce_rng(rng)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_")
-    Path(output_dir).mkdir(parents=True, exist_ok=True)
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     simple_dag_gen = GenDAG(num_nodes=size_micro_node_dag,
                             degree=degree, rng=rng)
@@ -50,11 +53,11 @@ def gen_partially_observed(
     )
     dag = dag_gen.run()
     dag.to_binary_csv(benchpress=False,
-                      name=output_dir + f"ground_truth_dag_{timestamp}d.csv")
+                      name=output_dir / f"ground_truth_dag_{timestamp}d.csv")
 
     subview = DAGView(dag=dag, rng=rng, dft_noise=dft_noise)
     return re_hide(subview, dag, num_sample, list_confounder2hide, output_dir,
-                   graphviz, timestamp, plot=True)
+                   graphviz, timestamp, plot=plot)
 
 
 def ordered_ind_col2global_ind(inds_cols, subview_global_inds):
@@ -72,8 +75,6 @@ def re_hide(subview, dag, num_sample, list_confounder2hide, output_dir,
         num_samples=num_sample, confound=True,
         list_nodes2hide=list_confounder2hide
     )
-    with chdir(output_dir):
-        subview.to_csv()
     str_node2hide = subview.str_node2hide
 
     dag2ancestral = DAG2Ancestral(dag.mat_adjacency)
@@ -112,6 +113,7 @@ def re_hide(subview, dag, num_sample, list_confounder2hide, output_dir,
         if plot:
             fig.savefig(f"graph_compare_{timestamp}dags.pdf", format="pdf")
             fig.savefig(f"graph_compare_{timestamp}dags.svg", format="svg")
+            plt.close(fig)
         with open("hidden_nodes.csv", "w") as outfile:
             outfile.write(
                 ",".join(str(node) for node in

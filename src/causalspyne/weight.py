@@ -1,13 +1,12 @@
-from numpy.random import default_rng
-
 from causalspyne.wishart import gen_weight_matrix
+from causalspyne.utils_random import coerce_rng
 
 
 class WeightGenUniform:
-    def __init__(self, list_weight_range, prob_neg_weights=0.5, rng=default_rng(0)):
+    def __init__(self, list_weight_range, prob_neg_weights=0.5, rng=None):
         self.list_weight_range = list_weight_range
         self.prob_neg_weights = prob_neg_weights
-        self.rng = rng
+        self.rng = coerce_rng(rng, seed=0)
 
     def gen(self, num_nodes):
         """
@@ -32,9 +31,9 @@ class WeightGenUniform:
 
 
 class WeightGenWishart(WeightGenUniform):
-    def __init__(self, prob_neg_weights=0.5, rng=default_rng(0)):
+    def __init__(self, prob_neg_weights=0.5, rng=None):
         self.prob_neg_weights = prob_neg_weights
-        self.rng = rng
+        self.rng = coerce_rng(rng, seed=0)
 
     def gen(self, num_nodes):
         """

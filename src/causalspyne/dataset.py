@@ -102,14 +102,14 @@ def visualize_simpson(scenario, treatment, effect,
 
     fig, axs = plt.subplots(2, 2)
     grouped_data = [y[discrete_treatment == g] for g in ints_treatment]
-    axs[0, 1].boxplot(grouped_data, labels=ints_treatment)
+    axs[0, 1].boxplot(grouped_data, tick_labels=ints_treatment)
     axs[0, 1].set_title(f"{na_confounder}s combined")
     axs[0, 1].set_xlabel(f'{na_treatment}')
     axs[0, 1].set_ylabel('performance')
     y0 = y[scenario == ints_scenarios[0]]
     discrete_treatment0 = discrete_treatment[scenario == ints_scenarios[0]]
     grouped_data0 = [y0[discrete_treatment0 == g] for g in ints_treatment]
-    axs[1, 0].boxplot(grouped_data0, labels=ints_treatment)
+    axs[1, 0].boxplot(grouped_data0, tick_labels=ints_treatment)
     axs[1, 0].set_title(f"{na_confounder} {ints_scenarios[0]}")
     axs[1, 0].set_xlabel(f'{na_treatment}')
     axs[1, 0].set_ylabel('performance')
@@ -117,7 +117,7 @@ def visualize_simpson(scenario, treatment, effect,
     y1 = y[scenario == ints_scenarios[1]]
     discrete_treatment1 = discrete_treatment[scenario == ints_scenarios[1]]
     grouped_data1 = [y1[discrete_treatment1 == g] for g in ints_treatment]
-    axs[1, 1].boxplot(grouped_data1, labels=ints_treatment)
+    axs[1, 1].boxplot(grouped_data1, tick_labels=ints_treatment)
     axs[1, 1].set_title(f"{na_confounder} {ints_scenarios[1]}")
     axs[1, 1].set_xlabel(f'{na_treatment}')
     axs[1, 1].set_ylabel('performance')

@@ -2,11 +2,10 @@
 2-level DAG generation
 """
 
-from numpy.random import default_rng
-
 from causalspyne.dag_stack_indexer import DAGStackIndexer
 from causalspyne.dag_manipulator import DAGManipulator
 from causalspyne.weight import WeightGenWishart
+from causalspyne.utils_random import coerce_rng
 
 
 class GenDAG2Level:
@@ -16,8 +15,9 @@ class GenDAG2Level:
     """
 
     def __init__(
-        self, dag_generator, num_macro_nodes, max_num_local_nodes=4, rng=default_rng()
+        self, dag_generator, num_macro_nodes, max_num_local_nodes=4, rng=None
     ):
+        rng = coerce_rng(rng)
         self.dag_generator = dag_generator
         self.num_macro_nodes = num_macro_nodes
         self.max_num_local_nodes = max_num_local_nodes

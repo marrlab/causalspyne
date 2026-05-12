@@ -10,10 +10,11 @@ from causalspyne.dag_gen import GenDAG
 from causalspyne.dag_viewer import DAGView
 
 
-def test_data_dag_subview():
+def test_data_dag_subview(tmp_path, monkeypatch):
     """
     test linear gaussian data gen
     """
+    monkeypatch.chdir(tmp_path)
     simple_dag_gen = GenDAG(num_nodes=3, degree=2, rng=default_rng(0))
     dag_gen = GenDAG2Level(
         dag_generator=simple_dag_gen, num_macro_nodes=2, rng=default_rng(0)
@@ -27,10 +28,11 @@ def test_data_dag_subview():
     subview.visualize(title="dag_marginal")
 
 
-def test_data_dag_subview_confounder():
+def test_data_dag_subview_confounder(tmp_path, monkeypatch):
     """
     test linear gaussian data gen
     """
+    monkeypatch.chdir(tmp_path)
     simple_dag_gen = GenDAG(num_nodes=3, degree=2, rng=default_rng(0))
     dag_gen = GenDAG2Level(
         dag_generator=simple_dag_gen, num_macro_nodes=2, rng=default_rng(0)
@@ -44,10 +46,11 @@ def test_data_dag_subview_confounder():
     subview.visualize(title="dag_marginal_confounder")
 
 
-def test_data_dag_subview_confounder_percentage():
+def test_data_dag_subview_confounder_percentage_single(tmp_path, monkeypatch):
     """
     test linear gaussian data gen
     """
+    monkeypatch.chdir(tmp_path)
     simple_dag_gen = GenDAG(num_nodes=4, degree=2, rng=default_rng(0))
     dag_gen = GenDAG2Level(
         dag_generator=simple_dag_gen, num_macro_nodes=4, rng=default_rng(0)
@@ -61,10 +64,11 @@ def test_data_dag_subview_confounder_percentage():
     subview.visualize(title="dag_marginal_confounder")
 
 
-def test_data_dag_subview_confounder_percentage():
+def test_data_dag_subview_confounder_percentage_multiple(tmp_path, monkeypatch):
     """
     test linear gaussian data gen
     """
+    monkeypatch.chdir(tmp_path)
     simple_dag_gen = GenDAG(num_nodes=4, degree=2, rng=default_rng(0))
     dag_gen = GenDAG2Level(
         dag_generator=simple_dag_gen, num_macro_nodes=4, rng=default_rng(0)

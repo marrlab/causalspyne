@@ -5,11 +5,11 @@ create different views for the same DAG by hiding some variables
 import warnings
 
 import numpy as np
-from numpy.random import default_rng
 import pandas as pd
 
 from causalspyne.data_gen import DataGen
 from causalspyne.dag_interface import MatDAG
+from causalspyne.utils_random import coerce_rng
 
 
 def process_list2hide(list_ind_or_percentage, total_num):
@@ -44,7 +44,8 @@ class DAGView:
     with ground truth DAG intact, only show subgraph
     """
 
-    def __init__(self, dag, dft_noise, rng=default_rng(0)):
+    def __init__(self, dag, dft_noise, rng=None):
+        rng = coerce_rng(rng, seed=0)
         self._dag = dag
         # there is no need to use a full DAG to represent subdag
         # since sub-dag is not responsible for data generation
