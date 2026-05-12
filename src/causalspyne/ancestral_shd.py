@@ -3,6 +3,7 @@
 
 from causallearn.utils.DAG2PAG import dag2pag
 from causallearn.graph.Dag import Dag
+from causallearn.graph.GraphNode import GraphNode
 import numpy as np
 
 # class ancestral_shd():
@@ -31,10 +32,13 @@ def structural_hamming_distance(true_dag, true_hidden_nodes, prediction):
     if (n, n) != prediction.shape:
         raise ValueError("Graphs must have the same number of nodes")
 
-    cl_dag = Dag(range(len(true_dag)))
+    nodes = [GraphNode(f"X{i}") for i in range(len(true_dag))]
+    hidden_nodes = [nodes[int(ind)] for ind in true_hidden_nodes]
+
+    cl_dag = Dag(nodes)
     for ch, pa in np.argwhere(true_dag):
-        cl_dag.add_directed_edge(pa, ch)
-    true_pag = dag2pag(cl_dag, true_hidden_nodes)
+        cl_dag.add_directed_edge(nodes[pa], nodes[ch])
+    true_pag = dag2pag(cl_dag, hidden_nodes)
 
     total_shd = np.sum(true_pag.graph != prediction)
 
