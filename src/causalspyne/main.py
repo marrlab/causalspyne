@@ -25,6 +25,7 @@ def gen_partially_observed(
     degree=2,
     list_confounder2hide=None,
     size_micro_node_dag=4,
+    max_num_local_nodes=4,
     num_macro_nodes=4,
     num_sample=200,
     output_dir="output/",
@@ -46,10 +47,12 @@ def gen_partially_observed(
     simple_dag_gen = GenDAG(num_nodes=size_micro_node_dag,
                             degree=degree, rng=rng)
 
-    # num_macro_nodes will overwrite behavior
     dag_gen = GenDAG2Level(
         dag_generator=simple_dag_gen,
-        num_macro_nodes=num_macro_nodes, rng=rng
+        num_macro_nodes=num_macro_nodes,
+        num_micro_nodes=size_micro_node_dag,
+        max_num_local_nodes=max_num_local_nodes,
+        rng=rng,
     )
     dag = dag_gen.run()
     dag.to_binary_csv(benchpress=False,

@@ -28,7 +28,7 @@ class GenDAG:
         self.dag_manipulator = None
         self.rng = rng
 
-    def gen_dag(self, num_nodes=None, prefix="", target_num_confounder=2):
+    def gen_dag(self, num_nodes=None, prefix="", *, target_num_confounder):
         """
         generate DAG and wrap it around with interface
         """

@@ -17,7 +17,10 @@ def test_data_dag_subview(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     simple_dag_gen = GenDAG(num_nodes=3, degree=2, rng=default_rng(0))
     dag_gen = GenDAG2Level(
-        dag_generator=simple_dag_gen, num_macro_nodes=2, rng=default_rng(0)
+        dag_generator=simple_dag_gen,
+        num_macro_nodes=2,
+        num_micro_nodes=3,
+        rng=default_rng(0),
     )
     dag = dag_gen.run()
     dag.visualize(title="dag_complete")
@@ -35,7 +38,10 @@ def test_data_dag_subview_confounder(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     simple_dag_gen = GenDAG(num_nodes=3, degree=2, rng=default_rng(0))
     dag_gen = GenDAG2Level(
-        dag_generator=simple_dag_gen, num_macro_nodes=2, rng=default_rng(0)
+        dag_generator=simple_dag_gen,
+        num_macro_nodes=2,
+        num_micro_nodes=3,
+        rng=default_rng(0),
     )
     dag = dag_gen.run()
     dag.visualize(title="dag_complete_confounder")
@@ -53,7 +59,10 @@ def test_data_dag_subview_confounder_percentage_single(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     simple_dag_gen = GenDAG(num_nodes=4, degree=2, rng=default_rng(0))
     dag_gen = GenDAG2Level(
-        dag_generator=simple_dag_gen, num_macro_nodes=4, rng=default_rng(0)
+        dag_generator=simple_dag_gen,
+        num_macro_nodes=4,
+        num_micro_nodes=4,
+        rng=default_rng(0),
     )
     dag = dag_gen.run()
     dag.visualize(title="dag_complete_confounder")
@@ -71,7 +80,10 @@ def test_data_dag_subview_confounder_percentage_multiple(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     simple_dag_gen = GenDAG(num_nodes=4, degree=2, rng=default_rng(0))
     dag_gen = GenDAG2Level(
-        dag_generator=simple_dag_gen, num_macro_nodes=4, rng=default_rng(0)
+        dag_generator=simple_dag_gen,
+        num_macro_nodes=4,
+        num_micro_nodes=4,
+        rng=default_rng(0),
     )
     dag = dag_gen.run()
     dag.visualize(title="dag_complete_confounder2")

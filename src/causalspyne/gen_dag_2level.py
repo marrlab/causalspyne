@@ -15,11 +15,17 @@ class GenDAG2Level:
     """
 
     def __init__(
-        self, dag_generator, num_macro_nodes, max_num_local_nodes=4, rng=None
+        self,
+        dag_generator,
+        num_macro_nodes,
+        num_micro_nodes,
+        max_num_local_nodes=4,
+        rng=None,
     ):
         rng = coerce_rng(rng)
         self.dag_generator = dag_generator
         self.num_macro_nodes = num_macro_nodes
+        self.num_micro_nodes = num_micro_nodes
         self.max_num_local_nodes = max_num_local_nodes
 
         self.global_dag_indexer = None
@@ -35,9 +41,13 @@ class GenDAG2Level:
         """
         # iterate each macro node
         for name in self.dag_backbone.list_node_names:
-            num_nodes = self.rng.integers(2, self.max_num_local_nodes + 1)
+            num_nodes = self.num_micro_nodes
+            if num_nodes is None:
+                num_nodes = self.rng.integers(2, self.max_num_local_nodes + 1)
             self.dict_macro_node2dag[name] = self.dag_generator.gen_dag(
-                num_nodes=num_nodes, prefix=name
+                num_nodes=num_nodes,
+                prefix=name,
+                target_num_confounder=2,
             )
         self.global_dag_indexer = DAGStackIndexer(self)
 
@@ -90,7 +100,9 @@ class GenDAG2Level:
         """
 
         # generate dag_backbone DAG with only macro nodes
-        self.dag_backbone = self.dag_generator.gen_dag(self.num_macro_nodes)
+        self.dag_backbone = self.dag_generator.gen_dag(
+            self.num_macro_nodes, target_num_confounder=2
+        )
         self.populate_macro_node()
         self.interconnection()
         self.dag_refined.check()

@@ -17,7 +17,10 @@ def test_data_gen_linear_gaussian(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     simple_dag_gen = GenDAG(num_nodes=3, degree=2, rng=default_rng(0))
     dag_gen = GenDAG2Level(
-        dag_generator=simple_dag_gen, num_macro_nodes=2, rng=default_rng(0)
+        dag_generator=simple_dag_gen,
+        num_macro_nodes=2,
+        num_micro_nodes=3,
+        rng=default_rng(0),
     )
     dag = dag_gen.run()
     gen_data = DataGen(dag, rng=default_rng(0))
