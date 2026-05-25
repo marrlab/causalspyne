@@ -14,14 +14,18 @@ from causalspyne.utils_random import coerce_rng
 
 class GenDAG:
     def __init__(self, num_nodes, degree, obj_gen_weight=None,
-                 rng=None):
+                 rng=None, strategy_cls=None):
         """
         degree: expected degree for each node
+        strategy_cls: callable class that takes rng and returns a skeleton
+            generator; defaults to Erdos_Renyi_PLP
         """
         rng = coerce_rng(rng)
         self.num_nodes = num_nodes
         self.degree = degree
-        self.strategy_gen_dag = Erdos_Renyi_PLP(rng)
+        if strategy_cls is None:
+            strategy_cls = Erdos_Renyi_PLP
+        self.strategy_gen_dag = strategy_cls(rng)
         self.obj_gen_weight = obj_gen_weight
         if obj_gen_weight is None:
             self.obj_gen_weight = WeightGenWishart(rng=rng)

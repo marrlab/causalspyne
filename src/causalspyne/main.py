@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 
 from causalspyne.gen_dag_2level import GenDAG2Level
 from causalspyne.dag_gen import GenDAG
+from causalspyne.dag_gen_topo_order import RootConfounderDAG
 from causalspyne.dag_viewer import DAGView
 from causalspyne.dag2ancestral import DAG2Ancestral
 
@@ -61,6 +62,104 @@ def gen_partially_observed(
     subview = DAGView(dag=dag, rng=rng, dft_noise=dft_noise)
     return re_hide(subview, dag, num_sample, list_confounder2hide, output_dir,
                    graphviz, timestamp, plot=plot)
+
+
+def gen_root_confounder_hidden(
+    degree=2,
+    size_micro_node_dag=4,
+    max_num_local_nodes=4,
+    num_macro_nodes=4,
+    num_sample=200,
+    output_dir="output/",
+    rng=None,
+    dft_noise="Gaussian",
+    graphviz=False,
+    plot=True,
+):
+    """
+    FCI benchmark where the root macro node (guaranteed confounder) is
+    entirely hidden. Uses RootConfounderDAG for the macro backbone so the
+    root always confounds at least two other macro nodes, then hides all
+    micro nodes belonging to that root macro cluster.
+    """
+    rng = coerce_rng(rng)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_")
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    simple_dag_gen = GenDAG(
+        num_nodes=size_micro_node_dag,
+        degree=degree,
+        rng=rng,
+        strategy_cls=RootConfounderDAG,
+    )
+
+    dag_gen = GenDAG2Level(
+        dag_generator=simple_dag_gen,
+        num_macro_nodes=num_macro_nodes,
+        num_micro_nodes=size_micro_node_dag,
+        max_num_local_nodes=max_num_local_nodes,
+        rng=rng,
+    )
+    dag = dag_gen.run()
+    dag.to_binary_csv(benchpress=False,
+                      name=output_dir / f"ground_truth_dag_{timestamp}d.csv")
+
+    # hide all micro nodes of every root macro node
+    root_names = dag_gen.get_root_macro_names()
+    list_global_inds_to_hide = []
+    for name in root_names:
+        list_global_inds_to_hide.extend(dag_gen.get_macro_node_global_inds(name))
+
+    subview = DAGView(dag=dag, rng=rng, dft_noise=dft_noise)
+    # DAGView.hide_top_order expects topological-order positions, not global indices
+    topo_positions = [dag.list_ind_nodes_sorted.index(g)
+                      for g in list_global_inds_to_hide]
+    subview._data_arr = subview.data_gen.gen(num_sample)
+    subview.hide_top_order(topo_positions)
+
+    return re_hide_by_inds(subview, dag, list_global_inds_to_hide,
+                           output_dir, graphviz, timestamp, plot=plot)
+
+
+def re_hide_by_inds(subview, dag, list_global_inds_to_hide,
+                    output_dir, graphviz, timestamp, plot=True):
+    """Like re_hide but uses pre-computed global indices instead of percentages."""
+    dag2ancestral = DAG2Ancestral(dag.mat_adjacency)
+    pred_ancestral_graph_mat = dag2ancestral.run(list_global_inds_to_hide)
+
+    if plot:
+        fig, (ax1, ax2, ax3) = plt.subplots(1, 3)
+        str_hidden = "_".join(str(i) for i in list_global_inds_to_hide)
+        mtitle = "hide_root_" + str_hidden
+        fig.suptitle(mtitle)
+
+        dag.visualize(title="DAG", ax=ax1, graphviz=graphviz)
+        ax1.set_title("DAG")
+
+        draw_dags_nx(
+            pred_ancestral_graph_mat,
+            dict_ind2name={
+                i: name for i, name in enumerate(sorted(subview.node_names))
+            },
+            title="ancestral",
+            ax=ax2,
+            graphviz=graphviz,
+        )
+        ax2.set_title("ancestral")
+
+        subview.visualize(title="subDAG", ax=ax3, graphviz=graphviz)
+        ax3.set_title("subDAG")
+
+    with chdir(output_dir):
+        subview.to_csv()
+        if plot:
+            fig.savefig(f"graph_compare_{timestamp}dags.pdf", format="pdf")
+            fig.savefig(f"graph_compare_{timestamp}dags.svg", format="svg")
+            plt.close(fig)
+        with open("hidden_nodes.csv", "w") as outfile:
+            outfile.write(",".join(str(i) for i in list_global_inds_to_hide))
+    return subview
 
 
 def ordered_ind_col2global_ind(inds_cols, subview_global_inds):

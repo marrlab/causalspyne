@@ -94,6 +94,21 @@ class GenDAG2Level:
         self.dag_manipulator.mk_confound(ind_arbitrary)
         print(self.dag_refined.num_confounder)
 
+    def get_macro_node_global_inds(self, macro_name):
+        """Return the list of global micro-node indices for a given macro node name."""
+        ind_macro = list(self.dag_backbone.list_node_names).index(macro_name)
+        num_micro = self.global_dag_indexer.dict_num[macro_name]
+        start = self.global_dag_indexer.list_accum_count[ind_macro]
+        return list(range(start, start + num_micro))
+
+    def get_root_macro_names(self):
+        """Return names of macro nodes that have no incoming edges (roots)."""
+        mat = self.dag_backbone.mat_adjacency
+        return [
+            name for i, name in enumerate(self.dag_backbone.list_node_names)
+            if mat[i, :].sum() == 0
+        ]
+
     def run(self):
         """
         generation
