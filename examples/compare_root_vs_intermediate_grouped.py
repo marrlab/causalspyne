@@ -23,8 +23,7 @@ import pandas as pd
 from scipy import stats
 from causallearn.search.ConstraintBased.FCI import fci
 
-from causalspyne.main import gen_partially_observed
-from causalspyne.dag_gen_topo_order import RootConfounderDAG
+from causalspyne.benchmark_fci import run_paired_scenarios, SCENARIO_HIDDEN
 from causalspyne.ancestral_shd import structural_hamming_distance
 
 try:
@@ -33,47 +32,35 @@ except ImportError:
     tqdm = None
 
 SCENARIOS = {
-    "root":         {"label": "Root hidden",         "hidden": [0]},
-    "intermediate": {"label": "Intermediate hidden", "hidden": [1.0]},
+    "root":         {"label": "Root hidden"},
+    "intermediate": {"label": "Intermediate hidden"},
 }
 
 
 def run_one_seed(seed, num_macro_nodes, args):
-    """Run both scenarios on the same DAG. Returns (root_shd, intermediate_shd)."""
+    """Run both scenarios on the same DAG using core benchmark logic."""
+    paired = run_paired_scenarios(
+        seed=seed,
+        num_macro_nodes=num_macro_nodes,
+        size_micro_node_dag=args.size_micro_node_dag,
+        max_num_local_nodes=args.max_num_local_nodes,
+        degree=args.degree,
+        num_sample=args.samples,
+        output_dir=str(args.output_dir / f"macro{num_macro_nodes}"),
+    )
     results = {}
-    for scenario_name, scenario in SCENARIOS.items():
-        run_dir = (args.output_dir / f"macro{num_macro_nodes}"
-                   / scenario_name / f"seed_{seed}")
-        run_dir.mkdir(parents=True, exist_ok=True)
-
-        import io, contextlib
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
-            subview = gen_partially_observed(
-                size_micro_node_dag=args.size_micro_node_dag,
-                max_num_local_nodes=args.max_num_local_nodes,
-                num_macro_nodes=num_macro_nodes,
-                degree=args.degree,
-                list_confounder2hide=scenario["hidden"],
-                num_sample=args.samples,
-                output_dir=run_dir,
-                rng=seed,
-                plot=False,
-                strategy_cls=RootConfounderDAG,
-            )
-
+    for scenario_name, data in paired.items():
+        subview = data["subview"]
         graph, _ = fci(
             subview.data, alpha=args.alpha,
             verbose=False, show_progress=False,
             node_names=subview.node_names,
         )
-        shd = structural_hamming_distance(
+        results[scenario_name] = structural_hamming_distance(
             true_dag=subview.dag.mat_adjacency,
-            true_hidden_nodes=subview.list_global_inds_nodes2hide,
+            true_hidden_nodes=data["hidden"],
             prediction=graph.graph,
         )
-        results[scenario_name] = shd
-
     return results
 
 
