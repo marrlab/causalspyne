@@ -166,8 +166,10 @@ def parse_args():
     p.add_argument("--replicates", type=int, default=30)
     p.add_argument("--seed-start", type=int, default=0)
     p.add_argument("--samples", type=int, default=200)
-    p.add_argument("--size-micro-node-dag", type=int, default=3)
-    p.add_argument("--max-num-local-nodes", type=int, default=4)
+    p.add_argument("--size-micro-node-dag", type=int, default=None,
+                   help="Fixed micro DAG size per macro node; None = random in [2, max-num-local-nodes]")
+    p.add_argument("--max-num-local-nodes", type=int, default=7,
+                   help="Upper bound on random micro DAG size when size-micro-node-dag is None")
     p.add_argument("--degree", type=float, default=2.0)
     p.add_argument("--alpha", type=float, default=0.05)
     p.add_argument("--output-dir", type=Path,

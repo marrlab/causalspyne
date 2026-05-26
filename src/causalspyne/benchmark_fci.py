@@ -24,8 +24,8 @@ SCENARIO_HIDDEN = {
 def run_paired_scenarios(
     seed: int,
     num_macro_nodes: int = 4,
-    size_micro_node_dag: int = 3,
-    max_num_local_nodes: int = 4,
+    size_micro_node_dag=None,
+    max_num_local_nodes: int = 7,
     degree: float = 2.0,
     num_sample: int = 200,
     output_dir: str = "/tmp/benchmark_fci",
