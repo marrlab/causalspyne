@@ -34,9 +34,11 @@ def gen_partially_observed(
     dft_noise="Gaussian",
     graphviz=False,
     plot=True,
+    strategy_cls=None,
 ):
     """
     sole function as user interface
+    strategy_cls: optional skeleton generator class (default: Erdos_Renyi_PLP)
     """
     if list_confounder2hide is None:
         list_confounder2hide = [0.5, 0.9]
@@ -46,7 +48,7 @@ def gen_partially_observed(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     simple_dag_gen = GenDAG(num_nodes=size_micro_node_dag,
-                            degree=degree, rng=rng)
+                            degree=degree, rng=rng, strategy_cls=strategy_cls)
 
     dag_gen = GenDAG2Level(
         dag_generator=simple_dag_gen,
