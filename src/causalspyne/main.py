@@ -27,6 +27,7 @@ def gen_partially_observed(
     list_confounder2hide=None,
     size_micro_node_dag=4,
     max_num_local_nodes=4,
+    min_num_local_nodes=3,
     num_macro_nodes=4,
     num_sample=200,
     output_dir="output/",
@@ -55,6 +56,7 @@ def gen_partially_observed(
         num_macro_nodes=num_macro_nodes,
         num_micro_nodes=size_micro_node_dag,
         max_num_local_nodes=max_num_local_nodes,
+        min_num_local_nodes=min_num_local_nodes,
         rng=rng,
     )
     dag = dag_gen.run()

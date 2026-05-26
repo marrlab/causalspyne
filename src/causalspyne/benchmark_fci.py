@@ -26,6 +26,7 @@ def run_paired_scenarios(
     num_macro_nodes: int = 4,
     size_micro_node_dag=None,
     max_num_local_nodes: int = 7,
+    min_num_local_nodes: int = 3,
     degree: float = 2.0,
     num_sample: int = 200,
     output_dir: str = "/tmp/benchmark_fci",
@@ -57,6 +58,7 @@ def run_paired_scenarios(
             subview = gen_partially_observed(
                 size_micro_node_dag=size_micro_node_dag,
                 max_num_local_nodes=max_num_local_nodes,
+                min_num_local_nodes=min_num_local_nodes,
                 num_macro_nodes=num_macro_nodes,
                 degree=degree,
                 list_confounder2hide=hidden_spec,

@@ -20,6 +20,7 @@ class GenDAG2Level:
         num_macro_nodes,
         num_micro_nodes,
         max_num_local_nodes=4,
+        min_num_local_nodes=3,
         rng=None,
     ):
         rng = coerce_rng(rng)
@@ -27,6 +28,7 @@ class GenDAG2Level:
         self.num_macro_nodes = num_macro_nodes
         self.num_micro_nodes = num_micro_nodes
         self.max_num_local_nodes = max_num_local_nodes
+        self.min_num_local_nodes = min_num_local_nodes
 
         self.global_dag_indexer = None
         self.dag_backbone = None
@@ -43,7 +45,7 @@ class GenDAG2Level:
         for name in self.dag_backbone.list_node_names:
             num_nodes = self.num_micro_nodes
             if num_nodes is None:
-                num_nodes = self.rng.integers(2, self.max_num_local_nodes + 1)
+                num_nodes = self.rng.integers(self.min_num_local_nodes, self.max_num_local_nodes + 1)
             self.dict_macro_node2dag[name] = self.dag_generator.gen_dag(
                 num_nodes=num_nodes,
                 prefix=name,

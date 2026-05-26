@@ -44,6 +44,7 @@ def run_one_seed(seed, num_macro_nodes, args):
         num_macro_nodes=num_macro_nodes,
         size_micro_node_dag=args.size_micro_node_dag,
         max_num_local_nodes=args.max_num_local_nodes,
+        min_num_local_nodes=args.min_num_local_nodes,
         degree=args.degree,
         num_sample=args.samples,
         output_dir=str(args.output_dir / f"macro{num_macro_nodes}"),
@@ -167,9 +168,11 @@ def parse_args():
     p.add_argument("--seed-start", type=int, default=0)
     p.add_argument("--samples", type=int, default=200)
     p.add_argument("--size-micro-node-dag", type=int, default=None,
-                   help="Fixed micro DAG size per macro node; None = random in [2, max-num-local-nodes]")
+                   help="Fixed micro DAG size per macro node; None = random in [min, max]")
+    p.add_argument("--min-num-local-nodes", type=int, default=3,
+                   help="Minimum micro DAG size (must be ≥3 to guarantee a confounder per macro node)")
     p.add_argument("--max-num-local-nodes", type=int, default=7,
-                   help="Upper bound on random micro DAG size when size-micro-node-dag is None")
+                   help="Upper bound on random micro DAG size")
     p.add_argument("--degree", type=float, default=2.0)
     p.add_argument("--alpha", type=float, default=0.05)
     p.add_argument("--output-dir", type=Path,
