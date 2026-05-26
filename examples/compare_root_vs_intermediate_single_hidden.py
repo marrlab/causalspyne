@@ -138,6 +138,7 @@ def plot_results(df, output_path):
     ax.set_title("FCI: root vs intermediate hidden (1 node, same DAG)")
     fig.tight_layout()
     fig.savefig(output_path)
+    fig.savefig(str(output_path).replace(".pdf", ".png"), dpi=150)
     plt.close(fig)
 
 

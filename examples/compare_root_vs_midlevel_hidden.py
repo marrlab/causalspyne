@@ -154,6 +154,7 @@ def plot_results(df, output_path):
     ax.set_title("FCI difficulty: root vs mid-level hidden confounder")
     fig.tight_layout()
     fig.savefig(output_path)
+    fig.savefig(str(output_path).replace(".pdf", ".png"), dpi=150)
     plt.close(fig)
 
 

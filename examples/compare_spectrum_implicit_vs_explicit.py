@@ -161,8 +161,10 @@ def plot_spectra(implicit_eigvals, explicit_eigvals, output_path):
     fig.suptitle("Power spectrum: implicit vs explicit unobserved confounding")
     fig.tight_layout()
     fig.savefig(output_path, bbox_inches="tight")
+    png_path = str(output_path).replace(".pdf", ".png")
+    fig.savefig(png_path, dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print(f"Saved plot → {output_path}")
+    print(f"Saved plot → {output_path} and {png_path}")
 
 
 def print_summary(implicit_eigvals, explicit_eigvals):
