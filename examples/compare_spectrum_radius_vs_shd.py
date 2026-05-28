@@ -60,6 +60,49 @@ def spectral_range_of_observed(data: np.ndarray) -> float:
         return float("nan"), []
 
 
+def _fci_worker_proc(result_q, data, alpha, node_names, true_adj, hidden_nodes):
+    """Subprocess target: run FCI and put SHD into result_q."""
+    try:
+        graph, _ = fci(data, alpha=alpha, verbose=False, show_progress=False,
+                       node_names=node_names)
+        shd = structural_hamming_distance(
+            true_dag=true_adj, true_hidden_nodes=hidden_nodes,
+            prediction=graph.graph,
+        )
+        result_q.put(("ok", shd))
+    except Exception as e:
+        result_q.put(("err", str(e)))
+
+
+def _run_fci_with_timeout(data, alpha, node_names, true_adj, hidden_nodes,
+                          timeout, label=""):
+    """Run FCI in a subprocess; return SHD or None on timeout/error.
+
+    Uses fork (Linux default) — fast and safe since loky workers are single-threaded.
+    p.kill() + p.join() actually stops the C-level computation.
+    """
+    import multiprocessing
+    ctx = multiprocessing.get_context("fork")
+    result_q = ctx.Queue()
+    p = ctx.Process(
+        target=_fci_worker_proc,
+        args=(result_q, data, alpha, node_names, true_adj, hidden_nodes),
+    )
+    p.start()
+    p.join(timeout if timeout > 0 else None)
+    if p.is_alive():
+        p.kill()
+        p.join()
+        print(f"  fci timeout ({label})", file=sys.stderr, flush=True)
+        return None
+    if not result_q.empty():
+        status, val = result_q.get_nowait()
+        if status == "ok":
+            return val
+        print(f"  fci error ({label}): {val}", file=sys.stderr, flush=True)
+    return None
+
+
 def run_one(seed, num_macro_nodes, degree, args) -> dict | None:
     """Generate one explicit instance, run FCI, return spectral range + SHD."""
     buf = io.StringIO()
@@ -93,33 +136,13 @@ def run_one(seed, num_macro_nodes, degree, args) -> dict | None:
     hidden = list(subview.list_global_inds_nodes2hide)
     timeout = getattr(args, "fci_timeout", 0)
     try:
-        import signal as _signal
-
-        def _timeout_handler(signum, frame):
-            raise TimeoutError("FCI timeout")
-
-        if timeout > 0:
-            old = _signal.signal(_signal.SIGALRM, _timeout_handler)
-            _signal.alarm(timeout)
-        try:
-            graph, _ = fci(
-                subview.data, alpha=args.alpha,
-                verbose=False, show_progress=False,
-                node_names=subview.node_names,
-            )
-        finally:
-            if timeout > 0:
-                _signal.alarm(0)
-                _signal.signal(_signal.SIGALRM, old)
-        shd = structural_hamming_distance(
-            true_dag=subview.dag.mat_adjacency,
-            true_hidden_nodes=hidden,
-            prediction=graph.graph,
+        shd = _run_fci_with_timeout(
+            subview.data, args.alpha, subview.node_names,
+            subview.dag.mat_adjacency, hidden, timeout,
+            label=f"macro={num_macro_nodes} deg={degree} seed={seed} n_obs={subview.data.shape[1]}",
         )
-    except TimeoutError:
-        print(f"  fci timeout (macro={num_macro_nodes} deg={degree} seed={seed} "
-              f"n_obs={subview.data.shape[1]})", file=sys.stderr)
-        return None
+        if shd is None:
+            return None
     except Exception as e:
         print(f"  fci error (macro={num_macro_nodes} deg={degree} seed={seed}): {e}",
               file=sys.stderr)
