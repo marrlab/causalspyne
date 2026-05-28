@@ -91,17 +91,35 @@ def run_one(seed, num_macro_nodes, degree, args) -> dict | None:
         return None
 
     hidden = list(subview.list_global_inds_nodes2hide)
+    timeout = getattr(args, "fci_timeout", 0)
     try:
-        graph, _ = fci(
-            subview.data, alpha=args.alpha,
-            verbose=False, show_progress=False,
-            node_names=subview.node_names,
-        )
+        import signal as _signal
+
+        def _timeout_handler(signum, frame):
+            raise TimeoutError("FCI timeout")
+
+        if timeout > 0:
+            old = _signal.signal(_signal.SIGALRM, _timeout_handler)
+            _signal.alarm(timeout)
+        try:
+            graph, _ = fci(
+                subview.data, alpha=args.alpha,
+                verbose=False, show_progress=False,
+                node_names=subview.node_names,
+            )
+        finally:
+            if timeout > 0:
+                _signal.alarm(0)
+                _signal.signal(_signal.SIGALRM, old)
         shd = structural_hamming_distance(
             true_dag=subview.dag.mat_adjacency,
             true_hidden_nodes=hidden,
             prediction=graph.graph,
         )
+    except TimeoutError:
+        print(f"  fci timeout (macro={num_macro_nodes} deg={degree} seed={seed} "
+              f"n_obs={subview.data.shape[1]})", file=sys.stderr)
+        return None
     except Exception as e:
         print(f"  fci error (macro={num_macro_nodes} deg={degree} seed={seed}): {e}",
               file=sys.stderr)
@@ -232,6 +250,8 @@ def parse_args():
     p.add_argument("--alpha", type=float, default=0.05)
     p.add_argument("--n-jobs", type=int, default=-1,
                    help="Parallel workers (-1 = all CPUs, 1 = serial)")
+    p.add_argument("--fci-timeout", type=int, default=300,
+                   help="Max seconds per FCI call (0 = no limit); skips instance on timeout")
     p.add_argument("--output-dir", type=Path, default=Path("output/spectrum_vs_shd"))
     return p.parse_args()
 

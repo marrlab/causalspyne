@@ -31,6 +31,7 @@ uv run python examples/compare_spectrum_radius_vs_shd.py \
   --min-num-local-nodes "$SPECTRUM_MIN_MICRO" \
   --max-num-local-nodes "$SPECTRUM_MAX_MICRO" \
   --n-jobs "${N_JOBS:--1}" \
+  --fci-timeout "${FCI_TIMEOUT:-300}" \
   --alpha "$ALPHA" \
   --output-dir "$OUT" \
   2>&1 | tee "$LOG"
