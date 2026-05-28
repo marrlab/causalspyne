@@ -127,11 +127,22 @@ def plot_grouped_paired(df, macro_sizes, output_path):
         ax.scatter(x_root, root_vals, color="#1A5EA8", s=18, zorder=3, alpha=0.8)
         ax.scatter(x_inter, inter_vals, color="#C1440E", s=18, zorder=3, alpha=0.8)
 
-        # Wilcoxon signed-rank test
+        # Wilcoxon signed-rank test + significance bracket
         if len(root_vals) >= 5:
             stat, pval = stats.wilcoxon(root_vals, inter_vals)
             sig = "***" if pval < 0.001 else "**" if pval < 0.01 else "*" if pval < 0.05 else "n.s."
-            ax.set_title(f"{n_macro} macro nodes\np={pval:.3f} {sig}", fontsize=10)
+            ax.set_title(f"{n_macro} macro nodes", fontsize=10)
+
+            # significance bracket between box 1 and box 2
+            y_max = max(root_vals.max(), inter_vals.max())
+            y_range = ax.get_ylim()[1] - ax.get_ylim()[0] if ax.get_ylim()[1] > ax.get_ylim()[0] else 0.1
+            bar_y = y_max + 0.04
+            bar_tip = bar_y - 0.01
+            ax.plot([1, 1, 2, 2], [bar_tip, bar_y, bar_y, bar_tip],
+                    lw=1.2, color="black")
+            p_label = f"p={pval:.2e} {sig}" if pval < 0.001 else f"p={pval:.3f} {sig}"
+            ax.text(1.5, bar_y + 0.005, p_label, ha="center", va="bottom",
+                    fontsize=8.5, fontweight="bold")
         else:
             ax.set_title(f"{n_macro} macro nodes", fontsize=10)
 
