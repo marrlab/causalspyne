@@ -17,12 +17,25 @@ ALPHA=0.05
 MIN_MICRO=3
 MAX_MICRO=5
 
+# --- Macro node sizes for each experiment ---
+# FCI paired benchmark (Fig 2) and multilevel (Fig 3): small graphs
+MACRO_SIZES_FCI="3 4"
+# Spectrum-vs-SHD (Fig 4): wider range including larger graphs to probe size effect
+MACRO_SIZES_SPECTRUM="${MACRO_SIZES_SPECTRUM:-3 4 5 6}"
+# Micro node range for spectrum experiment (larger graphs → more spectral variation)
+SPECTRUM_MIN_MICRO="${SPECTRUM_MIN_MICRO:-3}"
+SPECTRUM_MAX_MICRO="${SPECTRUM_MAX_MICRO:-8}"
+
 # --- Derived: seeds and samples depending on mode ---
 if [ "$QUICK" = "1" ]; then
   REPLICATES=5
   SAMPLES=100
   SEEDS_PER_COMBO=3
   SPECTRUM_TRIALS=20
+  MACRO_SIZES_FCI="3"
+  MACRO_SIZES_SPECTRUM="3 4"
+  SPECTRUM_MIN_MICRO=3
+  SPECTRUM_MAX_MICRO=5
   echo "[config] QUICK mode: reduced replicates/seeds for testing"
 else
   REPLICATES=100       # paper: 100 seeds for FCI benchmarks

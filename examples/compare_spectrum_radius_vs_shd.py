@@ -41,6 +41,12 @@ try:
 except ImportError:
     tqdm = None
 
+try:
+    from joblib import Parallel, delayed
+    _HAS_JOBLIB = True
+except ImportError:
+    _HAS_JOBLIB = False
+
 
 def spectral_range_of_observed(data: np.ndarray) -> float:
     """Spectral range (lambda_max - lambda_min) of normalized precision of observed data."""
@@ -111,6 +117,11 @@ def run_one(seed, num_macro_nodes, degree, args) -> dict | None:
     }
 
 
+def _run_one_star(combo, args):
+    seed, n_macro, deg = combo
+    return run_one(seed, n_macro, deg, args)
+
+
 def collect(args):
     combos = [
         (seed, n_macro, deg)
@@ -119,21 +130,29 @@ def collect(args):
         for seed in range(args.seed_start, args.seed_start + args.seeds_per_combo)
     ]
 
-    bar = tqdm(total=len(combos), unit="run") if tqdm else None
-    records = []
-    for seed, n_macro, deg in combos:
-        label = f"macro={n_macro} deg={deg} seed={seed}"
+    n_jobs = getattr(args, "n_jobs", 1)
+    if _HAS_JOBLIB and n_jobs != 1:
+        print(f"Running {len(combos)} instances with n_jobs={n_jobs}...", file=sys.stderr, flush=True)
+        results = Parallel(n_jobs=n_jobs, verbose=5)(
+            delayed(_run_one_star)(combo, args) for combo in combos
+        )
+        records = [r for r in results if r is not None]
+    else:
+        bar = tqdm(total=len(combos), unit="run") if tqdm else None
+        records = []
+        for seed, n_macro, deg in combos:
+            label = f"macro={n_macro} deg={deg} seed={seed}"
+            if bar:
+                bar.set_postfix_str(label, refresh=True)
+            else:
+                print(label, file=sys.stderr, flush=True)
+            rec = run_one(seed, n_macro, deg, args)
+            if rec:
+                records.append(rec)
+            if bar:
+                bar.update(1)
         if bar:
-            bar.set_postfix_str(label, refresh=True)
-        else:
-            print(label, file=sys.stderr, flush=True)
-        rec = run_one(seed, n_macro, deg, args)
-        if rec:
-            records.append(rec)
-        if bar:
-            bar.update(1)
-    if bar:
-        bar.close()
+            bar.close()
     return pd.DataFrame.from_records(records)
 
 
@@ -211,6 +230,8 @@ def parse_args():
     p.add_argument("--min-num-local-nodes", type=int, default=3)
     p.add_argument("--max-num-local-nodes", type=int, default=5)
     p.add_argument("--alpha", type=float, default=0.05)
+    p.add_argument("--n-jobs", type=int, default=-1,
+                   help="Parallel workers (-1 = all CPUs, 1 = serial)")
     p.add_argument("--output-dir", type=Path, default=Path("output/spectrum_vs_shd"))
     return p.parse_args()
 

@@ -22,7 +22,7 @@ echo "=== Fig 2: FCI root vs intermediate (paired, same DAG) ==="
 echo "Replicates: $REPLICATES | Samples: $SAMPLES | Output: $OUT | Log: $LOG"
 
 # Run each macro size separately for speed; results are merged in the output dir.
-for MACRO in 3 4; do
+for MACRO in $MACRO_SIZES_FCI; do
   echo "--- macro=$MACRO ---"
   uv run python examples/compare_root_vs_intermediate_grouped.py \
     --macro-node-sizes "$MACRO" \

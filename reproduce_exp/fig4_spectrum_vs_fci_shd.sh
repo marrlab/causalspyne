@@ -19,15 +19,18 @@ LOG="/tmp/reproduce_fig4.log"
 mkdir -p "$OUT"
 
 echo "=== Fig 4: Spectral range vs FCI SHD ==="
+echo "Macro sizes: $MACRO_SIZES_SPECTRUM | Micro range: [$SPECTRUM_MIN_MICRO, $SPECTRUM_MAX_MICRO]"
 echo "Seeds/combo: $SEEDS_PER_COMBO | Samples: $SAMPLES | Output: $OUT | Log: $LOG"
 
+# shellcheck disable=SC2086
 uv run python examples/compare_spectrum_radius_vs_shd.py \
-  --macro-node-sizes 3 4 \
+  --macro-node-sizes $MACRO_SIZES_SPECTRUM \
   --degrees 1.5 2.0 3.0 \
   --seeds-per-combo "$SEEDS_PER_COMBO" \
   --samples "$SAMPLES" \
-  --min-num-local-nodes "$MIN_MICRO" \
-  --max-num-local-nodes "$MAX_MICRO" \
+  --min-num-local-nodes "$SPECTRUM_MIN_MICRO" \
+  --max-num-local-nodes "$SPECTRUM_MAX_MICRO" \
+  --n-jobs "${N_JOBS:--1}" \
   --alpha "$ALPHA" \
   --output-dir "$OUT" \
   2>&1 | tee "$LOG"

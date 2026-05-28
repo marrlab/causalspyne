@@ -39,6 +39,7 @@ version = "0.1.6"
 source = { editable = "." }
 dependencies = [
     { name = "causal-learn" },
+    { name = "joblib" },
     { name = "matplotlib" },
     { name = "networkx" },
     { name = "numpy" },
@@ -57,6 +58,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "causal-learn", specifier = ">=0.1.4.3" },
+    { name = "joblib", specifier = ">=1.5.2" },
     { name = "matplotlib", specifier = ">=3.10.7" },
     { name = "networkx", specifier = ">=3.5" },
     { name = "numpy", specifier = ">=2.3.4" },
