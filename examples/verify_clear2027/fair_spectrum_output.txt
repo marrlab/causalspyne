@@ -1,0 +1,21 @@
+n=9 p_edge=0.25 confounders=3 children=3 trials=500 seed=0
+
+|W| in (0.1, 0.5), |Lambda| in (0.5, 1.0)
+  explicit  rho(R~) median   1.94 max    2.53 | min eig median 0.266 | mean pcorr^2 0.035 | bound median    7.72 | bound holds 100%
+  diag-dom  rho(R~) median   1.87 max    2.54 | min eig median 0.306 | mean pcorr^2 0.030 | bound median    9.49 | bound holds 100%
+  same instance: rho_exp > rho_dd in 77%; median ratio rho_exp/rho_dd 1.04; rho_exp above max rho_dd in 0%
+
+|W| in (0.1, 0.5), |Lambda| in (1.0, 2.0)
+  explicit  rho(R~) median   2.20 max    2.86 | min eig median 0.111 | mean pcorr^2 0.060 | bound median   23.44 | bound holds 100%
+  diag-dom  rho(R~) median   2.01 max    3.39 | min eig median 0.199 | mean pcorr^2 0.040 | bound median   30.10 | bound holds 100%
+  same instance: rho_exp > rho_dd in 81%; median ratio rho_exp/rho_dd 1.10; rho_exp above max rho_dd in 0%
+
+|W| in (0.5, 1.5), |Lambda| in (0.5, 1.0)
+  explicit  rho(R~) median   2.71 max    4.62 | min eig median 0.036 | mean pcorr^2 0.094 | bound median   14.15 | bound holds 100%
+  diag-dom  rho(R~) median   2.62 max    5.12 | min eig median 0.037 | mean pcorr^2 0.091 | bound median   17.30 | bound holds 100%
+  same instance: rho_exp > rho_dd in 68%; median ratio rho_exp/rho_dd 1.02; rho_exp above max rho_dd in 0%
+
+|W| in (0.5, 1.5), |Lambda| in (1.0, 2.0)
+  explicit  rho(R~) median   2.91 max    4.26 | min eig median 0.019 | mean pcorr^2 0.117 | bound median   44.34 | bound holds 100%
+  diag-dom  rho(R~) median   2.69 max    5.59 | min eig median 0.022 | mean pcorr^2 0.094 | bound median   56.49 | bound holds 100%
+  same instance: rho_exp > rho_dd in 71%; median ratio rho_exp/rho_dd 1.09; rho_exp above max rho_dd in 0%
