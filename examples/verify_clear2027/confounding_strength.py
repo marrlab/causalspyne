@@ -1,0 +1,102 @@
+"""Diagonal dominance caps confounding strength (figure for Appendix F.1).
+
+One confounder with |loadings| in [1, 2] on k of n=9 observables, unit noise.
+Per instance both arms share W, the confounded set and the off-diagonal Omega:
+  explicit : Omega = Lambda Lambda^T + I
+  diag-dom : same off-diagonals, diagonal = 1 + row sum of |off-diagonal|
+Panels: (a) rho(R_eps), (b) strongest correlation the confounder induces between
+two observables (W = 0), (c) rho(R~) with random W (|w| in [0.1, 0.5]).
+Medians and 10-90% bands over the trials.
+"""
+import argparse
+import numpy as np
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
+C_EXP, C_DD, INK, GRID = "#2a78d6", "#eb6834", "#3d3d3a", "#e4e2dc"
+
+
+def corr(M):
+    d = 1 / np.sqrt(np.diag(M))
+    return d[:, None] * M * d[None, :]
+
+
+def random_dag(rng, n, p, lo, hi):
+    W = np.zeros((n, n))
+    mask = np.tril(rng.random((n, n)) < p, -1)
+    W[mask] = rng.uniform(lo, hi, mask.sum()) * rng.choice([-1, 1], mask.sum())
+    perm = rng.permutation(n)
+    return W[np.ix_(perm, perm)]
+
+
+def run(trials, n, seed):
+    rng = np.random.default_rng(seed)
+    ks = list(range(2, n + 1))
+    out = {m: {a: [] for a in ("exp", "dd")} for m in ("reps", "corr", "rtilde")}
+    off = ~np.eye(n, dtype=bool)
+    for k in ks:
+        acc = {m: {a: [] for a in ("exp", "dd")} for m in out}
+        for _ in range(trials):
+            lam = np.zeros(n)
+            ch = rng.choice(n, k, replace=False)
+            lam[ch] = rng.uniform(1, 2, k) * rng.choice([-1, 1], k)
+            Oe = np.outer(lam, lam) + np.eye(n)
+            O = Oe - np.diag(np.diag(Oe))
+            Od = O + np.diag(1 + np.abs(O).sum(1))
+            W = random_dag(rng, n, 0.25, 0.1, 0.5)
+            A = np.linalg.inv(np.eye(n) - W)
+            for a, Om in (("exp", Oe), ("dd", Od)):
+                acc["reps"][a].append(np.linalg.eigvalsh(corr(Om))[-1])
+                acc["corr"][a].append(np.abs(corr(Om)[off]).max())  # W = 0: Sigma = Omega
+                P = corr(np.linalg.inv(A @ Om @ A.T))
+                acc["rtilde"][a].append(np.linalg.eigvalsh(P)[-1])
+        for m in out:
+            for a in ("exp", "dd"):
+                v = np.array(acc[m][a])
+                out[m][a].append(np.percentile(v, [10, 50, 90]))
+    return ks, {m: {a: np.array(out[m][a]) for a in out[m]} for m in out}
+
+
+def plot(ks, res, path):
+    plt.rcParams.update({"font.size": 9, "axes.edgecolor": INK, "axes.labelcolor": INK,
+                         "xtick.color": INK, "ytick.color": INK})
+    fig, axes = plt.subplots(1, 3, figsize=(10, 3.1))
+    titles = [r"(a) noise correlation $\rho(R_\epsilon)$",
+              r"(b) strongest induced $|\mathrm{corr}(Y_i,Y_j)|$, $W=0$",
+              r"(c) partial correlation $\rho(\tilde R)$, random $W$"]
+    for ax, m, t in zip(axes, ("reps", "corr", "rtilde"), titles):
+        for a, c, mk, lab in (("exp", C_EXP, "o", "explicit  $\\Lambda\\Lambda^T+I$"),
+                              ("dd", C_DD, "s", "diagonally dominant")):
+            q = res[m][a]
+            ax.fill_between(ks, q[:, 0], q[:, 2], color=c, alpha=0.15, linewidth=0)
+            ax.plot(ks, q[:, 1], color=c, lw=2, marker=mk, ms=5, label=lab)
+        if m == "reps":
+            ax.axhline(2, color=INK, lw=1, ls="--")
+            ax.text(ks[-1], 2.15, "bound 2", ha="right", va="bottom", color=INK, fontsize=8)
+        ax.set_title(t, fontsize=9, color=INK)
+        ax.set_xlabel("observables affected by the confounder")
+        ax.grid(axis="y", color=GRID, lw=0.8)
+        ax.set_axisbelow(True)
+        for s in ("top", "right"):
+            ax.spines[s].set_visible(False)
+    axes[0].legend(frameon=False, fontsize=8, loc="upper left")
+    fig.tight_layout()
+    fig.savefig(path, bbox_inches="tight")
+    fig.savefig(path.replace(".pdf", ".png"), dpi=160, bbox_inches="tight")
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--trials", type=int, default=300)
+    ap.add_argument("--n", type=int, default=9)
+    ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--out", default="confounding_strength.pdf")
+    a = ap.parse_args()
+    ks, res = run(a.trials, a.n, a.seed)
+    for m in res:
+        print(m, "k:", ks)
+        for arm in res[m]:
+            print("  ", arm, np.round(res[m][arm][:, 1], 2).tolist())
+    plot(ks, res, a.out)
+    print("saved", a.out)
