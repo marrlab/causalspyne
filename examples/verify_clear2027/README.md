@@ -105,3 +105,19 @@ almost coincide). Random PD draws never exceeded the DD *maximum* of `rho(R~)` (
 rejection threshold is the DD 95th percentile.
 
 Note: FCI orientation in causal-learn is not fully deterministic, so reruns can differ in the third decimal.
+
+## Downstream beyond FCI (not yet in the paper, 2026-11-13)
+
+* Script: `downstream_dd_vs_pd.py B 150` and `downstream_dd_vs_pd.py C 150` (16 processes, about 15 min each).
+  Outputs: `downstream_B_output.txt`, `downstream_C_output.txt`.
+* Same instances and seeds as F.6 designs B and C (identical random streams), only the measures differ:
+  * effect estimation: population OLS of `X_u` on its true parents; bias of each edge coefficient
+    `Sigma_pa^-1 Cov(X_pa, eps_u)`, computed analytically (mean and max `|bias|`, share of edges with relative bias > 10%, share with wrong sign);
+  * GES (causal-learn, BIC, assumes no hidden confounders) on the standardized data: spurious adjacency rate among
+    non-adjacent pairs, spurious adjacency rate on bidirected pairs, adjacency recall.
+* Result:
+  * GES, design B: the PD extremes produce more spurious edges, mostly between confounded pairs (`N = 5000`:
+    0.57 -> 0.80 and 0.52 -> 0.71, `p < 1e-14`). Design C: no consistent difference.
+  * Effect bias goes the other way: DD instances have the *larger* parent-adjustment bias (design B: about 2x mean
+    and max `|bias|`; design C: 10-30% larger). The spectrum (`rho(R~)`, `lambda_min(P)`) is not the quantity that
+    drives estimation bias, so "larger spectrum" does not mean "harder for every task".

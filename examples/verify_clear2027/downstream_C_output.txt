@@ -1,0 +1,80 @@
+W[0.1,0.5]_c0.7_N500  design C, 150 paired instances, means; Wilcoxon p
+   rho(R~)          DD 2.056  PD 2.377  p=8.1e-26
+   lmin(P)          DD 0.301  PD 0.303  p=8.2e-01
+   eff |bias| mean  DD 0.010  PD 0.010  p=1.8e-01
+   eff |bias| max   DD 0.073  PD 0.067  p=8.6e-02
+   eff rel>10%      DD 0.122  PD 0.125  p=5.2e-01
+   eff sign wrong   DD 0.000  PD 0.000  p=3.2e-01
+   GES FP adj       DD 0.176  PD 0.176  p=9.4e-01
+   GES FP on <->    DD 0.566  PD 0.557  p=6.4e-01
+   GES adj R        DD 0.753  PD 0.775  p=1.3e-02
+W[0.1,0.5]_c0.7_N5000  design C, 150 paired instances, means; Wilcoxon p
+   rho(R~)          DD 2.081  PD 2.384  p=1.3e-25
+   lmin(P)          DD 0.289  PD 0.285  p=3.3e-01
+   eff |bias| mean  DD 0.011  PD 0.010  p=5.6e-03
+   eff |bias| max   DD 0.077  PD 0.064  p=3.7e-03
+   eff rel>10%      DD 0.130  PD 0.119  p=1.1e-01
+   eff sign wrong   DD 0.002  PD 0.001  p=4.8e-01
+   GES FP adj       DD 0.350  PD 0.366  p=4.8e-02
+   GES FP on <->    DD 0.821  PD 0.811  p=3.7e-01
+   GES adj R        DD 0.946  PD 0.947  p=9.5e-01
+W[0.1,0.5]_c2.0_N500  design C, 150 paired instances, means; Wilcoxon p
+   rho(R~)          DD 2.432  PD 3.050  p=2.4e-26
+   lmin(P)          DD 0.205  PD 0.213  p=1.3e-02
+   eff |bias| mean  DD 0.021  PD 0.016  p=3.3e-05
+   eff |bias| max   DD 0.143  PD 0.106  p=1.1e-05
+   eff rel>10%      DD 0.170  PD 0.168  p=6.8e-01
+   eff sign wrong   DD 0.008  PD 0.003  p=1.7e-01
+   GES FP adj       DD 0.284  PD 0.298  p=1.0e-01
+   GES FP on <->    DD 0.757  PD 0.758  p=9.5e-01
+   GES adj R        DD 0.722  PD 0.758  p=1.7e-04
+W[0.1,0.5]_c2.0_N5000  design C, 148 paired instances, means; Wilcoxon p
+   rho(R~)          DD 2.491  PD 3.043  p=7.8e-26
+   lmin(P)          DD 0.204  PD 0.218  p=6.5e-04
+   eff |bias| mean  DD 0.020  PD 0.016  p=3.0e-05
+   eff |bias| max   DD 0.144  PD 0.101  p=1.9e-06
+   eff rel>10%      DD 0.159  PD 0.156  p=4.9e-01
+   eff sign wrong   DD 0.008  PD 0.002  p=2.7e-02
+   GES FP adj       DD 0.446  PD 0.460  p=1.2e-01
+   GES FP on <->    DD 0.905  PD 0.881  p=1.3e-01
+   GES adj R        DD 0.918  PD 0.923  p=7.9e-01
+W[0.5,1.5]_c0.7_N500  design C, 149 paired instances, means; Wilcoxon p
+   rho(R~)          DD 2.991  PD 3.372  p=3.4e-26
+   lmin(P)          DD 0.027  PD 0.026  p=1.8e-01
+   eff |bias| mean  DD 0.021  PD 0.017  p=1.5e-03
+   eff |bias| max   DD 0.117  PD 0.095  p=3.8e-04
+   eff rel>10%      DD 0.082  PD 0.059  p=1.1e-02
+   eff sign wrong   DD 0.000  PD 0.000  p=1.0e+00
+   GES FP adj       DD 0.256  PD 0.252  p=4.6e-01
+   GES FP on <->    DD 0.498  PD 0.474  p=2.6e-01
+   GES adj R        DD 0.905  PD 0.908  p=5.7e-01
+W[0.5,1.5]_c0.7_N5000  design C, 148 paired instances, means; Wilcoxon p
+   rho(R~)          DD 2.953  PD 3.371  p=2.1e-25
+   lmin(P)          DD 0.028  PD 0.027  p=1.4e-02
+   eff |bias| mean  DD 0.019  PD 0.018  p=4.1e-01
+   eff |bias| max   DD 0.112  PD 0.103  p=6.0e-02
+   eff rel>10%      DD 0.075  PD 0.073  p=4.1e-01
+   eff sign wrong   DD 0.000  PD 0.000  p=1.0e+00
+   GES FP adj       DD 0.394  PD 0.383  p=2.2e-01
+   GES FP on <->    DD 0.774  PD 0.780  p=9.0e-01
+   GES adj R        DD 0.958  PD 0.958  p=6.4e-01
+W[0.5,1.5]_c2.0_N500  design C, 148 paired instances, means; Wilcoxon p
+   rho(R~)          DD 3.342  PD 4.025  p=6.5e-26
+   lmin(P)          DD 0.021  PD 0.020  p=2.6e-01
+   eff |bias| mean  DD 0.034  PD 0.029  p=5.4e-04
+   eff |bias| max   DD 0.193  PD 0.158  p=1.3e-04
+   eff rel>10%      DD 0.135  PD 0.127  p=3.0e-01
+   eff sign wrong   DD 0.000  PD 0.000  p=1.0e+00
+   GES FP adj       DD 0.363  PD 0.334  p=5.1e-03
+   GES FP on <->    DD 0.645  PD 0.611  p=6.0e-02
+   GES adj R        DD 0.873  PD 0.894  p=4.9e-03
+W[0.5,1.5]_c2.0_N5000  design C, 148 paired instances, means; Wilcoxon p
+   rho(R~)          DD 3.227  PD 3.929  p=5.3e-26
+   lmin(P)          DD 0.021  PD 0.021  p=6.8e-01
+   eff |bias| mean  DD 0.035  PD 0.028  p=3.5e-04
+   eff |bias| max   DD 0.204  PD 0.156  p=1.0e-05
+   eff rel>10%      DD 0.136  PD 0.113  p=5.7e-03
+   eff sign wrong   DD 0.000  PD 0.000  p=3.2e-01
+   GES FP adj       DD 0.477  PD 0.474  p=7.0e-01
+   GES FP on <->    DD 0.836  PD 0.823  p=3.9e-01
+   GES adj R        DD 0.938  PD 0.940  p=4.2e-01
