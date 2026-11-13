@@ -1,0 +1,64 @@
+W[0.1,0.5]_c0.7_N500  (n=10, 200 paired instances, means; p = Wilcoxon signed-rank)
+   rho(R~)  DD 2.114  PD 2.108  p=2.4e-01
+   lmin(P)  DD 0.286  PD 0.295  p=3.2e-09
+   SHD      DD 0.316  PD 0.321  p=3.7e-03
+   adj P    DD 0.992  PD 0.991  p=5.9e-01
+   adj R    DD 0.672  PD 0.666  p=3.9e-02
+   arrow P  DD 0.707  PD 0.702  p=1.1e-01
+   arrow R  DD 0.575  PD 0.564  p=2.7e-02
+W[0.1,0.5]_c0.7_N5000  (n=10, 200 paired instances, means; p = Wilcoxon signed-rank)
+   rho(R~)  DD 2.136  PD 2.131  p=5.9e-01
+   lmin(P)  DD 0.280  PD 0.288  p=3.1e-08
+   SHD      DD 0.258  PD 0.253  p=1.2e-02
+   adj P    DD 0.995  PD 0.994  p=4.5e-01
+   adj R    DD 0.799  PD 0.802  p=9.7e-02
+   arrow P  DD 0.740  PD 0.743  p=2.6e-01
+   arrow R  DD 0.684  PD 0.693  p=4.1e-02
+W[0.1,0.5]_c2.0_N500  (n=10, 200 paired instances, means; p = Wilcoxon signed-rank)
+   rho(R~)  DD 2.576  PD 2.594  p=1.0e-01
+   lmin(P)  DD 0.200  PD 0.215  p=2.0e-14
+   SHD      DD 0.324  PD 0.321  p=8.6e-02
+   adj P    DD 0.989  PD 0.991  p=2.6e-01
+   adj R    DD 0.650  PD 0.658  p=6.9e-02
+   arrow P  DD 0.728  PD 0.723  p=2.2e-01
+   arrow R  DD 0.564  PD 0.574  p=4.1e-02
+W[0.1,0.5]_c2.0_N5000  (n=10, 200 paired instances, means; p = Wilcoxon signed-rank)
+   rho(R~)  DD 2.606  PD 2.640  p=7.3e-03
+   lmin(P)  DD 0.194  PD 0.209  p=5.4e-15
+   SHD      DD 0.262  PD 0.262  p=8.6e-01
+   adj P    DD 0.992  PD 0.992  p=8.3e-01
+   adj R    DD 0.764  PD 0.773  p=5.5e-03
+   arrow P  DD 0.754  PD 0.749  p=9.4e-02
+   arrow R  DD 0.682  PD 0.682  p=9.2e-01
+W[0.5,1.5]_c0.7_N500  (n=10, 200 paired instances, means; p = Wilcoxon signed-rank)
+   rho(R~)  DD 3.112  PD 3.063  p=1.4e-03
+   lmin(P)  DD 0.027  PD 0.028  p=1.5e-02
+   SHD      DD 0.413  PD 0.411  p=6.8e-01
+   adj P    DD 0.964  PD 0.965  p=4.8e-01
+   adj R    DD 0.493  PD 0.492  p=6.2e-01
+   arrow P  DD 0.677  PD 0.694  p=1.1e-01
+   arrow R  DD 0.317  PD 0.312  p=4.3e-01
+W[0.5,1.5]_c0.7_N5000  (n=10, 200 paired instances, means; p = Wilcoxon signed-rank)
+   rho(R~)  DD 3.046  PD 3.042  p=8.3e-01
+   lmin(P)  DD 0.026  PD 0.027  p=5.5e-02
+   SHD      DD 0.350  PD 0.357  p=6.0e-02
+   adj P    DD 0.967  PD 0.964  p=2.9e-01
+   adj R    DD 0.608  PD 0.602  p=1.9e-01
+   arrow P  DD 0.721  PD 0.717  p=5.7e-01
+   arrow R  DD 0.469  PD 0.457  p=4.8e-02
+W[0.5,1.5]_c2.0_N500  (n=10, 200 paired instances, means; p = Wilcoxon signed-rank)
+   rho(R~)  DD 3.429  PD 3.433  p=8.2e-01
+   lmin(P)  DD 0.022  PD 0.024  p=9.0e-04
+   SHD      DD 0.397  PD 0.398  p=4.8e-01
+   adj P    DD 0.951  PD 0.960  p=1.3e-02
+   adj R    DD 0.513  PD 0.508  p=2.8e-01
+   arrow P  DD 0.686  PD 0.688  p=7.2e-01
+   arrow R  DD 0.362  PD 0.354  p=2.0e-01
+W[0.5,1.5]_c2.0_N5000  (n=10, 200 paired instances, means; p = Wilcoxon signed-rank)
+   rho(R~)  DD 3.410  PD 3.424  p=1.2e-01
+   lmin(P)  DD 0.019  PD 0.021  p=5.5e-07
+   SHD      DD 0.359  PD 0.356  p=6.0e-01
+   adj P    DD 0.952  PD 0.952  p=1.0e+00
+   adj R    DD 0.602  PD 0.605  p=4.5e-01
+   arrow P  DD 0.694  PD 0.697  p=5.5e-01
+   arrow R  DD 0.456  PD 0.464  p=4.3e-01

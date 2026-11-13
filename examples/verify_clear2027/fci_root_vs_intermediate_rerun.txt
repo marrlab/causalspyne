@@ -1,0 +1,11 @@
+Rerun of Appendix F.3 (2026-11-13), command:
+  uv run python examples/compare_root_vs_intermediate_grouped.py --macro-node-sizes 3 4 --replicates 100 \
+      --samples 500 --min-num-local-nodes 3 --max-num-local-nodes 5
+old = main before the fix (dag2pag node order not aligned), new = branch fix-shd-node-order (commit 42b64c5)
+
+old  macro=3  root=0.471±0.070  inter=0.490±0.070  Wilcoxon p=0.0021   (paper: 0.478 / 0.498, p=0.0065)
+old  macro=4  root=0.367±0.049  inter=0.381±0.046  Wilcoxon p=0.0006   (paper: 0.370 / 0.380, p=0.0007)
+new  macro=3  root=0.286±0.063  inter=0.281±0.064  Wilcoxon p=0.5197   root lower in 51% of seeds
+new  macro=4  root=0.211±0.039  inter=0.215±0.037  Wilcoxon p=0.1579   root lower in 55% of seeds
+
+Conclusion: the significant root-vs-intermediate difference was an artifact of the misaligned ground truth.

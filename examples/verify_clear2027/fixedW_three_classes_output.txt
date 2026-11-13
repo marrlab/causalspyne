@@ -1,0 +1,4 @@
+|W| in [0.1,0.5], c=0.7 (medians over 24 W): none: rho 1.85 lmin 0.3245 pc2 0.023  DD: rho 2.85 lmin 0.1578 pc2 0.064  SDD: rho 4.01 lmin 0.0138 pc2 0.144  PD: rho 4.03 lmin 0.0138 pc2 0.150
+|W| in [0.1,0.5], c=2.0 (medians over 24 W): none: rho 1.76 lmin 0.3337 pc2 0.023  DD: rho 3.72 lmin 0.0912 pc2 0.122  SDD: rho 4.57 lmin 0.0048 pc2 0.198  PD: rho 4.83 lmin 0.0048 pc2 0.206
+|W| in [0.5,1.5], c=0.7 (medians over 24 W): none: rho 2.74 lmin 0.0257 pc2 0.086  DD: rho 3.69 lmin 0.0112 pc2 0.135  SDD: rho 4.37 lmin 0.0006 pc2 0.217  PD: rho 4.69 lmin 0.0006 pc2 0.222
+|W| in [0.5,1.5], c=2.0 (medians over 24 W): none: rho 2.77 lmin 0.0174 pc2 0.088  DD: rho 4.32 lmin 0.0050 pc2 0.185  SDD: rho 5.29 lmin 0.0002 pc2 0.269  PD: rho 5.36 lmin 0.0002 pc2 0.287

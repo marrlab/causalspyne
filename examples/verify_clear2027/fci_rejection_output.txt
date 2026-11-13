@@ -1,0 +1,64 @@
+W[0.1,0.5]_c0.7_N500: accepted 150/150 W (median tries 10); median rho: DD max 2.77, DD q95 threshold 2.30
+   rho(R~)  DD 2.056  PD>q95 2.377  p=8.1e-26
+   lmin(P)  DD 0.301  PD>q95 0.303  p=8.2e-01
+   SHD      DD 0.342  PD>q95 0.334  p=5.7e-02
+   adj P    DD 0.988  PD>q95 0.989  p=6.3e-01
+   adj R    DD 0.636  PD>q95 0.639  p=5.8e-01
+   arrow P  DD 0.686  PD>q95 0.690  p=4.4e-01
+   arrow R  DD 0.515  PD>q95 0.530  p=2.4e-01
+W[0.1,0.5]_c0.7_N5000: accepted 150/150 W (median tries 10); median rho: DD max 2.77, DD q95 threshold 2.31
+   rho(R~)  DD 2.081  PD>q95 2.384  p=1.3e-25
+   lmin(P)  DD 0.289  PD>q95 0.285  p=3.3e-01
+   SHD      DD 0.269  PD>q95 0.268  p=9.0e-01
+   adj P    DD 0.996  PD>q95 0.995  p=5.8e-01
+   adj R    DD 0.764  PD>q95 0.764  p=9.1e-01
+   arrow P  DD 0.744  PD>q95 0.741  p=5.5e-01
+   arrow R  DD 0.656  PD>q95 0.652  p=4.9e-01
+W[0.1,0.5]_c2.0_N500: accepted 150/150 W (median tries 6); median rho: DD max 3.69, DD q95 threshold 2.89
+   rho(R~)  DD 2.432  PD>q95 3.050  p=2.4e-26
+   lmin(P)  DD 0.205  PD>q95 0.213  p=1.3e-02
+   SHD      DD 0.337  PD>q95 0.327  p=1.4e-02
+   adj P    DD 0.990  PD>q95 0.989  p=7.1e-01
+   adj R    DD 0.626  PD>q95 0.649  p=1.6e-03
+   arrow P  DD 0.720  PD>q95 0.720  p=9.9e-01
+   arrow R  DD 0.523  PD>q95 0.555  p=4.6e-03
+W[0.1,0.5]_c2.0_N5000: accepted 148/150 W (median tries 6); median rho: DD max 3.70, DD q95 threshold 2.86
+   rho(R~)  DD 2.491  PD>q95 3.043  p=7.8e-26
+   lmin(P)  DD 0.204  PD>q95 0.218  p=6.5e-04
+   SHD      DD 0.275  PD>q95 0.275  p=9.8e-01
+   adj P    DD 0.994  PD>q95 0.991  p=4.0e-01
+   adj R    DD 0.740  PD>q95 0.754  p=1.3e-02
+   arrow P  DD 0.763  PD>q95 0.746  p=1.0e-02
+   arrow R  DD 0.637  PD>q95 0.652  p=7.5e-02
+W[0.5,1.5]_c0.7_N500: accepted 149/150 W (median tries 8); median rho: DD max 3.62, DD q95 threshold 3.24
+   rho(R~)  DD 2.991  PD>q95 3.372  p=3.4e-26
+   lmin(P)  DD 0.027  PD>q95 0.026  p=1.8e-01
+   SHD      DD 0.402  PD>q95 0.405  p=6.9e-01
+   adj P    DD 0.962  PD>q95 0.959  p=7.0e-01
+   adj R    DD 0.489  PD>q95 0.484  p=4.5e-01
+   arrow P  DD 0.695  PD>q95 0.695  p=9.6e-01
+   arrow R  DD 0.320  PD>q95 0.314  p=9.0e-01
+W[0.5,1.5]_c0.7_N5000: accepted 148/150 W (median tries 8); median rho: DD max 3.67, DD q95 threshold 3.23
+   rho(R~)  DD 2.953  PD>q95 3.371  p=2.1e-25
+   lmin(P)  DD 0.028  PD>q95 0.027  p=1.4e-02
+   SHD      DD 0.342  PD>q95 0.342  p=9.5e-01
+   adj P    DD 0.970  PD>q95 0.971  p=5.7e-01
+   adj R    DD 0.610  PD>q95 0.605  p=3.5e-01
+   arrow P  DD 0.737  PD>q95 0.748  p=3.8e-01
+   arrow R  DD 0.448  PD>q95 0.442  p=3.5e-01
+W[0.5,1.5]_c2.0_N500: accepted 148/150 W (median tries 7); median rho: DD max 4.52, DD q95 threshold 3.75
+   rho(R~)  DD 3.342  PD>q95 4.025  p=6.5e-26
+   lmin(P)  DD 0.021  PD>q95 0.020  p=2.6e-01
+   SHD      DD 0.412  PD>q95 0.411  p=7.6e-01
+   adj P    DD 0.951  PD>q95 0.957  p=1.7e-01
+   adj R    DD 0.492  PD>q95 0.491  p=8.4e-01
+   arrow P  DD 0.680  PD>q95 0.695  p=1.9e-01
+   arrow R  DD 0.329  PD>q95 0.321  p=4.7e-01
+W[0.5,1.5]_c2.0_N5000: accepted 148/150 W (median tries 5); median rho: DD max 4.41, DD q95 threshold 3.67
+   rho(R~)  DD 3.227  PD>q95 3.929  p=5.3e-26
+   lmin(P)  DD 0.021  PD>q95 0.021  p=6.8e-01
+   SHD      DD 0.346  PD>q95 0.340  p=3.4e-01
+   adj P    DD 0.962  PD>q95 0.966  p=7.1e-01
+   adj R    DD 0.617  PD>q95 0.613  p=6.4e-01
+   arrow P  DD 0.705  PD>q95 0.723  p=6.0e-02
+   arrow R  DD 0.473  PD>q95 0.475  p=9.1e-01

@@ -1,0 +1,64 @@
+W[0.1,0.5]_c0.7_N500  (150 paired instances, means; Wilcoxon p)
+   rho(R~)  DD 2.074  PD 2.582  p=3.8e-26
+   lmin(P)  DD 0.197  PD 0.104  p=2.3e-26
+   SHD      DD 0.373  PD 0.369  p=3.5e-01
+   adj P    DD 0.984  PD 0.989  p=3.6e-01
+   adj R    DD 0.577  PD 0.560  p=1.7e-02
+   arrow P  DD 0.686  PD 0.729  p=7.0e-05
+   arrow R  DD 0.399  PD 0.421  p=1.3e-01
+W[0.1,0.5]_c0.7_N5000  (150 paired instances, means; Wilcoxon p)
+   rho(R~)  DD 2.118  PD 2.676  p=2.9e-26
+   lmin(P)  DD 0.191  PD 0.102  p=2.3e-26
+   SHD      DD 0.320  PD 0.329  p=1.1e-01
+   adj P    DD 0.992  PD 0.989  p=3.3e-01
+   adj R    DD 0.658  PD 0.663  p=4.7e-01
+   arrow P  DD 0.733  PD 0.729  p=6.4e-01
+   arrow R  DD 0.505  PD 0.525  p=1.5e-01
+W[0.1,0.5]_c2.0_N500  (150 paired instances, means; Wilcoxon p)
+   rho(R~)  DD 2.394  PD 3.218  p=6.5e-26
+   lmin(P)  DD 0.106  PD 0.047  p=2.3e-26
+   SHD      DD 0.391  PD 0.385  p=1.4e-01
+   adj P    DD 0.987  PD 0.973  p=5.0e-04
+   adj R    DD 0.521  PD 0.525  p=4.4e-01
+   arrow P  DD 0.717  PD 0.730  p=3.8e-01
+   arrow R  DD 0.349  PD 0.391  p=2.0e-04
+W[0.1,0.5]_c2.0_N5000  (150 paired instances, means; Wilcoxon p)
+   rho(R~)  DD 2.426  PD 3.215  p=8.6e-26
+   lmin(P)  DD 0.104  PD 0.046  p=2.3e-26
+   SHD      DD 0.346  PD 0.330  p=5.3e-03
+   adj P    DD 0.984  PD 0.982  p=6.8e-01
+   adj R    DD 0.607  PD 0.647  p=2.7e-06
+   arrow P  DD 0.739  PD 0.739  p=4.1e-01
+   arrow R  DD 0.449  PD 0.524  p=6.8e-08
+W[0.5,1.5]_c0.7_N500  (150 paired instances, means; Wilcoxon p)
+   rho(R~)  DD 3.061  PD 3.498  p=8.8e-26
+   lmin(P)  DD 0.014  PD 0.005  p=2.3e-26
+   SHD      DD 0.433  PD 0.440  p=7.0e-02
+   adj P    DD 0.960  PD 0.951  p=1.1e-01
+   adj R    DD 0.451  PD 0.437  p=3.7e-02
+   arrow P  DD 0.679  PD 0.691  p=2.5e-01
+   arrow R  DD 0.266  PD 0.254  p=2.7e-01
+W[0.5,1.5]_c0.7_N5000  (150 paired instances, means; Wilcoxon p)
+   rho(R~)  DD 3.010  PD 3.439  p=7.8e-26
+   lmin(P)  DD 0.014  PD 0.005  p=2.3e-26
+   SHD      DD 0.374  PD 0.375  p=8.8e-01
+   adj P    DD 0.967  PD 0.960  p=4.5e-02
+   adj R    DD 0.550  PD 0.555  p=3.9e-01
+   arrow P  DD 0.724  PD 0.740  p=2.0e-01
+   arrow R  DD 0.367  PD 0.389  p=5.8e-02
+W[0.5,1.5]_c2.0_N500  (150 paired instances, means; Wilcoxon p)
+   rho(R~)  DD 3.129  PD 3.790  p=1.5e-25
+   lmin(P)  DD 0.008  PD 0.002  p=2.3e-26
+   SHD      DD 0.434  PD 0.429  p=5.4e-01
+   adj P    DD 0.944  PD 0.944  p=8.8e-01
+   adj R    DD 0.448  PD 0.426  p=1.3e-03
+   arrow P  DD 0.667  PD 0.708  p=1.6e-02
+   arrow R  DD 0.254  PD 0.254  p=7.6e-01
+W[0.5,1.5]_c2.0_N5000  (150 paired instances, means; Wilcoxon p)
+   rho(R~)  DD 3.199  PD 3.870  p=4.2e-25
+   lmin(P)  DD 0.008  PD 0.002  p=2.3e-26
+   SHD      DD 0.389  PD 0.386  p=6.9e-01
+   adj P    DD 0.955  PD 0.945  p=1.0e-01
+   adj R    DD 0.533  PD 0.547  p=4.0e-02
+   arrow P  DD 0.707  PD 0.713  p=7.8e-01
+   arrow R  DD 0.366  PD 0.394  p=1.8e-02
