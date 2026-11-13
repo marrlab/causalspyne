@@ -1,0 +1,60 @@
+W[0.1,0.5]_c0.7_N500  design R, 100 paired instances, means; Wilcoxon p
+   rho(R~)    DD 2.051  SDD 2.201  p=1.1e-06
+   lmin(P)    DD 0.293  SDD 0.197  p=4.1e-12
+   RCD SHD    DD 0.450  SDD 0.449  p=9.4e-01
+   RCD dir R  DD 0.021  SDD 0.084  p=2.1e-09
+   RCD dir P  DD 0.217  SDD 0.577  p=2.4e-08
+   FCI SHD    DD 0.339  SDD 0.395  p=3.9e-14
+W[0.1,0.5]_c0.7_N2000  design R, 100 paired instances, means; Wilcoxon p
+   rho(R~)    DD 2.080  SDD 2.208  p=2.0e-05
+   lmin(P)    DD 0.292  SDD 0.185  p=5.2e-15
+   RCD SHD    DD 0.364  SDD 0.321  p=1.5e-04
+   RCD dir R  DD 0.323  SDD 0.468  p=2.8e-08
+   RCD dir P  DD 0.808  SDD 0.770  p=3.8e-02
+   FCI SHD    DD 0.285  SDD 0.331  p=3.2e-13
+W[0.1,0.5]_c2.0_N500  design R, 100 paired instances, means; Wilcoxon p
+   rho(R~)    DD 2.446  SDD 2.462  p=9.5e-01
+   lmin(P)    DD 0.201  SDD 0.137  p=1.1e-08
+   RCD SHD    DD 0.452  SDD 0.440  p=1.1e-01
+   RCD dir R  DD 0.007  SDD 0.092  p=1.2e-11
+   RCD dir P  DD 0.070  SDD 0.571  p=1.2e-11
+   FCI SHD    DD 0.316  SDD 0.379  p=5.0e-15
+W[0.1,0.5]_c2.0_N2000  design R, 100 paired instances, means; Wilcoxon p
+   rho(R~)    DD 2.460  SDD 2.472  p=9.0e-01
+   lmin(P)    DD 0.203  SDD 0.136  p=2.9e-10
+   RCD SHD    DD 0.471  SDD 0.337  p=1.4e-14
+   RCD dir R  DD 0.160  SDD 0.455  p=4.1e-16
+   RCD dir P  DD 0.495  SDD 0.668  p=1.5e-05
+   FCI SHD    DD 0.288  SDD 0.330  p=5.6e-10
+W[0.5,1.5]_c0.7_N500  design R, 100 paired instances, means; Wilcoxon p
+   rho(R~)    DD 3.066  SDD 3.106  p=2.9e-01
+   lmin(P)    DD 0.027  SDD 0.017  p=4.3e-10
+   RCD SHD    DD 0.633  SDD 0.582  p=3.9e-09
+   RCD dir R  DD 0.005  SDD 0.075  p=6.0e-11
+   RCD dir P  DD 0.060  SDD 0.529  p=9.2e-11
+   FCI SHD    DD 0.412  SDD 0.437  p=1.3e-04
+W[0.5,1.5]_c0.7_N2000  design R, 100 paired instances, means; Wilcoxon p
+   rho(R~)    DD 3.033  SDD 3.088  p=8.6e-02
+   lmin(P)    DD 0.029  SDD 0.017  p=3.8e-08
+   RCD SHD    DD 0.562  SDD 0.421  p=3.9e-16
+   RCD dir R  DD 0.144  SDD 0.446  p=7.8e-17
+   RCD dir P  DD 0.605  SDD 0.723  p=1.2e-02
+   FCI SHD    DD 0.377  SDD 0.388  p=7.6e-02
+W[0.5,1.5]_c2.0_N500  design R, 100 paired instances, means; Wilcoxon p
+   rho(R~)    DD 3.253  SDD 3.289  p=3.4e-01
+   lmin(P)    DD 0.022  SDD 0.012  p=3.1e-12
+   RCD SHD    DD 0.628  SDD 0.571  p=5.7e-11
+   RCD dir R  DD 0.001  SDD 0.073  p=3.4e-10
+   RCD dir P  DD 0.020  SDD 0.420  p=2.0e-10
+   FCI SHD    DD 0.412  SDD 0.441  p=3.5e-07
+W[0.5,1.5]_c2.0_N2000  design R, 100 paired instances, means; Wilcoxon p
+   rho(R~)    DD 3.280  SDD 3.393  p=7.9e-03
+   lmin(P)    DD 0.022  SDD 0.011  p=3.5e-13
+   RCD SHD    DD 0.607  SDD 0.410  p=6.2e-17
+   RCD dir R  DD 0.084  SDD 0.497  p=3.9e-17
+   RCD dir P  DD 0.392  SDD 0.639  p=3.9e-07
+   FCI SHD    DD 0.369  SDD 0.394  p=3.6e-05
+Orienting edge A - C (Double tail): X0 --- X5
+Orienting edge B - D (Double tail): X3 --- X4
+Orienting edge (Double tail): X5 --- X9
+Orienting edge (Double tail): X9 --- X4
