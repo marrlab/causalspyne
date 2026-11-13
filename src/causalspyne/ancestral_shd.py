@@ -14,6 +14,23 @@ import numpy as np
 import numpy as np
 
 
+def pag_in_observed_order(pag, num_nodes, hidden_nodes):
+    """
+    Return ``pag.graph`` with rows/columns in ascending global index order of
+    the observed nodes, i.e. the column order of the observed data (and hence
+    of FCI's output). ``dag2pag`` returns its nodes in an arbitrary order, so
+    ``pag.graph`` must not be compared to a prediction directly.
+    Nodes must be named ``X{global index}``.
+    """
+    hidden = {int(ind) for ind in hidden_nodes}
+    observed = [i for i in range(num_nodes) if i not in hidden]
+    pos = {f"X{ind}": k for k, ind in enumerate(observed)}
+    perm = [pos[node.get_name()] for node in pag.get_nodes()]
+    mat = np.zeros_like(pag.graph)
+    mat[np.ix_(perm, perm)] = pag.graph
+    return mat
+
+
 def structural_hamming_distance(true_dag, true_hidden_nodes, prediction):
     """
     Compute the standardized structural Hamming distance between two graphs.
@@ -39,7 +56,8 @@ def structural_hamming_distance(true_dag, true_hidden_nodes, prediction):
     for ch, pa in np.argwhere(true_dag):
         cl_dag.add_directed_edge(nodes[pa], nodes[ch])
     true_pag = dag2pag(cl_dag, hidden_nodes)
+    mat_true_pag = pag_in_observed_order(true_pag, len(true_dag), true_hidden_nodes)
 
-    total_shd = np.sum(true_pag.graph != prediction)
+    total_shd = np.sum(mat_true_pag != prediction)
 
     return total_shd / (n**2 - n)
