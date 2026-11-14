@@ -110,3 +110,14 @@ def test_subdag_panel_has_no_hidden_vertices():
     ill = ConfoundingIllustration(adj, hidden=[1])
     code = ill._tikz_graph(True, 1, 1, sub=True)
     assert "(n1)" not in code and "\\draw" not in code
+
+
+def test_panels_tikz_separate_files():
+    import numpy as np
+    from causalspyne.illustration import ConfoundingIllustration
+    adj = np.zeros((3, 3), dtype=int)
+    adj[0, 1] = adj[2, 1] = 1
+    panels = ConfoundingIllustration(adj, hidden=[1]).panels_tikz()
+    assert set(panels) == {"dag", "admg", "explicit_W", "implicit_W", "implicit_Omega"}
+    assert all(p.startswith("\\begin{tikzpicture}") and p.rstrip().endswith("\\end{tikzpicture}") for p in panels.values())
+    assert "gray" in panels["dag"]  # edges at the hidden vertex are gray

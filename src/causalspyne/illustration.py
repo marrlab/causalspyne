@@ -298,7 +298,7 @@ class ConfoundingIllustration:
         ax.axis("off")
 
     # -------------------------------------------------------------------- TikZ
-    def _tikz_graph(self, full, xscale, yscale, sub=False):
+    def _tikz_graph(self, full, xscale, yscale, sub=False, mark_sub=False):
         hidden = set(self.hidden)
         lines = []
         for v in range(self.n):
@@ -313,7 +313,9 @@ class ConfoundingIllustration:
             directed = ([(p, c) for c, p in zip(*np.nonzero(self.adj))]
                         if full else self.directed)
         for p, c in sorted(directed):
-            lines.append(f"\\draw[arr] (n{p}) -- (n{c});")
+            # mark_sub: edges of the observed sub-DAG in black, edges at a hidden vertex in gray
+            grey = mark_sub and (p in hidden or c in hidden)
+            lines.append(f"\\draw[arr{',gray' if grey else ''}] (n{p}) -- (n{c});")
         if not full and not sub:
             for a, b in self.bidirected:
                 side, angle = self._bend(a, b)
@@ -323,7 +325,7 @@ class ConfoundingIllustration:
 
     def _tikz_matrix(self, mat, labels, n_obs, title, cell=0.27):
         n = len(labels)
-        fs = "tiny" if cell < 0.2 else "scriptsize"
+        fs = "tiny" if cell <= 0.2 else "scriptsize"
         out = [f"\\node[font=\\scriptsize,anchor=south] at ({n * cell / 2:.3f},0.75) {{{title}}};"]
 
         def rect(r0, r1, c0, c1, colour):
@@ -411,3 +413,35 @@ class ConfoundingIllustration:
                 + matrix(self.explicit_matrix(), self.order, no, "explicit $W'$") + "\\hspace{1.2cm}\n"
                 + matrix(self.implicit_weight_pattern_marked(), self.observed, no, "implicit $W$") + "\\hspace{1.2cm}\n"
                 + matrix(self.omega_pattern(), self.observed, no, "implicit $\\Omega$") + "\n")
+
+
+def _panels(self, xscale=0.8, yscale=0.8, cell=0.27, node=0.45):
+    """
+    The six panels of one row as separate standalone ``tikzpicture`` strings, so that LaTeX can lay them out and
+    scale them (e.g. ``\\resizebox{\\linewidth}{!}{...}`` inside a ``minipage`` of the wanted width):
+    ``dag``, ``subdag``, ``admg``, ``explicit_W``, ``implicit_W``, ``implicit_Omega``.
+    """
+    xs = [p[0] for p in self.pos.values()]
+    top = max(p[1] for p in self.pos.values()) + 0.8
+    no = len(self.observed)
+    sty = f",obs/.append style={{minimum size={node}cm,font=\\tiny}},hid/.append style={{minimum size={node}cm,font=\\tiny}}"
+
+    def graph(full, title, sub=False, mark_sub=False):
+        return (f"\\begin{{tikzpicture}}[x={xscale}cm,y={yscale}cm,baseline=(current bounding box.north)"
+                f"{sty}]\n\\node[font=\\scriptsize] at ({np.mean(xs):.2f},{top:.2f}) {{{title}}};\n"
+                + self._tikz_graph(full, xscale, yscale, sub, mark_sub) + "\n\\end{tikzpicture}")
+
+    def matrix(mat, labels, n_obs, title):
+        return ("\\begin{tikzpicture}[baseline=(current bounding box.north)]\n"
+                + self._tikz_matrix(mat, labels, n_obs, title, cell=cell) + "\n\\end{tikzpicture}")
+
+    return {
+        "dag": graph(True, "DAG (sub-DAG in black)", mark_sub=True),
+        "admg": graph(False, "ancestral ADMG"),
+        "explicit_W": matrix(self.explicit_matrix(), self.order, no, "explicit $W'$"),
+        "implicit_W": matrix(self.implicit_weight_pattern_marked(), self.observed, no, "implicit $W$"),
+        "implicit_Omega": matrix(self.omega_pattern(), self.observed, no, "implicit $\\Omega$"),
+    }
+
+
+ConfoundingIllustration.panels_tikz = _panels
