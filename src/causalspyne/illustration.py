@@ -323,6 +323,7 @@ class ConfoundingIllustration:
 
     def _tikz_matrix(self, mat, labels, n_obs, title, cell=0.27):
         n = len(labels)
+        fs = "tiny" if cell < 0.2 else "scriptsize"
         out = [f"\\node[font=\\scriptsize,anchor=south] at ({n * cell / 2:.3f},0.75) {{{title}}};"]
 
         def rect(r0, r1, c0, c1, colour):
@@ -352,10 +353,10 @@ class ConfoundingIllustration:
             out.append(f"\\node[font=\\tiny,left=-1pt] at (0,{-(i + .5) * cell:.3f}) {{{v}}};")
         if n_obs < n:
             w, wo = n * cell, n_obs * cell
-            out.append(f"\\node[font=\\scriptsize,above=8pt] at ({wo / 2:.3f},0) {{$W_{{OO}}$}};"
-                       f" \\node[font=\\scriptsize,above=8pt] at ({(w + wo) / 2:.3f},0) {{$W_{{OU}}$}};"
-                       f" \\node[font=\\scriptsize,below=1pt] at ({wo / 2:.3f},{-w:.3f}) {{$W_{{UO}}$}};"
-                       f" \\node[font=\\scriptsize,below=1pt] at ({(w + wo) / 2:.3f},{-w:.3f}) {{$W_{{UU}}$}};")
+            out.append(f"\\node[font=\\{fs},above=8pt] at ({wo / 2:.3f},0) {{$W_{{OO}}$}};"
+                       f" \\node[font=\\{fs},above=8pt] at ({(w + wo) / 2:.3f},0) {{$W_{{OU}}$}};"
+                       f" \\node[font=\\{fs},below=1pt] at ({wo / 2:.3f},{-w:.3f}) {{$W_{{UO}}$}};"
+                       f" \\node[font=\\{fs},below=1pt] at ({(w + wo) / 2:.3f},{-w:.3f}) {{$W_{{UU}}$}};")
         return "\n".join(out)
 
     def tikz_preamble(self):
@@ -370,7 +371,7 @@ class ConfoundingIllustration:
                 "  arr/.style={-{Stealth[length=1.6mm]},thick},\n"
                 "  arr2/.style={{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]},thick,red!70!black}}\n")
 
-    def to_tikz(self, xscale=0.8, yscale=0.8, with_preamble=True, two_lines=False, cell=0.27):
+    def to_tikz(self, xscale=0.8, yscale=0.8, with_preamble=True, two_lines=False, cell=0.27, one_line_full=False):
         """
         TikZ code of one row (DAG | observed sub-DAG | ancestral ADMG, then explicit W' | implicit W |
         implicit Omega), ready to be put in a figure environment. With ``two_lines=False`` the old single
@@ -391,7 +392,16 @@ class ConfoundingIllustration:
             return ("\\begin{tikzpicture}[baseline=(current bounding box.center)]\n"
                     + self._tikz_matrix(mat, labels, n_obs, title, cell=cell) + "\n\\end{tikzpicture}")
 
-        head = f"\\begin{{tikzpicture}}[x={xscale}cm,y={yscale}cm,baseline=(current bounding box.center)]\n"
+        compact = (",obs/.append style={minimum size=0.36cm,font=\\tiny},"
+                   "hid/.append style={minimum size=0.36cm,font=\\tiny}") if one_line_full else ""
+        head = (f"\\begin{{tikzpicture}}[x={xscale}cm,y={yscale}cm,"
+                f"baseline=(current bounding box.center){compact}]\n")
+        if one_line_full:  # DAG | sub-DAG | ancestral ADMG | explicit W' | implicit W | implicit Omega on one line
+            return (pre + head + graph(True, "DAG") + graph(True, "sub-DAG", sub=True, k=1)
+                    + graph(False, "ancestral ADMG", k=2) + "\\end{tikzpicture}\\hfill\n"
+                    + matrix(self.explicit_matrix(), self.order, no, "explicit $W'$") + "\\hfill\n"
+                    + matrix(self.implicit_weight_pattern_marked(), self.observed, no, "implicit $W$") + "\\hfill\n"
+                    + matrix(self.omega_pattern(), self.observed, no, "implicit $\\Omega$") + "\n")
         if not two_lines:
             return (pre + head + graph(True, "DAG") + graph(False, "ancestral ADMG", k=1) + "\\end{tikzpicture}\\hfill\n"
                     + matrix(self.explicit_matrix(), self.order, no, "explicit $W'$") + "\\hfill\n"
