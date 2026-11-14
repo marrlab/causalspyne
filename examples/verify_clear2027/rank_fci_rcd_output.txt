@@ -1,0 +1,24 @@
+W[0.1,0.5] c=0.7 N=500 (100 ADMGs)
+   pair error       FCI/RCD under DD 0.393/0.503  RE 0.438/0.528   RCD wins 0.09 (DD) -> 0.15 (RE)   mean(FCI-RCD) -0.110 -> -0.089  p(change)=1.5e-02
+   adjacency error  FCI/RCD under DD 0.182/0.245  RE 0.284/0.297   RCD wins 0.19 (DD) -> 0.42 (RE)   mean(FCI-RCD) -0.062 -> -0.013  p(change)=3.3e-07
+W[0.1,0.5] c=0.7 N=2000 (100 ADMGs)
+   pair error       FCI/RCD under DD 0.360/0.419  RE 0.407/0.325   RCD wins 0.31 (DD) -> 0.80 (RE)   mean(FCI-RCD) -0.059 -> +0.082  p(change)=7.1e-13
+   adjacency error  FCI/RCD under DD 0.148/0.212  RE 0.247/0.193   RCD wins 0.20 (DD) -> 0.84 (RE)   mean(FCI-RCD) -0.064 -> +0.054  p(change)=6.3e-16
+W[0.1,0.5] c=2.0 N=500 (100 ADMGs)
+   pair error       FCI/RCD under DD 0.402/0.553  RE 0.451/0.524   RCD wins 0.04 (DD) -> 0.24 (RE)   mean(FCI-RCD) -0.151 -> -0.074  p(change)=1.2e-09
+   adjacency error  FCI/RCD under DD 0.213/0.288  RE 0.303/0.296   RCD wins 0.15 (DD) -> 0.58 (RE)   mean(FCI-RCD) -0.075 -> +0.007  p(change)=1.9e-13
+W[0.1,0.5] c=2.0 N=2000 (100 ADMGs)
+   pair error       FCI/RCD under DD 0.391/0.483  RE 0.427/0.360   RCD wins 0.19 (DD) -> 0.73 (RE)   mean(FCI-RCD) -0.092 -> +0.068  p(change)=2.6e-14
+   adjacency error  FCI/RCD under DD 0.184/0.252  RE 0.263/0.219   RCD wins 0.22 (DD) -> 0.70 (RE)   mean(FCI-RCD) -0.068 -> +0.043  p(change)=7.3e-15
+W[0.5,1.5] c=0.7 N=500 (100 ADMGs)
+   pair error       FCI/RCD under DD 0.427/0.638  RE 0.457/0.595   RCD wins 0.01 (DD) -> 0.06 (RE)   mean(FCI-RCD) -0.211 -> -0.137  p(change)=4.2e-09
+   adjacency error  FCI/RCD under DD 0.259/0.358  RE 0.314/0.339   RCD wins 0.19 (DD) -> 0.35 (RE)   mean(FCI-RCD) -0.099 -> -0.026  p(change)=2.6e-11
+W[0.5,1.5] c=0.7 N=2000 (100 ADMGs)
+   pair error       FCI/RCD under DD 0.412/0.584  RE 0.428/0.457   RCD wins 0.03 (DD) -> 0.43 (RE)   mean(FCI-RCD) -0.172 -> -0.029  p(change)=8.5e-13
+   adjacency error  FCI/RCD under DD 0.234/0.326  RE 0.281/0.281   RCD wins 0.18 (DD) -> 0.48 (RE)   mean(FCI-RCD) -0.091 -> -0.000  p(change)=7.9e-14
+W[0.5,1.5] c=2.0 N=500 (100 ADMGs)
+   pair error       FCI/RCD under DD 0.442/0.657  RE 0.462/0.608   RCD wins 0.00 (DD) -> 0.04 (RE)   mean(FCI-RCD) -0.215 -> -0.146  p(change)=9.7e-10
+   adjacency error  FCI/RCD under DD 0.268/0.368  RE 0.317/0.345   RCD wins 0.20 (DD) -> 0.42 (RE)   mean(FCI-RCD) -0.100 -> -0.028  p(change)=1.8e-10
+W[0.5,1.5] c=2.0 N=2000 (100 ADMGs)
+   pair error       FCI/RCD under DD 0.421/0.587  RE 0.438/0.524   RCD wins 0.05 (DD) -> 0.23 (RE)   mean(FCI-RCD) -0.166 -> -0.086  p(change)=6.2e-07
+   adjacency error  FCI/RCD under DD 0.248/0.320  RE 0.286/0.315   RCD wins 0.26 (DD) -> 0.42 (RE)   mean(FCI-RCD) -0.072 -> -0.029  p(change)=6.1e-05
