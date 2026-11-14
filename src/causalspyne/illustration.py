@@ -114,13 +114,65 @@ class ConfoundingIllustration:
         idx = np.array(self.order)
         return self.adj[np.ix_(idx, idx)]
 
+    def _hidden_reach(self):
+        """{hidden h: observed vertices reached from h by a directed path whose inner vertices are hidden}"""
+        children = {v: [c for c in range(self.n) if self.adj[c, v]] for v in range(self.n)}
+        hid = set(self.hidden)
+        reach = {}
+        for h in self.hidden:
+            seen, stack, found = {h}, [h], set()
+            while stack:
+                v = stack.pop()
+                for c in children[v]:
+                    if c in seen:
+                        continue
+                    seen.add(c)
+                    if c in hid:
+                        stack.append(c)
+                    else:
+                        found.add(c)
+            reach[h] = found
+        return reach
+
     def omega_pattern(self):
-        """nonzero pattern of the implied Omega over the observed vertices"""
+        """
+        Structural pattern of the noise covariance Omega of the implicit parameterization over the observed
+        vertices, for generic weights: Omega = L S L^T + D with L = W_OU (I - W_UU)^{-1}, so Omega_ij is
+        nonzero iff some hidden vertex reaches both i and j through hidden vertices only.
+        Entries: 1 on the diagonal and for the bidirected edges of the ancestral ADMG, 2 for the remaining
+        nonzero entries ("bows": one of i, j is an ancestor of the other, so the ancestral graph carries the
+        dependence on the directed edge instead of a bidirected one).
+        """
         obs = self.observed
         pos = {v: k for k, v in enumerate(obs)}
         pattern = np.eye(len(obs), dtype=int)
-        for a, b in self.bidirected:
-            pattern[pos[a], pos[b]] = pattern[pos[b], pos[a]] = 1
+        bi = {tuple(sorted(e)) for e in self.bidirected}
+        for found in self._hidden_reach().values():
+            for a in found:
+                for b in found:
+                    if a < b:
+                        pattern[pos[a], pos[b]] = pattern[pos[b], pos[a]] = 1 if (a, b) in bi else 2
+        return pattern
+
+    def implicit_weight_pattern(self):
+        """
+        Structural pattern of the weight matrix W of the implicit parameterization over the observed vertices
+        (row = child, column = parent): W = W_OO + W_OU (I - W_UU)^{-1} W_UO. It equals W_OO exactly when
+        W_UO = 0 (hidden roots) and has additional entries otherwise.
+        """
+        obs = self.observed
+        pos = {v: k for k, v in enumerate(obs)}
+        pattern = np.zeros((len(obs), len(obs)), dtype=int)
+        for c in obs:
+            for p in obs:
+                if self.adj[c, p]:
+                    pattern[pos[c], pos[p]] = 1
+        reach = self._hidden_reach()
+        for h, found in reach.items():
+            for p in obs:
+                if self.adj[h, p]:  # observed parent p of the hidden vertex h
+                    for c in found:
+                        pattern[pos[c], pos[p]] = 1
         return pattern
 
     # ------------------------------------------------------------- matplotlib
@@ -149,7 +201,10 @@ class ConfoundingIllustration:
                 ax.add_patch(Rectangle((c0, r0), c1 - c0, r1 - r0,
                                        facecolor=colour, edgecolor="none"))
             for i, j in zip(*np.nonzero(mat)):
-                ax.plot(j + 0.5, i + 0.5, "ko", ms=5)
+                if mat[i, j] == 2:  # bow: nonzero Omega entry carried by a directed edge in the ancestral graph
+                    ax.plot(j + 0.5, i + 0.5, "o", ms=5, mfc="white", mec="k", mew=0.9)
+                else:
+                    ax.plot(j + 0.5, i + 0.5, "ko", ms=5)
             for k in range(n + 1):
                 ax.axhline(k, color="0.6", lw=0.4)
                 ax.axvline(k, color="0.6", lw=0.4)
@@ -271,14 +326,17 @@ class ConfoundingIllustration:
                        f" \\draw[thick] (0,{-n_obs * cell:.3f}) -- ({n * cell:.3f},{-n_obs * cell:.3f});")
         out.append(f"\\draw[thick] (0,0) rectangle ({n * cell:.3f},{-n * cell:.3f});")
         for i, j in zip(*np.nonzero(mat)):
-            out.append(f"\\fill ({(j + .5) * cell:.3f},{-(i + .5) * cell:.3f}) circle (0.075);")
+            if mat[i, j] == 2:  # bow, see omega_pattern
+                out.append(f"\\filldraw[fill=white] ({(j + .5) * cell:.3f},{-(i + .5) * cell:.3f}) circle (0.07);")
+            else:
+                out.append(f"\\fill ({(j + .5) * cell:.3f},{-(i + .5) * cell:.3f}) circle (0.075);")
         for j, v in enumerate(labels):
             out.append(f"\\node[font=\\tiny,above=-1pt] at ({(j + .5) * cell:.3f},0) {{{v}}};")
         for i, v in enumerate(labels):
             out.append(f"\\node[font=\\tiny,left=-1pt] at (0,{-(i + .5) * cell:.3f}) {{{v}}};")
         if n_obs < n:
             w, wo = n * cell, n_obs * cell
-            out.append(f"\\node[font=\\scriptsize,above=8pt] at ({wo / 2:.3f},0) {{$W_O$}};"
+            out.append(f"\\node[font=\\scriptsize,above=8pt] at ({wo / 2:.3f},0) {{$W_{{OO}}$}};"
                        f" \\node[font=\\scriptsize,above=8pt] at ({(w + wo) / 2:.3f},0) {{$W_{{OU}}$}};"
                        f" \\node[font=\\scriptsize,below=1pt] at ({wo / 2:.3f},{-w:.3f}) {{$W_{{UO}}$}};"
                        f" \\node[font=\\scriptsize,below=1pt] at ({(w + wo) / 2:.3f},{-w:.3f}) {{$W_{{UU}}$}};")

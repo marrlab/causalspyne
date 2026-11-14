@@ -46,13 +46,33 @@ def test_block_structure_of_explicit_matrix():
     assert mat2[len(ill2.observed):, :len(ill2.observed)].sum() == 2  # W_UO != 0
 
 
-def test_omega_pattern_matches_bidirected_edges():
+def test_omega_pattern_follows_the_explicit_model():
+    # hidden root 1 loads on 0, 2, 5: Omega has all three off-diagonal pairs; 0<->2 is a bow (2 -> 0)
     ill = ConfoundingIllustration(paper_dag(), hidden=[1])
     pattern = ill.omega_pattern()
+    pos = {v: k for k, v in enumerate(ill.observed)}
     assert (pattern == pattern.T).all()
-    assert pattern.sum() == len(ill.observed) + 2 * len(ill.bidirected)
-    diag = ConfoundingIllustration(paper_dag(), hidden=[2, 5]).omega_pattern()
-    assert (diag == np.eye(5)).all()
+    assert pattern[pos[0], pos[5]] == 1 and pattern[pos[2], pos[5]] == 1  # bidirected in the ancestral ADMG
+    assert pattern[pos[0], pos[2]] == 2  # bow, not a bidirected edge
+    # hidden 2 and 5: no bidirected edge, but the noises of 2 and 5 still enter 0, 4 and 3, 4 (bows)
+    ill2 = ConfoundingIllustration(paper_dag(), hidden=[2, 5])
+    p2 = ill2.omega_pattern()
+    pos2 = {v: k for k, v in enumerate(ill2.observed)}
+    assert (p2 == 2).sum() == 4 and p2[pos2[0], pos2[4]] == 2 and p2[pos2[3], pos2[4]] == 2
+    assert ill2.bidirected == []
+
+
+def test_implicit_weight_pattern():
+    root = ConfoundingIllustration(paper_dag(), hidden=[1])
+    obs = root.observed
+    # hidden root: W of the implicit model equals the observed block W_OO
+    assert (root.implicit_weight_pattern() == root.adj[np.ix_(obs, obs)]).all()
+    inter = ConfoundingIllustration(paper_dag(), hidden=[2, 5])
+    w = inter.implicit_weight_pattern()
+    pos = {v: k for k, v in enumerate(inter.observed)}
+    for parent, child in [(1, 0), (1, 3), (1, 4)]:  # paths 1->2->0, 1->5->3, 1->2->4 are absorbed
+        assert w[pos[child], pos[parent]] == 1
+    assert w[pos[3], pos[1]] == 1 and inter.adj[3, 1] == 0  # not a direct edge of the DAG
 
 
 def test_layout_and_outputs():
