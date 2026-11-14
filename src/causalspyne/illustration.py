@@ -176,6 +176,30 @@ class ConfoundingIllustration:
         fig.tight_layout()
         return fig
 
+    def _bend(self, a, b):
+        """
+        Choose the side (+1 left of a->b, -1 right) and TikZ bend angle of a
+        bidirected edge so that the curve stays clear of the other drawn
+        vertices. Returns ``(side, angle)``; the curve's mid-point lies about
+        ``0.37 * |ab| * tan(angle)`` away from the chord.
+        """
+        pa, pb = np.array(self.pos[a], float), np.array(self.pos[b], float)
+        chord = pb - pa
+        length = np.linalg.norm(chord)
+        left = np.array([-chord[1], chord[0]]) / length
+        others = [np.array(self.pos[v], float) for v in self.observed if v not in (a, b)]
+        t = np.linspace(0.1, 0.9, 17)[:, None]
+        best = None
+        for side in (1, -1):
+            for angle in (20, 30, 40, 50):
+                h = 0.37 * length * np.tan(np.radians(angle))
+                curve = pa + t * chord + side * left * (4 * t * (1 - t)) * h
+                clearance = min([np.linalg.norm(curve - o, axis=1).min() for o in others] or [9.0])
+                score = min(clearance, 0.7) - 0.004 * angle
+                if best is None or score > best[0] + 1e-9:
+                    best = (score, side, angle)
+        return best[1], best[2]
+
     def _draw_graph(self, ax, full):
         hidden = set(self.hidden)
         directed = ([(p, c) for c, p in zip(*np.nonzero(self.adj))]
@@ -187,10 +211,12 @@ class ConfoundingIllustration:
                                     "shrinkA": 11, "shrinkB": 11})
         if not full:
             for a, b in self.bidirected:
+                side, angle = self._bend(a, b)
+                rad = -side * 0.74 * np.tan(np.radians(angle))  # matplotlib: positive rad bends right
                 ax.annotate("", xy=self.pos[b], xytext=self.pos[a],
                             arrowprops={"arrowstyle": "<|-|>", "lw": 1.1,
                                         "color": "firebrick", "shrinkA": 11,
-                                        "shrinkB": 11, "connectionstyle": "arc3,rad=0.3"})
+                                        "shrinkB": 11, "connectionstyle": f"arc3,rad={rad:.3f}"})
         for v in nodes:
             x, y = self.pos[v]
             hid = v in hidden
@@ -219,8 +245,8 @@ class ConfoundingIllustration:
             lines.append(f"\\draw[arr] (n{p}) -- (n{c});")
         if not full:
             for a, b in self.bidirected:
-                bend = "bend left=35" if abs(self.pos[a][1] - self.pos[b][1]) < 0.1 \
-                    else "bend left=20"
+                side, angle = self._bend(a, b)
+                bend = f"bend {'left' if side > 0 else 'right'}={angle}"
                 lines.append(f"\\draw[arr2,{bend}] (n{a}) to (n{b});")
         return "\n".join(lines)
 
