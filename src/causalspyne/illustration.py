@@ -175,6 +175,19 @@ class ConfoundingIllustration:
                         pattern[pos[c], pos[p]] = 1
         return pattern
 
+    def implicit_weight_pattern_marked(self):
+        """
+        Like :meth:`implicit_weight_pattern`, but entries that are not edges of the observed sub-DAG W_OO and
+        appear only through paths via hidden vertices are marked 2 (1 for the sub-DAG edges).
+        """
+        pattern = self.implicit_weight_pattern()
+        obs = self.observed
+        for i, c in enumerate(obs):
+            for j, p in enumerate(obs):
+                if pattern[i, j] and not self.adj[c, p]:
+                    pattern[i, j] = 2
+        return pattern
+
     # ------------------------------------------------------------- matplotlib
     def to_matplotlib(self, figsize=(11, 3.4)):
         """one row: DAG | ancestral ADMG | explicit W' | implicit Omega"""
@@ -285,20 +298,23 @@ class ConfoundingIllustration:
         ax.axis("off")
 
     # -------------------------------------------------------------------- TikZ
-    def _tikz_graph(self, full, xscale, yscale):
+    def _tikz_graph(self, full, xscale, yscale, sub=False):
         hidden = set(self.hidden)
         lines = []
         for v in range(self.n):
-            if not full and v in hidden:
+            if (not full or sub) and v in hidden:
                 continue
             x, y = self.pos[v]
             style = "hid" if v in hidden else "obs"
             lines.append(f"\\node[{style}] (n{v}) at ({x:.2f},{y:.2f}) {{{v}}};")
-        directed = ([(p, c) for c, p in zip(*np.nonzero(self.adj))]
-                    if full else self.directed)
+        if sub:  # observed sub-DAG: edges of the DAG between observed vertices (support of W_OO)
+            directed = [(p, c) for c, p in zip(*np.nonzero(self.adj)) if p not in hidden and c not in hidden]
+        else:
+            directed = ([(p, c) for c, p in zip(*np.nonzero(self.adj))]
+                        if full else self.directed)
         for p, c in sorted(directed):
             lines.append(f"\\draw[arr] (n{p}) -- (n{c});")
-        if not full:
+        if not full and not sub:
             for a, b in self.bidirected:
                 side, angle = self._bend(a, b)
                 bend = f"bend {'left' if side > 0 else 'right'}={angle}"
@@ -354,29 +370,34 @@ class ConfoundingIllustration:
                 "  arr/.style={-{Stealth[length=1.6mm]},thick},\n"
                 "  arr2/.style={{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]},thick,red!70!black}}\n")
 
-    def to_tikz(self, xscale=0.8, yscale=0.8, with_preamble=True):
+    def to_tikz(self, xscale=0.8, yscale=0.8, with_preamble=True, two_lines=False, cell=0.27):
         """
-        TikZ code of one row (DAG | ancestral ADMG | explicit W' | implicit
-        Omega), ready to be put in a figure environment.
+        TikZ code of one row (DAG | observed sub-DAG | ancestral ADMG, then explicit W' | implicit W |
+        implicit Omega), ready to be put in a figure environment. With ``two_lines=False`` the old single
+        line (DAG | ancestral ADMG | explicit W' | implicit Omega) is returned.
         """
         xs = [p[0] for p in self.pos.values()]
         shift = (max(xs) - min(xs) + 1.0) * xscale + 0.4
         top = max(p[1] for p in self.pos.values()) + 0.8
         no = len(self.observed)
         pre = self.tikz_preamble() if with_preamble else ""
-        return (
-            pre
-            + f"\\begin{{tikzpicture}}[x={xscale}cm,y={yscale}cm,baseline=(current bounding box.center)]\n"
-            f"\\node[font=\\scriptsize] at ({np.mean(xs):.2f},{top:.2f}) {{DAG}};\n"
-            + self._tikz_graph(True, xscale, yscale) + "\n"
-            f"\\begin{{scope}}[xshift={shift:.2f}cm]\n"
-            f"\\node[font=\\scriptsize] at ({np.mean(xs):.2f},{top:.2f}) {{ancestral ADMG}};\n"
-            + self._tikz_graph(False, xscale, yscale) + "\n\\end{scope}\n"
-            "\\end{tikzpicture}\\hfill\n"
-            "\\begin{tikzpicture}[baseline=(current bounding box.center)]\n"
-            + self._tikz_matrix(self.explicit_matrix(), self.order, no, "explicit $W'$") + "\n"
-            "\\end{tikzpicture}\\hfill\n"
-            "\\begin{tikzpicture}[baseline=(current bounding box.center)]\n"
-            + self._tikz_matrix(self.omega_pattern(), self.observed, no, "implicit $\\Omega$") + "\n"
-            "\\end{tikzpicture}\n"
-        )
+
+        def graph(full, title, sub=False, k=0):
+            return (f"\\begin{{scope}}[xshift={k * shift:.2f}cm]\n"
+                    f"\\node[font=\\scriptsize] at ({np.mean(xs):.2f},{top:.2f}) {{{title}}};\n"
+                    + self._tikz_graph(full, xscale, yscale, sub) + "\n\\end{scope}\n")
+
+        def matrix(mat, labels, n_obs, title):
+            return ("\\begin{tikzpicture}[baseline=(current bounding box.center)]\n"
+                    + self._tikz_matrix(mat, labels, n_obs, title, cell=cell) + "\n\\end{tikzpicture}")
+
+        head = f"\\begin{{tikzpicture}}[x={xscale}cm,y={yscale}cm,baseline=(current bounding box.center)]\n"
+        if not two_lines:
+            return (pre + head + graph(True, "DAG") + graph(False, "ancestral ADMG", k=1) + "\\end{tikzpicture}\\hfill\n"
+                    + matrix(self.explicit_matrix(), self.order, no, "explicit $W'$") + "\\hfill\n"
+                    + matrix(self.omega_pattern(), self.observed, no, "implicit $\\Omega$") + "\n")
+        return (pre + head + graph(True, "DAG") + graph(True, "observed sub-DAG", sub=True, k=1)
+                + graph(False, "ancestral ADMG", k=2) + "\\end{tikzpicture}\\\\[2pt]\n"
+                + matrix(self.explicit_matrix(), self.order, no, "explicit $W'$") + "\\hspace{1.2cm}\n"
+                + matrix(self.implicit_weight_pattern_marked(), self.observed, no, "implicit $W$") + "\\hspace{1.2cm}\n"
+                + matrix(self.omega_pattern(), self.observed, no, "implicit $\\Omega$") + "\n")
