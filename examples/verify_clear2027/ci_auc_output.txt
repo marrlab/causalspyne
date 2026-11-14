@@ -1,0 +1,24 @@
+W[0.1,0.5] c=0.7 N=500 (100 ADMGs, paired)
+   recall                         DD 0.657  PD 0.664  diff +0.0074 [-0.0054,+0.0201]  p=2.3e-01
+   accuracy                       DD 0.679  PD 0.685  diff +0.0065 [-0.0056,+0.0180]  p=2.5e-01
+   AUC                            DD 0.850  PD 0.855  diff +0.0059 [-0.0011,+0.0132]  p=2.5e-01
+   AUC (weak dependencies only)   DD 0.623  PD 0.624  diff +0.0017 [-0.0127,+0.0166]  p=8.2e-01
+   recall (weak dependencies)     DD 0.176  PD 0.173  diff -0.0025 [-0.0183,+0.0129]  p=7.5e-01
+W[0.1,0.5] c=2.0 N=500 (100 ADMGs, paired)
+   recall                         DD 0.719  PD 0.708  diff -0.0112 [-0.0258,+0.0045]  p=3.3e-02
+   accuracy                       DD 0.741  PD 0.729  diff -0.0127 [-0.0257,+0.0005]  p=2.5e-02
+   AUC                            DD 0.875  PD 0.871  diff -0.0039 [-0.0131,+0.0058]  p=1.4e-01
+   AUC (weak dependencies only)   DD 0.623  PD 0.609  diff -0.0147 [-0.0313,+0.0022]  p=1.4e-01
+   recall (weak dependencies)     DD 0.190  PD 0.174  diff -0.0165 [-0.0329,-0.0003]  p=5.2e-02
+W[0.5,1.5] c=0.7 N=500 (100 ADMGs, paired)
+   recall                         DD 0.822  PD 0.783  diff -0.0390 [-0.0500,-0.0290]  p=2.6e-10
+   accuracy                       DD 0.833  PD 0.798  diff -0.0358 [-0.0450,-0.0272]  p=1.7e-10
+   AUC                            DD 0.922  PD 0.904  diff -0.0176 [-0.0229,-0.0124]  p=1.1e-08
+   AUC (weak dependencies only)   DD 0.635  PD 0.613  diff -0.0226 [-0.0386,-0.0066]  p=3.4e-03
+   recall (weak dependencies)     DD 0.200  PD 0.180  diff -0.0201 [-0.0366,-0.0050]  p=5.7e-03
+W[0.5,1.5] c=2.0 N=500 (100 ADMGs, paired)
+   recall                         DD 0.852  PD 0.813  diff -0.0387 [-0.0530,-0.0240]  p=1.2e-06
+   accuracy                       DD 0.862  PD 0.827  diff -0.0357 [-0.0484,-0.0231]  p=1.2e-06
+   AUC                            DD 0.933  PD 0.918  diff -0.0145 [-0.0222,-0.0064]  p=1.7e-04
+   AUC (weak dependencies only)   DD 0.629  PD 0.638  diff +0.0091 [-0.0097,+0.0278]  p=3.8e-01
+   recall (weak dependencies)     DD 0.205  PD 0.198  diff -0.0065 [-0.0263,+0.0118]  p=5.8e-01
