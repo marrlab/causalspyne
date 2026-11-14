@@ -1,0 +1,40 @@
+W[0.1,0.5] c=0.7 N=500 (100 instances)
+   recall       DD 0.657  PD 0.664  diff +0.007  p=2.3e-01
+   specificity  DD 0.948  PD 0.952  diff +0.004  p=6.1e-01
+   accuracy     DD 0.679  PD 0.685  diff +0.006  p=2.5e-01
+   weak recall  DD 0.176  PD 0.173  diff -0.002  p=7.5e-01
+W[0.1,0.5] c=0.7 N=5000 (100 instances)
+   recall       DD 0.836  PD 0.849  diff +0.013  p=6.0e-02
+   specificity  DD 0.942  PD 0.936  diff -0.006  p=5.3e-01
+   accuracy     DD 0.846  PD 0.857  diff +0.011  p=7.3e-02
+   weak recall  DD 0.552  PD 0.544  diff -0.008  p=2.9e-01
+W[0.1,0.5] c=2.0 N=500 (100 instances)
+   recall       DD 0.719  PD 0.708  diff -0.011  p=3.3e-02
+   specificity  DD 0.951  PD 0.949  diff -0.002  p=4.9e-01
+   accuracy     DD 0.741  PD 0.729  diff -0.013  p=2.5e-02
+   weak recall  DD 0.190  PD 0.174  diff -0.017  p=5.2e-02
+W[0.1,0.5] c=2.0 N=5000 (100 instances)
+   recall       DD 0.862  PD 0.874  diff +0.012  p=4.9e-01
+   specificity  DD 0.959  PD 0.949  diff -0.010  p=2.6e-01
+   accuracy     DD 0.873  PD 0.881  diff +0.008  p=6.1e-01
+   weak recall  DD 0.559  PD 0.543  diff -0.016  p=1.0e-01
+W[0.5,1.5] c=0.7 N=500 (100 instances)
+   recall       DD 0.822  PD 0.783  diff -0.039  p=2.6e-10
+   specificity  DD 0.946  PD 0.948  diff +0.002  p=4.4e-01
+   accuracy     DD 0.833  PD 0.798  diff -0.036  p=1.7e-10
+   weak recall  DD 0.200  PD 0.180  diff -0.020  p=5.7e-03
+W[0.5,1.5] c=0.7 N=5000 (100 instances)
+   recall       DD 0.906  PD 0.903  diff -0.002  p=2.3e-01
+   specificity  DD 0.958  PD 0.956  diff -0.002  p=7.3e-01
+   accuracy     DD 0.913  PD 0.910  diff -0.003  p=2.0e-01
+   weak recall  DD 0.548  PD 0.520  diff -0.027  p=5.5e-02
+W[0.5,1.5] c=2.0 N=500 (100 instances)
+   recall       DD 0.852  PD 0.813  diff -0.039  p=1.2e-06
+   specificity  DD 0.939  PD 0.949  diff +0.011  p=9.1e-02
+   accuracy     DD 0.862  PD 0.827  diff -0.036  p=1.2e-06
+   weak recall  DD 0.205  PD 0.198  diff -0.007  p=5.8e-01
+W[0.5,1.5] c=2.0 N=5000 (100 instances)
+   recall       DD 0.920  PD 0.922  diff +0.002  p=6.0e-01
+   specificity  DD 0.955  PD 0.955  diff +0.001  p=4.2e-01
+   accuracy     DD 0.927  PD 0.927  diff +0.000  p=5.1e-01
+   weak recall  DD 0.527  PD 0.558  diff +0.032  p=2.8e-01
