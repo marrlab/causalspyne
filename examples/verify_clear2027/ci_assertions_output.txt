@@ -1,0 +1,28 @@
+W[0.1,0.5] c=0.7 (60 instances, |V|=10, |S|<=2)
+   same CI zeros in both arms: 1.000   dependent assertions/instance 1534
+   mean |pc| over dependent: DD 0.186  PD 0.208
+   N=500: rejected DD 991.9 PD 1000.7; outcome differs for 366.1 assertions/instance (23.9%)
+   N=5000: rejected DD 1276.7 PD 1298.0; outcome differs for 253.6 assertions/instance (16.5%)
+   largest difference: pc(4,5 | [3, 9]) DD -0.047  PD -0.620
+   Thm 2: max rho(R~)/bound  DD 0.288  PD 0.132 (<=1 expected)
+W[0.1,0.5] c=2.0 (60 instances, |V|=10, |S|<=2)
+   same CI zeros in both arms: 1.000   dependent assertions/instance 1554
+   mean |pc| over dependent: DD 0.239  PD 0.240
+   N=500: rejected DD 1115.6 PD 1066.1; outcome differs for 429.8 assertions/instance (27.7%)
+   N=5000: rejected DD 1347.6 PD 1343.0; outcome differs for 265.1 assertions/instance (17.1%)
+   largest difference: pc(0,4 | [3, 5]) DD +0.042  PD +0.896
+   Thm 2: max rho(R~)/bound  DD 0.146  PD 0.051 (<=1 expected)
+W[0.5,1.5] c=0.7 (60 instances, |V|=10, |S|<=2)
+   same CI zeros in both arms: 1.000   dependent assertions/instance 1533
+   mean |pc| over dependent: DD 0.375  PD 0.398
+   N=500: rejected DD 1262.9 PD 1199.2; outcome differs for 283.9 assertions/instance (18.5%)
+   N=5000: rejected DD 1392.7 PD 1390.4; outcome differs for 178.0 assertions/instance (11.6%)
+   largest difference: pc(1,5 | [3, 7]) DD +0.038  PD +0.759
+   Thm 2: max rho(R~)/bound  DD 0.212  PD 0.084 (<=1 expected)
+W[0.5,1.5] c=2.0 (60 instances, |V|=10, |S|<=2)
+   same CI zeros in both arms: 1.000   dependent assertions/instance 1535
+   mean |pc| over dependent: DD 0.419  PD 0.416
+   N=500: rejected DD 1315.2 PD 1237.1; outcome differs for 305.4 assertions/instance (19.9%)
+   N=5000: rejected DD 1418.8 PD 1413.7; outcome differs for 163.3 assertions/instance (10.6%)
+   largest difference: pc(4,8 | [7, 9]) DD +0.010  PD +0.902
+   Thm 2: max rho(R~)/bound  DD 0.099  PD 0.029 (<=1 expected)
