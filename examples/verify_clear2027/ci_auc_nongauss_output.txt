@@ -1,0 +1,16 @@
+non-Gaussian W[0.1,0.5] c=0.7 N=500 (100 ADMGs, paired, SDD vs DD)
+   recall    DD 0.656  SDD 0.625  diff -0.0308 [-0.0511,-0.0106]  p=4.1e-03
+   accuracy  DD 0.682  SDD 0.655  diff -0.0274 [-0.0458,-0.0093]  p=5.7e-03
+   AUC       DD 0.846  SDD 0.824  diff -0.0215 [-0.0315,-0.0106]  p=3.2e-04
+non-Gaussian W[0.1,0.5] c=2.0 N=500 (100 ADMGs, paired, SDD vs DD)
+   recall    DD 0.715  SDD 0.655  diff -0.0603 [-0.0803,-0.0393]  p=6.3e-07
+   accuracy  DD 0.736  SDD 0.682  diff -0.0540 [-0.0721,-0.0360]  p=1.2e-06
+   AUC       DD 0.873  SDD 0.843  diff -0.0306 [-0.0426,-0.0186]  p=1.4e-05
+non-Gaussian W[0.5,1.5] c=0.7 N=500 (100 ADMGs, paired, SDD vs DD)
+   recall    DD 0.819  SDD 0.697  diff -0.1225 [-0.1389,-0.1052]  p=5.1e-18
+   accuracy  DD 0.832  SDD 0.722  diff -0.1102 [-0.1247,-0.0965]  p=4.7e-18
+   AUC       DD 0.919  SDD 0.857  diff -0.0619 [-0.0719,-0.0515]  p=1.0e-16
+non-Gaussian W[0.5,1.5] c=2.0 N=500 (100 ADMGs, paired, SDD vs DD)
+   recall    DD 0.852  SDD 0.695  diff -0.1569 [-0.1741,-0.1394]  p=4.8e-18
+   accuracy  DD 0.860  SDD 0.717  diff -0.1431 [-0.1591,-0.1269]  p=4.6e-18
+   AUC       DD 0.933  SDD 0.859  diff -0.0733 [-0.0836,-0.0631]  p=3.1e-17
