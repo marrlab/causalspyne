@@ -71,9 +71,10 @@ def plot(ks, res, path, extremes=None):
     plt.rcParams.update({"font.size": 9, "axes.edgecolor": INK, "axes.labelcolor": INK,
                          "xtick.color": INK, "ytick.color": INK})
     fig, axes = plt.subplots(1, 3, figsize=(10, 3.1))
-    titles = [r"(a) noise correlation $\rho(R_\epsilon)$",
-              r"(b) strongest induced $|\mathrm{corr}(Y_i,Y_j)|$, $W=0$"]
-    for ax, m, t in zip(axes[:2], ("reps", "corr"), titles):
+    titles = [r"(a) noise correlation matrix",
+              r"(b) induced correlation, no directed edges ($W=0$)"]
+    ylabels = [r"spectral radius $\rho(R_\epsilon)$", r"largest $|\mathrm{corr}(Y_i,Y_j)|$"]
+    for ax, m, t, yl in zip(axes[:2], ("reps", "corr"), titles, ylabels):
         for a, c, mk, lab in (("exp", C_EXP, "o", "explicit  $\\Lambda\\Lambda^T+I$"),
                               ("dd", C_DD, "s", "diagonally dominant")):
             q = res[m][a]
@@ -83,6 +84,7 @@ def plot(ks, res, path, extremes=None):
             ax.axhline(2, color=INK, lw=1, ls="--")
             ax.text(ks[-1], 2.15, "bound 2", ha="right", va="bottom", color=INK, fontsize=8)
         ax.set_title(t, fontsize=9, color=INK)
+        ax.set_ylabel(yl)
         ax.set_xlabel("observables affected by the confounder")
         ax.grid(axis="y", color=GRID, lw=0.8)
         ax.set_axisbelow(True)
@@ -97,7 +99,8 @@ def plot(ks, res, path, extremes=None):
     ax.set_xticks(range(len(rows)))
     ax.set_xticklabels([r[0] for r in rows], fontsize=7)
     ax.set_xlabel(r"$|W_{ij}|$ range and entry bound on $|\Omega_{ij}|$")
-    ax.set_title(r"(c) largest $\rho(\tilde R)$, fixed $W$", fontsize=9, color=INK)
+    ax.set_title(r"(c) partial correlation matrix, fixed $W$", fontsize=9, color=INK)
+    ax.set_ylabel(r"largest spectral radius $\rho(\tilde{R})$")
     ax.grid(axis="y", color=GRID, lw=0.8); ax.set_axisbelow(True)
     for s_ in ("top", "right"):
         ax.spines[s_].set_visible(False)
