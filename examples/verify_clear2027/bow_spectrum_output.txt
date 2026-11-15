@@ -1,0 +1,4 @@
+|W| in [0.1,0.5], c=0.7 (24 W, medians): ancestral DD 2.67 SDD 3.76 PD 3.94 | with bows DD 2.73 SDD 3.73 PD 3.77 | median ratio bows/ancestral DD 0.97 PD 0.96
+|W| in [0.1,0.5], c=2.0 (24 W, medians): ancestral DD 3.65 SDD 4.89 PD 5.05 | with bows DD 3.51 SDD 4.28 PD 4.43 | median ratio bows/ancestral DD 0.94 PD 0.87
+|W| in [0.5,1.5], c=0.7 (24 W, medians): ancestral DD 3.52 SDD 4.13 PD 4.60 | with bows DD 3.27 SDD 4.07 PD 4.23 | median ratio bows/ancestral DD 0.94 PD 0.97
+|W| in [0.5,1.5], c=2.0 (24 W, medians): ancestral DD 4.63 SDD 5.65 PD 5.91 | with bows DD 4.12 SDD 5.10 PD 5.29 | median ratio bows/ancestral DD 0.90 PD 0.93
