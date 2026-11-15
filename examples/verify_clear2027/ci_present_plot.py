@@ -1,4 +1,4 @@
-"""Five ways to present the DD vs larger-spectrum CI-test result (reads ci_present.npz).  Usage: python ci_present_plot.py outdir"""
+"""Five ways to present the DD vs PD∖DD CI-test result (reads ci_present.npz).  Usage: python ci_present_plot.py outdir"""
 import sys, os, numpy as np
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -38,7 +38,7 @@ for m, ax in enumerate(axs):
         ax.errorbar(d.mean(), y, xerr=[[d.mean() - np.percentile(bs, 2.5)], [np.percentile(bs, 97.5) - d.mean()]],
                     fmt="o", color=BLUE if f == "G" else ORANGE, capsize=3)
         ax.text(1.02, y, "*" if adj[k] < 0.05 else "n.s.", transform=ax.get_yaxis_transform(), va="center", fontsize=8)
-    ax.axvline(0, color="k", lw=0.8); ax.set_xlabel("larger spectrum − DD  (points, 95% CI)")
+    ax.axvline(0, color="k", lw=0.8); ax.set_xlabel("(PD∖DD) − DD  (points, 95% CI)")
     ax.set_title(["CI-test recall", "AUC of |z|"][m]); ax.grid(axis="x", alpha=0.3)
 axs[0].set_yticks(range(len(ORDER))); axs[0].set_yticklabels([lab(f, s) for f, s in ORDER][::-1], fontsize=8)
 fig.suptitle("N=500, paired per ADMG (100); * = significant after Holm correction over 8 settings", fontsize=9)
@@ -50,7 +50,7 @@ sel = [("G", 1), ("G", 3), ("N", 1), ("N", 3)]
 fig, axs = plt.subplots(2, 4, figsize=(13, 5), sharex=True, gridspec_kw={"height_ratios": [2, 1]})
 from ci_test_performance import Z
 for j, (f, s) in enumerate(sel):
-    for a_, col, nm in ((0, BLUE, "DD"), (1, ORANGE, "larger spectrum")):
+    for a_, col, nm in ((0, BLUE, "DD"), (1, ORANGE, "PD∖DD")):
         z, pc, dep = D[f"{f}{s}_raw{a_}"]; dep = dep.astype(bool)
         rec, frac = [], []
         for lo, hi in zip(edges[:-1], edges[1:]):
@@ -77,7 +77,7 @@ for k, (f, s) in enumerate(ORDER):
         nstar = np.exp(np.log(n0) + (target - r0) / (r1 - r0) * (np.log(n1) - np.log(n0)))
     fac.append(nstar / 500)
     if (f, s) in [("G", 3), ("N", 3)]:
-        for a_, col, nm in ((0, BLUE, "DD"), (1, ORANGE, "larger spectrum")):
+        for a_, col, nm in ((0, BLUE, "DD"), (1, ORANGE, "PD∖DD")):
             ax1.plot(NS, M[a_], "o-" if f == "G" else "s--", color=col, ms=3, label=f"{nm} ({'Gauss' if f=='G' else 'non-G'})")
 ax1.set_xscale("log"); ax1.set_xlabel("sample size N"); ax1.set_ylabel("CI-test recall"); ax1.grid(alpha=0.3); ax1.legend(fontsize=7)
 ax1.set_title("recall vs N, |W|∈[0.5,1.5], c=2", fontsize=9)
@@ -86,7 +86,7 @@ ax2.barh(range(len(ORDER)), fac[::-1], color=[BLUE if f == "G" else ORANGE for f
 for k_, c_ in enumerate(cens[::-1]):
     if c_: ax2.text(5, k_, 'not reached by N=5000 (>10x)', va='center', ha='center', color='w', fontsize=7)
 ax2.set_yticks(range(len(ORDER))); ax2.set_yticklabels([lab(f, s) for f, s in ORDER][::-1], fontsize=8)
-ax2.axvline(1, color="k", lw=0.8); ax2.set_xlabel("samples the larger spectrum needs, relative to DD at N=500")
+ax2.axvline(1, color="k", lw=0.8); ax2.set_xlabel("samples the PD∖DD class needs, relative to DD at N=500")
 ax2.set_title("sample-size equivalent", fontsize=9)
 fig.tight_layout(); fig.savefig(f"{out}/present3_sample_size.png", dpi=170); plt.close(fig)
 np.savetxt(f"{out}/present3_factors.txt", np.array(fac), fmt="%.2f")
@@ -96,7 +96,7 @@ def roc(z, dep):
     o = np.argsort(-z); d = dep[o]; tp = np.cumsum(d) / d.sum(); fp = np.cumsum(~d) / (~d).sum(); return fp, tp
 fig, axs = plt.subplots(1, 4, figsize=(12.5, 3.3), sharey=True)
 for j, (f, s) in enumerate(sel):
-    for a_, col, nm in ((0, BLUE, "DD"), (1, ORANGE, "larger spectrum")):
+    for a_, col, nm in ((0, BLUE, "DD"), (1, ORANGE, "PD∖DD")):
         z, pc, dep = D[f"{f}{s}_raw{a_}"]; dep = dep.astype(bool)
         fp, tp = roc(z, dep); a = np.trapz(tp, fp)
         axs[j].plot(fp, tp, color=col, label=f"{nm}, AUC {a:.3f}")
@@ -110,7 +110,7 @@ for ax, (f, s) in zip(axs.ravel(), ORDER):
     M = D[f"{f}{s}_metrics"][:, :, I500, 0]
     ax.scatter(M[:, 0], M[:, 1], s=10, alpha=0.6, color=BLUE if f == "G" else ORANGE)
     lo = min(M.min(), 1) - 0.0; ax.plot([M.min(), 1], [M.min(), 1], "k-", lw=0.7)
-    ax.set_title(lab(f, s), fontsize=8); ax.set_xlabel("recall, DD"); ax.set_ylabel("recall, larger spectrum")
+    ax.set_title(lab(f, s), fontsize=8); ax.set_xlabel("recall, DD"); ax.set_ylabel("recall, PD∖DD")
     ax.text(0.04, 0.9, f"below diagonal in {(M[:,1] < M[:,0]).mean()*100:.0f}% of ADMGs", transform=ax.transAxes, fontsize=7)
 fig.tight_layout(); fig.savefig(f"{out}/present5_paired_scatter.png", dpi=170); plt.close(fig)
 print("ok")
