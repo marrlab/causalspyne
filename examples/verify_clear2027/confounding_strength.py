@@ -67,46 +67,53 @@ def read_extremes(path):
     return rows
 
 
-def plot(ks, res, path, extremes=None):
+def plot(ks, res, path, extremes=None, panels="ac"):
+    """panels: letters of the panels to draw, in order. a = rho(R_eps) vs k, b = strongest induced correlation
+    with W = 0 (dropped from the main text on 2026-11-15: not claimed there), c = fixed-W extremes.
+    Panels are labelled (a), (b), ... in the order drawn."""
     plt.rcParams.update({"font.size": 9, "axes.edgecolor": INK, "axes.labelcolor": INK,
                          "xtick.color": INK, "ytick.color": INK})
-    fig, axes = plt.subplots(1, 3, figsize=(10, 3.1))
-    titles = [r"(a) noise correlation matrix",
-              r"(b) induced correlation, no directed edges ($W=0$)"]
-    ylabels = [r"spectral radius $\rho(R_\epsilon)$", r"largest $|\mathrm{corr}(Y_i,Y_j)|$"]
-    for ax, m, t, yl in zip(axes[:2], ("reps", "corr"), titles, ylabels):
-        for a, c, mk, lab in (("exp", C_EXP, "o", "explicit  $\\Lambda\\Lambda^T+I$"),
-                              ("dd", C_DD, "s", "diagonally dominant")):
-            q = res[m][a]
-            ax.fill_between(ks, q[:, 0], q[:, 2], color=c, alpha=0.15, linewidth=0)
-            ax.plot(ks, q[:, 1], color=c, lw=2, marker=mk, ms=5, label=lab)
-        if m == "reps":
-            ax.axhline(2, color=INK, lw=1, ls="--")
-            ax.text(ks[-1], 2.15, "bound 2", ha="right", va="bottom", color=INK, fontsize=8)
-        ax.set_title(t, fontsize=9, color=INK)
-        ax.set_ylabel(yl)
-        ax.set_xlabel("observables affected by the confounder")
-        ax.grid(axis="y", color=GRID, lw=0.8)
-        ax.set_axisbelow(True)
-        for s in ("top", "right"):
-            ax.spines[s].set_visible(False)
-    ax = axes[2]
-    rows = read_extremes(extremes)
-    cols = [("#b9b7ae", "no confounding"), (C_DD, "diagonally dominant"), ("#4fa36b", "root explicit"), (C_EXP, "general PD")]
-    w = 0.2
-    for q, (c, lab) in enumerate(cols):
-        ax.bar(np.arange(len(rows)) + (q - 1.5) * w, [r[1][q] for r in rows], w, color=c, label=lab)
-    ax.set_xticks(range(len(rows)))
-    ax.set_xticklabels([r[0] for r in rows], fontsize=7)
-    ax.set_xlabel(r"$|W_{ij}|$ range and entry bound on $|\Omega_{ij}|$")
-    ax.set_title(r"(c) partial correlation matrix, fixed $W$", fontsize=9, color=INK)
-    ax.set_ylabel(r"largest spectral radius $\rho(\tilde{R})$")
-    ax.grid(axis="y", color=GRID, lw=0.8); ax.set_axisbelow(True)
-    for s_ in ("top", "right"):
-        ax.spines[s_].set_visible(False)
-    ax.set_ylim(0, 7.4)
-    ax.legend(frameon=False, fontsize=7, loc="upper left", ncol=2)
-    axes[0].legend(frameon=False, fontsize=8, loc="upper left")
+    n = len(panels)
+    fig, axes = plt.subplots(1, n, figsize=(3.4 * n + (0 if n > 2 else 0.2), 3.1))
+    axes = np.atleast_1d(axes)
+    spec = {"a": ("reps", "noise correlation matrix", r"spectral radius $\rho(R_\epsilon)$"),
+            "b": ("corr", "induced correlation, no directed edges ($W=0$)", r"largest $|\mathrm{corr}(Y_i,Y_j)|$")}
+    for idx, (ax, p) in enumerate(zip(axes, panels)):
+        letter = "(" + "abc"[idx] + ") "
+        if p in "ab":
+            m, t, yl = spec[p]
+            for arm, c, mk, lab in (("exp", C_EXP, "o", "explicit  $\\Lambda\\Lambda^T+I$"),
+                                    ("dd", C_DD, "s", "diagonally dominant")):
+                q = res[m][arm]
+                ax.fill_between(ks, q[:, 0], q[:, 2], color=c, alpha=0.15, linewidth=0)
+                ax.plot(ks, q[:, 1], color=c, lw=2, marker=mk, ms=5, label=lab)
+            if m == "reps":
+                ax.axhline(2, color=INK, lw=1, ls="--")
+                ax.text(ks[-1], 2.15, "bound 2", ha="right", va="bottom", color=INK, fontsize=8)
+                ax.legend(frameon=False, fontsize=8, loc="upper left")
+            ax.set_title(letter + t, fontsize=9, color=INK)
+            ax.set_ylabel(yl)
+            ax.set_xlabel("observables affected by the confounder")
+            ax.grid(axis="y", color=GRID, lw=0.8)
+            ax.set_axisbelow(True)
+            for s_ in ("top", "right"):
+                ax.spines[s_].set_visible(False)
+        else:
+            rows = read_extremes(extremes)
+            cols = [("#b9b7ae", "no confounding"), (C_DD, "diagonally dominant"), ("#4fa36b", "root explicit"), (C_EXP, "general PD")]
+            w = 0.2
+            for q, (c, lab) in enumerate(cols):
+                ax.bar(np.arange(len(rows)) + (q - 1.5) * w, [r[1][q] for r in rows], w, color=c, label=lab)
+            ax.set_xticks(range(len(rows)))
+            ax.set_xticklabels([r[0] for r in rows], fontsize=7)
+            ax.set_xlabel(r"$|W_{ij}|$ range and entry bound on $|\Omega_{ij}|$")
+            ax.set_title(letter + r"partial correlation matrix, fixed $W$", fontsize=9, color=INK)
+            ax.set_ylabel(r"largest spectral radius $\rho(\tilde{R})$")
+            ax.grid(axis="y", color=GRID, lw=0.8); ax.set_axisbelow(True)
+            for s_ in ("top", "right"):
+                ax.spines[s_].set_visible(False)
+            ax.set_ylim(0, 7.4)
+            ax.legend(frameon=False, fontsize=7, loc="upper left", ncol=2)
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
     fig.savefig(path.replace(".pdf", ".png"), dpi=160, bbox_inches="tight")
@@ -119,11 +126,12 @@ if __name__ == "__main__":
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", default="confounding_strength.pdf")
     ap.add_argument("--extremes", default="fixedW_three_classes_output.txt")
+    ap.add_argument("--panels", default="ac", help="panels to draw; main text uses ac, abc gives the three-panel version")
     a = ap.parse_args()
     ks, res = run(a.trials, a.n, a.seed)
     for m in res:
         print(m, "k:", ks)
         for arm in res[m]:
             print("  ", arm, np.round(res[m][arm][:, 1], 2).tolist())
-    plot(ks, res, a.out, a.extremes)
+    plot(ks, res, a.out, a.extremes, a.panels)
     print("saved", a.out)
