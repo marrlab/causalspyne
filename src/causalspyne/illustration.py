@@ -238,7 +238,7 @@ class ConfoundingIllustration:
             ax.set_title(title, pad=22)
 
         draw_matrix(axes[2], self.explicit_matrix(), self.order, len(self.observed),
-                    "explicit $W'$")
+                    "explicit $W^\\dagger$")
         draw_matrix(axes[3], self.omega_pattern(), self.observed, len(self.observed),
                     r"implicit $\Omega$")
         fig.tight_layout()
@@ -401,16 +401,16 @@ class ConfoundingIllustration:
         if one_line_full:  # DAG | sub-DAG | ancestral ADMG | explicit W' | implicit W | implicit Omega on one line
             return (pre + head + graph(True, "DAG") + graph(True, "sub-DAG", sub=True, k=1)
                     + graph(False, "ancestral ADMG", k=2) + "\\end{tikzpicture}\\hfill\n"
-                    + matrix(self.explicit_matrix(), self.order, no, "explicit $W'$") + "\\hfill\n"
+                    + matrix(self.explicit_matrix(), self.order, no, "explicit $W^\\dagger$") + "\\hfill\n"
                     + matrix(self.implicit_weight_pattern_marked(), self.observed, no, "implicit $W$") + "\\hfill\n"
                     + matrix(self.omega_pattern(), self.observed, no, "implicit $\\Omega$") + "\n")
         if not two_lines:
             return (pre + head + graph(True, "DAG") + graph(False, "ancestral ADMG", k=1) + "\\end{tikzpicture}\\hfill\n"
-                    + matrix(self.explicit_matrix(), self.order, no, "explicit $W'$") + "\\hfill\n"
+                    + matrix(self.explicit_matrix(), self.order, no, "explicit $W^\\dagger$") + "\\hfill\n"
                     + matrix(self.omega_pattern(), self.observed, no, "implicit $\\Omega$") + "\n")
         return (pre + head + graph(True, "DAG") + graph(True, "observed sub-DAG", sub=True, k=1)
                 + graph(False, "ancestral ADMG", k=2) + "\\end{tikzpicture}\\\\[2pt]\n"
-                + matrix(self.explicit_matrix(), self.order, no, "explicit $W'$") + "\\hspace{1.2cm}\n"
+                + matrix(self.explicit_matrix(), self.order, no, "explicit $W^\\dagger$") + "\\hspace{1.2cm}\n"
                 + matrix(self.implicit_weight_pattern_marked(), self.observed, no, "implicit $W$") + "\\hspace{1.2cm}\n"
                 + matrix(self.omega_pattern(), self.observed, no, "implicit $\\Omega$") + "\n")
 
@@ -438,7 +438,7 @@ def _panels(self, xscale=0.8, yscale=0.8, cell=0.27, node=0.45):
     return {
         "dag": graph(True, "DAG (sub-DAG in black)", mark_sub=True),
         "admg": graph(False, "ancestral ADMG"),
-        "explicit_W": matrix(self.explicit_matrix(), self.order, no, "explicit $W'$"),
+        "explicit_W": matrix(self.explicit_matrix(), self.order, no, "explicit $W^\\dagger$"),
         "implicit_W": matrix(self.implicit_weight_pattern_marked(), self.observed, no, "implicit $W$"),
         "implicit_Omega": matrix(self.omega_pattern(), self.observed, no, "implicit $\\Omega$"),
     }
