@@ -16,7 +16,7 @@ algs = [("FCI", rcd, 7), ("RCD", rcd, 2), ("ICA-LiNGAM", ica, 2)]
 def lab(k):
     w = "[0.1,0.5]" if "0.1,0.5" in k else "[0.5,1.5]"
     c = k.split("_c")[1].split("_")[0]; n = k.split("_N")[1]
-    return f"|W|∈{w}  c={c}  N={n}"
+    return f"|W|∈{w}  |Ω_ij|≤{c}  N={n}"
 rng = np.random.default_rng(0)
 fig, axs = plt.subplots(1, 3, figsize=(11, 3.6), sharey=True)
 for ax, (nm, d, q) in zip(axs, algs):
@@ -32,7 +32,7 @@ for ax, (nm, d, q) in zip(axs, algs):
         ax.errorbar(m, yi, xerr=[[m - l], [h - m]], fmt="o", color=c, capsize=3)
         ax.text(1.02, yi, "*" if a < 0.05 else "n.s.", transform=ax.get_yaxis_transform(), va="center", fontsize=8)
     ax.axvline(0, color="k", lw=0.8); ax.grid(axis="x", alpha=0.3)
-    ax.set_title(nm); ax.set_xlabel("SHD(RE) − SHD(DD)  (points, 95% CI)")
+    ax.set_title(nm); ax.set_xlabel("change in SHD: RE − DD  (points, 95% CI)")
 axs[0].set_yticks(range(len(keys))); axs[0].set_yticklabels([lab(k) for k in keys][::-1], fontsize=8)
 fig.suptitle("non-Gaussian data, paired per ADMG (100); right of 0 = worse under RE; * = significant after Holm correction", fontsize=9)
 fig.tight_layout(); fig.savefig(out, dpi=170)

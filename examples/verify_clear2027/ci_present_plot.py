@@ -11,7 +11,7 @@ FAM = {"G": "Gaussian: explicit extreme vs DD", "N": "non-Gaussian: root-explici
 rng = np.random.default_rng(0)
 ORDER = [(f, s) for f in "GN" for s in range(4)]
 def lab(f, s):
-    w0, w1, c = SETS[s]; return f"{'Gauss' if f=='G' else 'non-G'}  |W|∈[{w0},{w1}]  c={c}"
+    w0, w1, c = SETS[s]; return f"{'Gauss' if f=='G' else 'non-G'}  |W|∈[{w0},{w1}]  |Ω_ij|≤{c}"
 BLUE, ORANGE = "#2a6fb0", "#d9731a"
 
 def holm(ps):
@@ -38,7 +38,7 @@ for m, ax in enumerate(axs):
         ax.errorbar(d.mean(), y, xerr=[[d.mean() - np.percentile(bs, 2.5)], [np.percentile(bs, 97.5) - d.mean()]],
                     fmt="o", color=BLUE if f == "G" else ORANGE, capsize=3)
         ax.text(1.02, y, "*" if adj[k] < 0.05 else "n.s.", transform=ax.get_yaxis_transform(), va="center", fontsize=8)
-    ax.axvline(0, color="k", lw=0.8); ax.set_xlabel("(PD∖DD) − DD  (points, 95% CI)")
+    ax.axvline(0, color="k", lw=0.8); ax.set_xlabel(f"change in {['recall','AUC'][m]}: (PD∖DD) − DD  (points, 95% CI)")
     ax.set_title(["CI-test recall", "AUC of |z|"][m]); ax.grid(axis="x", alpha=0.3)
 axs[0].set_yticks(range(len(ORDER))); axs[0].set_yticklabels([lab(f, s) for f, s in ORDER][::-1], fontsize=8)
 fig.suptitle("N=500, paired per ADMG (100); * = significant after Holm correction over 8 settings", fontsize=9)
@@ -80,7 +80,7 @@ for k, (f, s) in enumerate(ORDER):
         for a_, col, nm in ((0, BLUE, "DD"), (1, ORANGE, "PD∖DD")):
             ax1.plot(NS, M[a_], "o-" if f == "G" else "s--", color=col, ms=3, label=f"{nm} ({'Gauss' if f=='G' else 'non-G'})")
 ax1.set_xscale("log"); ax1.set_xlabel("sample size N"); ax1.set_ylabel("CI-test recall"); ax1.grid(alpha=0.3); ax1.legend(fontsize=7)
-ax1.set_title("recall vs N, |W|∈[0.5,1.5], c=2", fontsize=9)
+ax1.set_title("recall vs N, |W|∈[0.5,1.5], |Ω_ij|≤2", fontsize=9)
 cens = [np.isnan(x) for x in fac]; fac = [10.0 if np.isnan(x) else x for x in fac]
 ax2.barh(range(len(ORDER)), fac[::-1], color=[BLUE if f == "G" else ORANGE for f, s in ORDER][::-1])
 for k_, c_ in enumerate(cens[::-1]):

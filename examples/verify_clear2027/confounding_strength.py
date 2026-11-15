@@ -63,7 +63,7 @@ def read_extremes(path):
         m = re.match(r"\|W\| in \[([\d.]+),([\d.]+)\], c=([\d.]+)", line)
         if m:
             rho = [float(x) for x in re.findall(r"(?:none|DD|SDD|PD): rho ([\d.]+)", line)]
-            rows.append((f"[{m.group(1)},{m.group(2)}]\nc={m.group(3)}", rho))
+            rows.append((f"[{m.group(1)},{m.group(2)}]\n$|\\Omega_{{ij}}|\\leq{m.group(3)}$", rho))
     return rows
 
 
@@ -96,7 +96,7 @@ def plot(ks, res, path, extremes=None):
         ax.bar(np.arange(len(rows)) + (q - 1.5) * w, [r[1][q] for r in rows], w, color=c, label=lab)
     ax.set_xticks(range(len(rows)))
     ax.set_xticklabels([r[0] for r in rows], fontsize=7)
-    ax.set_xlabel(r"$|W_{ij}|$ range, $c$")
+    ax.set_xlabel(r"$|W_{ij}|$ range and entry bound on $|\Omega_{ij}|$")
     ax.set_title(r"(c) largest $\rho(\tilde R)$, fixed $W$", fontsize=9, color=INK)
     ax.grid(axis="y", color=GRID, lw=0.8); ax.set_axisbelow(True)
     for s_ in ("top", "right"):
