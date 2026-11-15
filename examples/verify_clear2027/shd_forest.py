@@ -16,10 +16,10 @@ algs = [("FCI", rcd, 7), ("RCD", rcd, 2), ("ICA-LiNGAM", ica, 2)]
 def lab(k):
     w = "[0.1,0.5]" if "0.1,0.5" in k else "[0.5,1.5]"
     c = k.split("_c")[1].split("_")[0]; n = k.split("_N")[1]
-    return f"|W|∈{w}  |Ω_ij|≤{c}  N={n}"
+    return f"{w.strip('[]').replace(',', '–')}  ≤{c}  N={n}"   # range of |W|, bound on |Omega_ij|, sample size
 rng = np.random.default_rng(0)
 plt.rcParams["font.size"] = 7
-fig, axs = plt.subplots(1, 3, figsize=(6.2, 2.3), sharey=True)
+fig, axs = plt.subplots(1, 3, figsize=(4.6, 1.9), sharey=True)
 for ax, (nm, d, q) in zip(axs, algs):
     mu, lo, hi, ps = [], [], [], []
     for k in keys:
@@ -33,8 +33,9 @@ for ax, (nm, d, q) in zip(axs, algs):
         ax.errorbar(m, yi, xerr=[[m - l], [h - m]], fmt="o", color=c, capsize=3)
         ax.text(1.02, yi, "*" if a < 0.05 else "n.s.", transform=ax.get_yaxis_transform(), va="center", fontsize=6.5)
     ax.axvline(0, color="k", lw=0.8); ax.grid(axis="x", alpha=0.3)
-    ax.set_title(nm, fontsize=8); ax.set_xlabel("SHD change (RE − DD)")
+    ax.set_title(nm, fontsize=8); ax.set_xlabel("Δ SHD (points)")
 axs[0].set_yticks(range(len(keys))); axs[0].set_yticklabels([lab(k) for k in keys][::-1], fontsize=6.5)
+axs[0].set_ylabel("|W| range, bound on |Ω_ij|, N", fontsize=6)
 # (title dropped: data, pairing and the star legend are in the paper caption)
 fig.tight_layout(); fig.savefig(out, dpi=170)
 for nm, d, q in algs:

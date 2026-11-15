@@ -11,7 +11,7 @@ FAM = {"G": "Gaussian: explicit extreme vs DD", "N": "non-Gaussian: root-explici
 rng = np.random.default_rng(0)
 ORDER = [(f, s) for f in "GN" for s in range(4)]
 def lab(f, s):
-    w0, w1, c = SETS[s]; return f"{'Gauss' if f=='G' else 'non-G'}  |W|∈[{w0},{w1}]  |Ω_ij|≤{c}"
+    w0, w1, c = SETS[s]; return f"{'G' if f=='G' else 'U'}  {w0}–{w1}  ≤{c}"   # noise (G Gaussian, U uniform), range of |W|, bound on |Omega_ij|
 BLUE, ORANGE = "#2a6fb0", "#d9731a"
 
 def holm(ps):
@@ -22,7 +22,7 @@ def holm(ps):
 
 # 1. forest plot ------------------------------------------------------------------------------------------------
 plt.rcParams["font.size"] = 7
-fig, axs = plt.subplots(1, 2, figsize=(6.2, 2.3), sharey=True)
+fig, axs = plt.subplots(1, 2, figsize=(4.6, 1.9), sharey=True)
 pv = {m: [] for m in (0, 1)}
 for f, s in ORDER:
     M = D[f"{f}{s}_metrics"][:, :, I500, :]            # R x arm x metric
@@ -39,9 +39,10 @@ for m, ax in enumerate(axs):
         ax.errorbar(d.mean(), y, xerr=[[d.mean() - np.percentile(bs, 2.5)], [np.percentile(bs, 97.5) - d.mean()]],
                     fmt="o", color=BLUE if f == "G" else ORANGE, capsize=3)
         ax.text(1.02, y, "*" if adj[k] < 0.05 else "n.s.", transform=ax.get_yaxis_transform(), va="center", fontsize=6.5)
-    ax.axvline(0, color="k", lw=0.8); ax.set_xlabel(f"change in {['recall','AUC'][m]} (PD∖DD − DD, points)")
+    ax.axvline(0, color="k", lw=0.8); ax.set_xlabel(f"Δ {['recall','AUC'][m]} (points)")
     ax.set_title(["CI-test recall", "AUC of |z|"][m], fontsize=8); ax.grid(axis="x", alpha=0.3)
 axs[0].set_yticks(range(len(ORDER))); axs[0].set_yticklabels([lab(f, s) for f, s in ORDER][::-1], fontsize=6.5)
+axs[0].set_ylabel("noise, |W| range, bound on |Ω_ij|", fontsize=6)
 # (title dropped: N=500, 100 ADMGs and the star legend are in the paper caption)
 fig.tight_layout(); fig.savefig(f"{out}/present1_forest.png", dpi=170); plt.close(fig)
 
