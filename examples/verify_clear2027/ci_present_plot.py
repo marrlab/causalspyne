@@ -21,7 +21,8 @@ def holm(ps):
     return adj
 
 # 1. forest plot ------------------------------------------------------------------------------------------------
-fig, axs = plt.subplots(1, 2, figsize=(9, 3.6), sharey=True)
+plt.rcParams["font.size"] = 7
+fig, axs = plt.subplots(1, 2, figsize=(6.2, 2.3), sharey=True)
 pv = {m: [] for m in (0, 1)}
 for f, s in ORDER:
     M = D[f"{f}{s}_metrics"][:, :, I500, :]            # R x arm x metric
@@ -37,11 +38,11 @@ for m, ax in enumerate(axs):
         y = len(ORDER) - 1 - k
         ax.errorbar(d.mean(), y, xerr=[[d.mean() - np.percentile(bs, 2.5)], [np.percentile(bs, 97.5) - d.mean()]],
                     fmt="o", color=BLUE if f == "G" else ORANGE, capsize=3)
-        ax.text(1.02, y, "*" if adj[k] < 0.05 else "n.s.", transform=ax.get_yaxis_transform(), va="center", fontsize=8)
-    ax.axvline(0, color="k", lw=0.8); ax.set_xlabel(f"change in {['recall','AUC'][m]}: (PD∖DD) − DD  (points, 95% CI)")
-    ax.set_title(["CI-test recall", "AUC of |z|"][m]); ax.grid(axis="x", alpha=0.3)
-axs[0].set_yticks(range(len(ORDER))); axs[0].set_yticklabels([lab(f, s) for f, s in ORDER][::-1], fontsize=8)
-fig.suptitle("N=500, paired per ADMG (100); * = significant after Holm correction over 8 settings", fontsize=9)
+        ax.text(1.02, y, "*" if adj[k] < 0.05 else "n.s.", transform=ax.get_yaxis_transform(), va="center", fontsize=6.5)
+    ax.axvline(0, color="k", lw=0.8); ax.set_xlabel(f"change in {['recall','AUC'][m]} (PD∖DD − DD, points)")
+    ax.set_title(["CI-test recall", "AUC of |z|"][m], fontsize=8); ax.grid(axis="x", alpha=0.3)
+axs[0].set_yticks(range(len(ORDER))); axs[0].set_yticklabels([lab(f, s) for f, s in ORDER][::-1], fontsize=6.5)
+# (title dropped: N=500, 100 ADMGs and the star legend are in the paper caption)
 fig.tight_layout(); fig.savefig(f"{out}/present1_forest.png", dpi=170); plt.close(fig)
 
 # 2. recall vs true partial correlation strength -----------------------------------------------------------------
