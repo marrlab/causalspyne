@@ -100,7 +100,7 @@ def plot(ks, res, path, extremes=None, panels="ac"):
                 ax.spines[s_].set_visible(False)
         else:
             rows = read_extremes(extremes)
-            cols = [("#b9b7ae", "no confounding"), (C_DD, "diagonally dominant"), ("#4fa36b", "canonical explicit"), (C_EXP, "general PD")]
+            cols = [("#b9b7ae", "no confounding"), (C_DD, "diagonally dominant"), ("#4fa36b", "canonical root explicit"), (C_EXP, "general PD")]
             w = 0.2
             for q, (c, lab) in enumerate(cols):
                 ax.bar(np.arange(len(rows)) + (q - 1.5) * w, [r[1][q] for r in rows], w, color=c, label=lab)

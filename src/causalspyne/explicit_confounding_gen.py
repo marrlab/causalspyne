@@ -4,7 +4,7 @@ Model (root-explicit, Example 1 of the paper): X = (I - W)^{-1} (eps + Lambda xi
 eps and xi independent with i.i.d. uniform entries of unit variance, one hidden root xi_l per bidirected pair {i, j} of the ADMG
 (canonical DAG), Lambda[:, l] nonzero only in rows i and j. Then Omega = I + Lambda Lambda^T (the covariance of the noise of the
 implicit parameterization); with equal loadings a = b = sqrt(|theta|) it is the diagonally dominant Omega of the paper
-(Omega_ii = 1 + sum_j |theta_ij|, Omega_ij = theta_ij); unequal loadings a_l / b_l = exp(2 r_l) give the canonical-explicit class.
+(Omega_ii = 1 + sum_j |theta_ij|, Omega_ij = theta_ij); unequal loadings a_l / b_l = exp(2 r_l) give the canonical root-explicit class (CRE).
 Data are standardized to unit column variance. Convention: W[child, parent] != 0 means parent -> child.
 The functions use the same random number calls, in the same order, as the scripts in examples/verify_clear2027.
 """

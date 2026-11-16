@@ -7,7 +7,7 @@ from scipy.stats import wilcoxon
 out = sys.argv[1] if len(sys.argv) > 1 else "."
 os.makedirs(out, exist_ok=True)
 D = np.load("ci_present.npz"); NS = list(D["NS"]); I500 = NS.index(500); SETS = D["SETS"]
-FAM = {"G": "Gaussian: explicit extreme vs DD", "N": "non-Gaussian: canonical explicit vs DD"}
+FAM = {"G": "Gaussian: explicit extreme vs DD", "N": "non-Gaussian: CRE vs DD"}
 rng = np.random.default_rng(0)
 ORDER = [(f, s) for f in "GN" for s in range(4)]
 def lab(f, s):
