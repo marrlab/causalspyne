@@ -366,7 +366,7 @@ class ConfoundingIllustration:
                 lines.append(f"\\draw[arr2,{bend}] (n{a}) to (n{b});")
         return "\n".join(lines)
 
-    def _tikz_matrix(self, mat, labels, n_obs, title, cell=0.27):
+    def _tikz_matrix(self, mat, labels, n_obs, title, cell=0.27, mark2="circle"):
         n = len(labels)
         fs = "tiny" if cell <= 0.2 else "scriptsize"
         out = [f"\\node[font=\\scriptsize,anchor=south] at ({n * cell / 2:.3f},0.75) {{{title}}};"]
@@ -388,7 +388,10 @@ class ConfoundingIllustration:
                        f" \\draw[thick] (0,{-n_obs * cell:.3f}) -- ({n * cell:.3f},{-n_obs * cell:.3f});")
         out.append(f"\\draw[thick] (0,0) rectangle ({n * cell:.3f},{-n * cell:.3f});")
         for i, j in zip(*np.nonzero(mat)):
-            if mat[i, j] == 2:  # bow, see omega_pattern
+            if mat[i, j] == 2 and mark2 == "square":  # fast-forward entry of the implicit W (not in W_OO)
+                x0, y0 = (j + .5) * cell, -(i + .5) * cell
+                out.append(f"\\filldraw[fill=white] ({x0 - 0.065:.3f},{y0 - 0.065:.3f}) rectangle ({x0 + 0.065:.3f},{y0 + 0.065:.3f});")
+            elif mat[i, j] == 2:  # bow, see omega_pattern
                 out.append(f"\\filldraw[fill=white] ({(j + .5) * cell:.3f},{-(i + .5) * cell:.3f}) circle (0.07);")
             else:
                 out.append(f"\\fill ({(j + .5) * cell:.3f},{-(i + .5) * cell:.3f}) circle (0.075);")
@@ -433,9 +436,9 @@ class ConfoundingIllustration:
                     f"\\node[font=\\scriptsize] at ({np.mean(xs):.2f},{top:.2f}) {{{title}}};\n"
                     + self._tikz_graph(full, xscale, yscale, sub) + "\n\\end{scope}\n")
 
-        def matrix(mat, labels, n_obs, title):
+        def matrix(mat, labels, n_obs, title, mark2="circle"):
             return ("\\begin{tikzpicture}[baseline=(current bounding box.center)]\n"
-                    + self._tikz_matrix(mat, labels, n_obs, title, cell=cell) + "\n\\end{tikzpicture}")
+                    + self._tikz_matrix(mat, labels, n_obs, title, cell=cell, mark2=mark2) + "\n\\end{tikzpicture}")
 
         compact = (",obs/.append style={minimum size=0.36cm,font=\\tiny},"
                    "hid/.append style={minimum size=0.36cm,font=\\tiny}") if one_line_full else ""
@@ -445,7 +448,7 @@ class ConfoundingIllustration:
             return (pre + head + graph(True, "DAG") + graph(True, "sub-DAG", sub=True, k=1)
                     + graph(False, "ancestral ADMG", k=2) + "\\end{tikzpicture}\\hfill\n"
                     + matrix(self.explicit_matrix(), self.order, no, "explicit $W^\\dagger$") + "\\hfill\n"
-                    + matrix(self.implicit_weight_pattern_marked(), self.observed, no, "implicit $W$") + "\\hfill\n"
+                    + matrix(self.implicit_weight_pattern_marked(), self.observed, no, "implicit $W$", mark2="square") + "\\hfill\n"
                     + matrix(self.omega_pattern(), self.observed, no, "implicit $\\Omega$") + "\n")
         if not two_lines:
             return (pre + head + graph(True, "DAG") + graph(False, "ancestral ADMG", k=1) + "\\end{tikzpicture}\\hfill\n"
@@ -454,7 +457,7 @@ class ConfoundingIllustration:
         return (pre + head + graph(True, "DAG") + graph(True, "observed sub-DAG", sub=True, k=1)
                 + graph(False, "ancestral ADMG", k=2) + "\\end{tikzpicture}\\\\[2pt]\n"
                 + matrix(self.explicit_matrix(), self.order, no, "explicit $W^\\dagger$") + "\\hspace{1.2cm}\n"
-                + matrix(self.implicit_weight_pattern_marked(), self.observed, no, "implicit $W$") + "\\hspace{1.2cm}\n"
+                + matrix(self.implicit_weight_pattern_marked(), self.observed, no, "implicit $W$", mark2="square") + "\\hspace{1.2cm}\n"
                 + matrix(self.omega_pattern(), self.observed, no, "implicit $\\Omega$") + "\n")
 
 
@@ -474,15 +477,15 @@ def _panels(self, xscale=0.8, yscale=0.8, cell=0.27, node=0.45):
                 f"{sty}]\n\\node[font=\\scriptsize] at ({np.mean(xs):.2f},{top:.2f}) {{{title}}};\n"
                 + self._tikz_graph(full, xscale, yscale, sub, mark_sub) + "\n\\end{tikzpicture}")
 
-    def matrix(mat, labels, n_obs, title):
+    def matrix(mat, labels, n_obs, title, mark2="circle"):
         return ("\\begin{tikzpicture}[baseline=(current bounding box.north)]\n"
-                + self._tikz_matrix(mat, labels, n_obs, title, cell=cell) + "\n\\end{tikzpicture}")
+                + self._tikz_matrix(mat, labels, n_obs, title, cell=cell, mark2=mark2) + "\n\\end{tikzpicture}")
 
     return {
         "dag": graph(True, "DAG (sub-DAG in black)", mark_sub=True),
         "admg": graph(False, "ancestral ADMG"),
         "explicit_W": matrix(self.explicit_matrix(), self.order, no, "explicit $W^\\dagger$"),
-        "implicit_W": matrix(self.implicit_weight_pattern_marked(), self.observed, no, "implicit $W$"),
+        "implicit_W": matrix(self.implicit_weight_pattern_marked(), self.observed, no, "implicit $W$", mark2="square"),
         "implicit_Omega": matrix(self.omega_pattern(), self.observed, no, "implicit $\\Omega$"),
     }
 
