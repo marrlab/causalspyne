@@ -75,3 +75,23 @@ def labels_exact_mag(W, pairs, pag=None):
 def pair_shd(true_labels, est_labels):
     """Share of the pairs whose labels differ."""
     return float(np.mean(np.asarray(true_labels) != np.asarray(est_labels)))
+
+
+def typed_edge_shd(dir_true, bi_true, dir_est, bi_est):
+    """SHD that treats the edges of the three types separately, so that bows are two edges and not one pair label:
+    false negatives (edge of the type in the truth, not in the estimate) plus false positives (edge of the type in the estimate,
+    not in the truth), summed over the types i -> j (directed, ordered pairs, so -> and <- are different edges) and i <-> j
+    (bidirected, unordered pairs).
+
+    dir_true, dir_est: adjacency matrices with [i, j] != 0 iff i -> j; bi_true, bi_est: symmetric matrices, nonzero off the
+    diagonal iff i <-> j. Returns a dict with ``fn`` and ``fp`` per type ("dir", "bi") and the total ``shd``."""
+    def mask(m):
+        m = (np.nan_to_num(np.asarray(m, float)) != 0)
+        np.fill_diagonal(m, False)
+        return m
+    dt, de, bt, be = mask(dir_true), mask(dir_est), mask(bi_true), mask(bi_est)
+    bt, be = np.triu(bt | bt.T, 1), np.triu(be | be.T, 1)
+    out = {"dir": {"fn": int((dt & ~de).sum()), "fp": int((de & ~dt).sum())},
+           "bi": {"fn": int((bt & ~be).sum()), "fp": int((be & ~bt).sum())}}
+    out["shd"] = sum(v for t in ("dir", "bi") for v in out[t].values())
+    return out

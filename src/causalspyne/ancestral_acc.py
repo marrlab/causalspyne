@@ -139,3 +139,13 @@ def pag_ancestor_scores(G):
                 if G[a, b] in (-1, 2) and G[b, a] in (1, 2):
                     possible[a, b] = 1
     return ancestor_closure(definite) + 0.5 * (ancestor_closure(possible) * (1 - ancestor_closure(definite)))
+
+
+def ancestral_binary_accuracy(adj_true, adj_est_directed):
+    """(True positives + true negatives) / all ordered pairs (u, v), u != v, for the question "is u an ancestor of v"
+    (the measure used for ancestral relations by Wang and Drton, JMLR 2023, Sec. 6.1). Both arguments are adjacency matrices of
+    directed edges (adj[i, j] != 0: i -> j); the estimated ancestors are the transitive closure of the estimated directed edges."""
+    import numpy as np
+    t, e = ancestor_closure(adj_true), ancestor_closure(adj_est_directed)
+    off = ~np.eye(len(t), dtype=bool)
+    return float(np.mean(t[off] == e[off]))

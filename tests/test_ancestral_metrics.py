@@ -36,3 +36,14 @@ def test_pair_labels_and_shd():
     B = np.array([[0, 0, np.nan], [0.7, 0, 0], [np.nan, -0.5, 0]])
     assert pair_shd(t, labels_estimate(B)) == 0.0
     assert pair_shd(t, labels_estimate(np.zeros((3, 3)))) == 1.0
+
+
+def test_typed_edge_shd_counts_bow_as_two_edges():
+    from causalspyne.pair_shd import typed_edge_shd
+    from causalspyne.ancestral_acc import ancestral_binary_accuracy
+    d_true = np.array([[0, 1], [0, 0]]); b_true = np.array([[0, 1], [1, 0]])        # bow: 0 -> 1 and 0 <-> 1
+    assert typed_edge_shd(d_true, b_true, d_true, b_true)["shd"] == 0
+    assert typed_edge_shd(d_true, b_true, d_true, np.zeros((2, 2)))["shd"] == 1      # misses only the bidirected edge
+    r = typed_edge_shd(d_true, b_true, d_true.T, np.zeros((2, 2)))                   # reversed edge: 1 FN + 1 FP, plus the missing <->
+    assert r["shd"] == 3 and r["dir"] == {"fn": 1, "fp": 1}
+    assert ancestral_binary_accuracy(d_true, d_true) == 1.0 and ancestral_binary_accuracy(d_true, d_true.T) == 0.0
