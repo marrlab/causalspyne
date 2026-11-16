@@ -268,15 +268,52 @@ class ConfoundingIllustration:
                     best = (score, side, angle)
         return best[1], best[2]
 
+
+    def _bend_directed(self, directed, nodes):
+        """
+        Bend directed edges that would run through a vertex or lie on top of another edge.
+
+        ``directed`` is the list of (parent, child) edges that are drawn and ``nodes`` the vertices that are drawn.
+        Returns a dict ``{(p, c): (side, angle)}``; ``angle == 0`` means a straight arrow, otherwise TikZ
+        ``bend left/right=angle`` (side +1 left, -1 right). Edges are processed in sorted order and each is
+        compared with the straight or already bent edges before it.
+        """
+        pos = {v: np.array(self.pos[v], float) for v in self.pos}
+        t = np.linspace(0.2, 0.8, 13)[:, None]
+        drawn, result = [], {}
+        for p, c in sorted(directed):
+            pa, pb = pos[p], pos[c]
+            chord = pb - pa
+            length = np.linalg.norm(chord)
+            left = np.array([-chord[1], chord[0]]) / length
+            others = [pos[v] for v in nodes if v not in (p, c)]
+            best = None
+            for angle in (0, 15, 25, 35):
+                for side in ((1,) if angle == 0 else (1, -1)):
+                    h = 0.37 * length * np.tan(np.radians(angle))
+                    curve = pa + t * chord + side * left * (4 * t * (1 - t)) * h
+                    clear_nodes = min([np.linalg.norm(curve - o, axis=1).min() for o in others] or [9.0])
+                    clear_edges = min([np.linalg.norm(curve[:, None] - d[None], axis=2).min() for d in drawn] or [9.0])
+                    clearance = min(clear_nodes, 1.6 * clear_edges)
+                    score = min(clearance, 0.34) - 0.004 * angle
+                    if best is None or score > best[0] + 1e-9:
+                        best = (score, side, angle, curve)
+            result[(p, c)] = (best[1], best[2])
+            drawn.append(best[3])
+        return result
+
     def _draw_graph(self, ax, full):
         hidden = set(self.hidden)
         directed = ([(p, c) for c, p in zip(*np.nonzero(self.adj))]
                     if full else self.directed)
         nodes = [v for v in range(self.n) if full or v not in hidden]
+        bends = self._bend_directed(directed, nodes)
         for p, c in directed:
+            side, angle = bends[(p, c)]
+            rad = -side * 0.74 * np.tan(np.radians(angle))
             ax.annotate("", xy=self.pos[c], xytext=self.pos[p],
                         arrowprops={"arrowstyle": "-|>", "lw": 1.1, "color": "k",
-                                    "shrinkA": 11, "shrinkB": 11})
+                                    "shrinkA": 11, "shrinkB": 11, "connectionstyle": f"arc3,rad={rad:.3f}"})
         if not full:
             for a, b in self.bidirected:
                 side, angle = self._bend(a, b)
@@ -312,10 +349,16 @@ class ConfoundingIllustration:
         else:
             directed = ([(p, c) for c, p in zip(*np.nonzero(self.adj))]
                         if full else self.directed)
+        drawn_nodes = [v for v in range(self.n) if not ((not full or sub) and v in hidden)]
+        bends = self._bend_directed(directed, drawn_nodes)
         for p, c in sorted(directed):
             # mark_sub: edges of the observed sub-DAG in black, edges at a hidden vertex in gray
             grey = mark_sub and (p in hidden or c in hidden)
-            lines.append(f"\\draw[arr{',gray' if grey else ''}] (n{p}) -- (n{c});")
+            side, angle = bends[(p, c)]
+            if angle:
+                lines.append(f"\\draw[arr{',gray' if grey else ''},bend {'left' if side > 0 else 'right'}={angle}] (n{p}) to (n{c});")
+            else:
+                lines.append(f"\\draw[arr{',gray' if grey else ''}] (n{p}) -- (n{c});")
         if not full and not sub:
             for a, b in self.bidirected:
                 side, angle = self._bend(a, b)
