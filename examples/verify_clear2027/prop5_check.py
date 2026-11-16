@@ -1,4 +1,4 @@
-"""Numerical check and plot of Proposition 5: mean squared partial correlation (1/(n(n-1))) sum_{i != j} rho_ij^2 <= (rho(R~) - 1)/(n - 1).
+"""Numerical check and plot of Proposition 5: (1/n) sum_{i != j} rho_ij^2 <= rho(R~) - 1  (equivalently the mean squared partial correlation per pair is at most (rho(R~) - 1)/(n - 1)).
 Instances: weighted DAG W (causalspyne.explicit_confounding_gen.random_instance, n = 5, 10, 20, 30; weight ranges [0.1,0.5] and [0.5,1.5]), bidirected pairs,
 and Omega from three classes: DD (equal loadings), CRE (unequal loadings a/b = exp(2r), |r| <= 2), and general PD (Omega = L L^T + I with a dense random L).
 Sigma = (I - W)^-1 Omega (I - W)^-T, P = normalized precision, R~ = -P. Usage: python prop5_check.py out.png   (prints the number of violations and the tightness)"""
@@ -9,8 +9,8 @@ from causalspyne.explicit_confounding_gen import random_instance, pair_loadings,
 rng = np.random.default_rng(11)
 def stats(W, Om):
     n = len(W); A = np.linalg.inv(np.eye(n) - W); S = A @ Om @ A.T; P = np.linalg.inv(S); d = 1 / np.sqrt(np.diag(P)); Pn = d[:, None] * P * d[None, :]
-    mean_sq = ((Pn ** 2).sum() - n) / (n * (n - 1)); rho = np.linalg.eigvalsh(Pn)[-1]
-    return mean_sq, (rho - 1) / (n - 1)
+    lhs = ((Pn ** 2).sum() - n) / n; rho = np.linalg.eigvalsh(Pn)[-1]
+    return lhs, rho - 1
 rows = {"DD": [], "CRE": [], "PD": []}; viol = 0; tot = 0
 for n in (5, 10, 20, 30):
     for (wlo, whi) in ((0.1, 0.5), (0.5, 1.5)):
@@ -33,7 +33,7 @@ col = {"DD": "#e8683a", "CRE": "#4fa36b", "PD": "#2a6fb0"}
 for cls, v in rows.items():
     v = np.array(v); ax.scatter(v[:, 1], v[:, 0], s=5, alpha=0.35, color=col[cls], label={"DD": "diagonally dominant", "CRE": "canonical root explicit", "PD": "general PD"}[cls])
 lim = [min(np.array(rows['DD'])[:, 0].min(), 1e-4), 1.0]
-ax.plot([1e-3, 1], [1e-3, 1], "k--", lw=0.8, label="bound (equality)")
-ax.set_xscale("log"); ax.set_yscale("log"); ax.set_xlim(0.03, 1); ax.set_ylim(0.003, 1)
-ax.set_xlabel(r"bound $(\rho(\tilde R)-1)/(|V|-1)$"); ax.set_ylabel(r"mean squared partial correlation"); ax.legend(fontsize=6, loc="lower right")
+ax.plot([1e-2, 30], [1e-2, 30], "k--", lw=0.8, label="bound (equality)")
+ax.set_xscale("log"); ax.set_yscale("log"); ax.set_xlim(0.3, 30); ax.set_ylim(0.1, 30)
+ax.set_xlabel(r"bound $\rho(\tilde R)-1$"); ax.set_ylabel(r"$\frac{1}{|V|}\sum_{i\neq j}\rho_{i,j|\cdot}^2$"); ax.legend(fontsize=6, loc="lower right")
 fig.tight_layout(); fig.savefig(sys.argv[1], dpi=170)
